@@ -1,4 +1,4 @@
-import { PlayerType } from '@store/reducer/player/type';
+import { PlayerType } from '@store/reducer/type';
 import { styled } from 'styled-components';
 import PlayerInfo from './PlayerInfo';
 import PlayerStock from './PlayerStock';
@@ -15,7 +15,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
           <PlayerInfo player={player} />
           <PlayerStockList>
             {player.userStatusBoard.stockList.map((stock) => (
-              <PlayerStock key={stock.id} stockInfo={stock} />
+              <PlayerStock key={stock.name} stockInfo={stock} />
             ))}
           </PlayerStockList>
         </>

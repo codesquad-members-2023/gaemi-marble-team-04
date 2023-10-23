@@ -1,16 +1,14 @@
 import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
-import PlayerCard from '@components/Player/PlayerCard';
+import LeftPlayers from '@components/Player/LeftPlayers';
 import PlayerTestModal from '@components/Player/PlayerTestModal';
-import { usePlayersValue } from '@store/reducer/player';
+import RightPlayers from '@components/Player/RightPlayers';
 import { useState } from 'react';
 import { styled } from 'styled-components';
-import { leftPlayerOrderList, rightPlayerOrderList } from './constants';
 
 export default function GamePage() {
   // Memo: 테스트용 임시 모달
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
-  const playersInfo = usePlayersValue();
 
   const handleOpenModal = () => {
     setIsTestModalOpen(true);
@@ -20,30 +18,14 @@ export default function GamePage() {
     setIsTestModalOpen(false);
   };
 
-  const leftPlayersInfo = playersInfo.filter((player) =>
-    leftPlayerOrderList.includes(player.order)
-  );
-
-  const rightPlayerInfo = playersInfo.filter((player) =>
-    rightPlayerOrderList.includes(player.order)
-  );
-
   return (
     <>
       <Container>
         <GameHeader handleClickTest={handleOpenModal} />
         <Main>
-          <Players>
-            {leftPlayersInfo.map((playerInfo) => (
-              <PlayerCard key={playerInfo.order} player={playerInfo} />
-            ))}
-          </Players>
+          <LeftPlayers />
           <GameBoard />
-          <Players>
-            {rightPlayerInfo.map((playerInfo) => (
-              <PlayerCard key={playerInfo.order} player={playerInfo} />
-            ))}
-          </Players>
+          <RightPlayers />
         </Main>
       </Container>
       {isTestModalOpen && <PlayerTestModal handleClose={handleCloseModal} />}
@@ -68,10 +50,4 @@ const Main = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
-`;
-
-const Players = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 `;

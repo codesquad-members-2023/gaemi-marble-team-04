@@ -3,9 +3,11 @@ import type { DefaultTheme } from 'styled-components';
 export const colors = {
   white: '#FFF',
   black: '#000',
+  blue: '#007AFF',
   royalBlue: '#4169E1',
   purple: '#823FE8',
   red: '#FF3B30',
+  yellow: '#FFCC00',
   greyWithBlur: '#00000033',
   grey10: '#E5E5E5',
   grey20: '#CCC',
@@ -62,6 +64,11 @@ export const designSystem = {
     systemWarning: colors.red,
     systemBackground: colors.white,
     systemBackgroundWeak: colors.grey10,
+
+    player1: colors.black,
+    player2: colors.red,
+    player3: colors.blue,
+    player4: colors.yellow,
   },
   filter: {
     neutralText:

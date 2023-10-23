@@ -1,6 +1,6 @@
 import { getCell, postBuy, postEnter, postReady, postSell } from '@api/ws';
 import useOutsideClick from '@hooks/useOutsideClick';
-import usePlayerReducer from '@store/reducer/player/usePlayerReducer';
+import useGameReducer from '@store/reducer/useGameReducer';
 import { styled } from 'styled-components';
 import Modal from '../Modal/Modal';
 
@@ -10,7 +10,7 @@ type PlayerTestModalProps = {
 
 export default function PlayerTestModal({ handleClose }: PlayerTestModalProps) {
   const { ref: testModalRef } = useOutsideClick<HTMLDivElement>(handleClose);
-  const { dispatch } = usePlayerReducer();
+  const { dispatch } = useGameReducer();
 
   const handleEnter = async () => {
     const res = await postEnter('fuse12');

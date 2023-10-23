@@ -1,6 +1,6 @@
 import { Icon } from '@components/icon/Icon';
 import { antList } from '@pages/constants';
-import { PlayerType } from '@store/reducer/player/type';
+import { PlayerType } from '@store/reducer/type';
 import { styled } from 'styled-components';
 
 type PlayerInfoProps = {

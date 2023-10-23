@@ -99,7 +99,7 @@ export const handlers = [
             stockList: [
               {
                 id: 1,
-                name: 'Google',
+                name: 'google',
                 quantity: 20,
                 price: 50000,
               },
@@ -124,7 +124,7 @@ export const handlers = [
             stockList: [
               {
                 id: 1,
-                name: 'Google',
+                name: 'google',
                 quantity: 10,
                 price: 50000,
               },
@@ -145,6 +145,45 @@ export const handlers = [
           location: 6,
           salary: 1000000,
           dividend: 1000000,
+        },
+      })
+    );
+  }),
+
+  rest.post('/start', (_, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        type: 'start',
+        data: {
+          playerId: 'fuse12',
+        },
+      })
+    );
+  }),
+
+  rest.post('/endTurn', (_, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        type: 'endTurn',
+        data: {
+          nextPlayerId: 'TOMMY',
+          nextPlayerStatus: { type: 'default' },
+        },
+      })
+    );
+  }),
+
+  rest.post('/dice', (_, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({
+        type: 'dice',
+        data: {
+          startLocation: 0,
+          dice1: 3,
+          dice2: 5,
         },
       })
     );

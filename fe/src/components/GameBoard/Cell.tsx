@@ -23,7 +23,7 @@ export default function Cell({ theme, name, logo, sharePrice }: Cellprops) {
       )}
       <Content>
         {!theme && <CellImg src={cellImageMap[logo]} />}
-        {sharePrice && <Price>{addCommasToNumber(sharePrice)}</Price>}
+        {sharePrice && <span>{addCommasToNumber(sharePrice)}</span>}
       </Content>
     </Container>
   );
@@ -65,5 +65,3 @@ const Content = styled.div`
   justify-content: center;
   align-items: center;
 `;
-
-const Price = styled.div``;

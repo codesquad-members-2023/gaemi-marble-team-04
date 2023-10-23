@@ -1,3 +1,4 @@
+import { delay } from '@utils/index';
 import { useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Cell from './Cell';
@@ -7,7 +8,7 @@ type DirectionType = 'top' | 'right' | 'bottom' | 'left';
 export default function GameBoard() {
   const [dice, setDice] = useState(0);
   const tokenRef = useRef<HTMLDivElement>(null);
-  const coordinates = useRef({ x: 0, y: 0 });
+  const tokenCoordinates = useRef({ x: 0, y: 0 });
   const isStart = useRef(true);
   const currentCell = useRef(0);
   const direction = useRef<DirectionType>('top');
@@ -46,27 +47,27 @@ export default function GameBoard() {
 
       switch (direction.current) {
         case 'top':
-          coordinates.current.y -= 6;
-          tokenRef.current!.style.transform = `translate(${coordinates.current.x}rem, ${coordinates.current.y}rem)`;
+          tokenCoordinates.current.y -= 6;
+          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
           break;
         case 'right':
-          coordinates.current.x += 6;
-          tokenRef.current!.style.transform = `translate(${coordinates.current.x}rem, ${coordinates.current.y}rem)`;
+          tokenCoordinates.current.x += 6;
+          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
           break;
         case 'bottom':
-          coordinates.current.y += 6;
-          tokenRef.current!.style.transform = `translate(${coordinates.current.x}rem, ${coordinates.current.y}rem)`;
+          tokenCoordinates.current.y += 6;
+          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
           break;
         case 'left':
-          coordinates.current.x -= 6;
-          tokenRef.current!.style.transform = `translate(${coordinates.current.x}rem, ${coordinates.current.y}rem)`;
+          tokenCoordinates.current.x -= 6;
+          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
           break;
         default:
           break;
       }
       currentCell.current = (currentCell.current + 1) % 24;
       isStart.current = false;
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await delay(200);
     }
   };
   return (
@@ -187,16 +188,16 @@ export default function GameBoard() {
 const Board = styled.div`
   width: 42rem;
   height: 42rem;
-  border-color: ${({ theme: { color } }) => color.accentText};
   position: relative;
+  border-color: ${({ theme: { color } }) => color.accentText};
 `;
 
 const Line1 = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
   position: absolute;
   top: 6rem;
   left: 0;
+  display: flex;
+  flex-direction: column-reverse;
 
   div {
     border-top: none;
@@ -204,10 +205,10 @@ const Line1 = styled.div`
 `;
 
 const Line2 = styled.div`
-  display: flex;
-  flex-direction: row;
   position: absolute;
   top: 0;
+  display: flex;
+  flex-direction: row;
 
   div {
     border-right: none;
@@ -215,10 +216,10 @@ const Line2 = styled.div`
 `;
 
 const Line3 = styled.div`
-  display: flex;
-  flex-direction: column;
   position: absolute;
   right: 0;
+  display: flex;
+  flex-direction: column;
 
   div {
     border-bottom: none;
@@ -226,11 +227,11 @@ const Line3 = styled.div`
 `;
 
 const Line4 = styled.div`
-  display: flex;
-  flex-direction: row-reverse;
   position: absolute;
   bottom: 0;
   left: 6rem;
+  display: flex;
+  flex-direction: row-reverse;
 
   div {
     border-left: none;
@@ -246,23 +247,22 @@ const RollButton = styled.button`
 const Center = styled.div`
   width: 30rem;
   height: 30rem;
+  position: absolute;
+  top: 6rem;
+  left: 6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  position: absolute;
-  top: 6rem;
-  left: 6rem;
 `;
 
 const PlayerToken = styled.div`
-  width: 3rem;
-  height: 3rem;
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
   border-radius: 50%;
   background-color: red;
-  position: absolute;
-  bottom: 1.5rem;
-  left: 1.5rem;
-
   transition: all 0.2s;
 `;

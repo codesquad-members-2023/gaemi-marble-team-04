@@ -1,4 +1,6 @@
 import { Icon } from '@components/icon/Icon';
+import { ROUTE_PATH } from '@router/constants';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 type GameHeaderProps = {
@@ -6,6 +8,12 @@ type GameHeaderProps = {
 };
 
 export default function GameHeader({ handleClickTest }: GameHeaderProps) {
+  const navigate = useNavigate();
+
+  const handleExit = () => {
+    navigate(ROUTE_PATH.HOME);
+  };
+
   return (
     <Header>
       <Logo>Gaemi Marble</Logo>
@@ -19,7 +27,12 @@ export default function GameHeader({ handleClickTest }: GameHeaderProps) {
           />
         </IconContainer>
         <IconContainer>
-          <Icon name="exit" size="3rem" color="accentText" />
+          <Icon
+            name="exit"
+            size="3rem"
+            color="accentText"
+            onClick={handleExit}
+          />
         </IconContainer>
       </Temp>
     </Header>

@@ -1,5 +1,6 @@
-import { DirectionType } from '@components/GameBoard/GameBoard';
 import { atom, useAtom } from 'jotai';
+
+export type DirectionType = 'top' | 'right' | 'bottom' | 'left';
 
 export type PlayerTokenAtom = {
   location: number;

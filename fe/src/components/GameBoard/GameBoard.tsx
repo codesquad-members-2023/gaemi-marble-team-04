@@ -5,14 +5,12 @@ import {
   usePlayerToken3,
   usePlayerToken4,
 } from '@store/playerToken';
-import { delay } from '@utils/index';
+import { changeDirection, delay } from '@utils/index';
 import { RefObject, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Cell from './Cell';
 import PlayerToken from './PlayerToken';
 import { CELL, CORNER_CELLS, TOKEN_TRANSITION_DELAY } from './constants';
-
-export type DirectionType = 'top' | 'right' | 'bottom' | 'left';
 
 export default function GameBoard() {
   const [dice, setDice] = useState(0);
@@ -34,16 +32,16 @@ export default function GameBoard() {
 
     switch (order) {
       case 1:
-        moveToken(randomNum, token1, setToken1, tokenRef1);
+        moveToken(randomNum, tokenRef1, token1, setToken1);
         break;
       case 2:
-        moveToken(randomNum, token2, setToken2, tokenRef2);
+        moveToken(randomNum, tokenRef2, token2, setToken2);
         break;
       case 3:
-        moveToken(randomNum, token3, setToken3, tokenRef3);
+        moveToken(randomNum, tokenRef3, token3, setToken3);
         break;
       case 4:
-        moveToken(randomNum, token4, setToken4, tokenRef4);
+        moveToken(randomNum, tokenRef4, token4, setToken4);
         break;
       default:
         break;
@@ -52,28 +50,13 @@ export default function GameBoard() {
     setDice(randomNum);
   };
 
-  const changeDirection = (direction: DirectionType) => {
-    switch (direction) {
-      case 'top':
-        return 'right';
-      case 'right':
-        return 'bottom';
-      case 'bottom':
-        return 'left';
-      case 'left':
-        return 'top';
-      default:
-        return 'top';
-    }
-  };
-
   const moveToken = async (
     diceCount: number,
+    tokenRef: RefObject<HTMLDivElement>,
     tokenAtom: PlayerTokenAtom,
     setTokenAtom: (
       updateFunction: (prev: PlayerTokenAtom) => PlayerTokenAtom
-    ) => void,
-    tokenRef: RefObject<HTMLDivElement>
+    ) => void
   ) => {
     const tokenCoordinates = tokenAtom.coordinates;
     let tokenDirection = tokenAtom.direction;

@@ -1,22 +1,30 @@
 import { delay } from '@utils/index';
-import { useRef, useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Cell from './Cell';
+import PlayerToken from './PlayerToken';
+import { CELL, CORNER_CELLS, TOKEN_TRANSITION_DELAY } from './constants';
 
 type DirectionType = 'top' | 'right' | 'bottom' | 'left';
 
 export default function GameBoard() {
   const [dice, setDice] = useState(0);
-  const tokenRef = useRef<HTMLDivElement>(null);
-  const tokenCoordinates = useRef({ x: 0, y: 0 });
-  const isStart = useRef(true);
-  const currentCell = useRef(0);
-  const direction = useRef<DirectionType>('top');
 
+  const tokenRef1 = useRef<HTMLDivElement>(null);
+  const tokenRef2 = useRef<HTMLDivElement>(null);
+  const tokenRef3 = useRef<HTMLDivElement>(null);
+  const tokenRef4 = useRef<HTMLDivElement>(null);
+
+  const tokenCoordinates = useRef({ x: 0, y: 0 });
+  const direction = useRef<DirectionType>('top');
+  const currentCell = useRef(0); // 후에 칸도착 location으로 변경할 수 있음
+
+  // TODO: 본인 차례에만 주사위 굴리기 버튼이 렌더링되고 클릭 가능하도록 구현
+  // TODO: 자기 차례에 주사위를 굴리면 자신의 말만 이동할 수 있도록 구현
   const throwDice = () => {
     const randomNum = Math.floor(Math.random() * 11) + 2;
     setDice(randomNum);
-    moveToken(randomNum);
+    moveToken(randomNum, tokenRef1);
   };
 
   const changeDirection = (direction: DirectionType) => {
@@ -34,42 +42,38 @@ export default function GameBoard() {
     }
   };
 
-  const moveToken = async (주사위눈: number) => {
-    for (let i = 주사위눈; i > 0; i--) {
-      if (
-        (!isStart.current && currentCell.current === 0) ||
-        currentCell.current === 6 ||
-        currentCell.current === 12 ||
-        currentCell.current === 18
-      ) {
+  const moveToken = async (
+    diceCount: number,
+    tokenRef: RefObject<HTMLDivElement>
+  ) => {
+    const moveToNextCell = (x: number, y: number) => {
+      tokenCoordinates.current.x += x;
+      tokenCoordinates.current.y += y;
+      tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
+    };
+
+    const directions = {
+      top: { x: 0, y: -CELL.HEIGHT },
+      right: { x: CELL.WIDTH, y: 0 },
+      bottom: { x: 0, y: CELL.HEIGHT },
+      left: { x: -CELL.HEIGHT, y: 0 },
+    };
+
+    for (let i = diceCount; i > 0; i--) {
+      const directionData = directions[direction.current];
+      moveToNextCell(directionData.x, directionData.y);
+
+      currentCell.current = (currentCell.current + 1) % 24;
+      const isCorner = CORNER_CELLS.includes(currentCell.current); // 0, 6, 12, 18 칸에서 방향 전환
+
+      if (isCorner) {
         direction.current = changeDirection(direction.current);
       }
 
-      switch (direction.current) {
-        case 'top':
-          tokenCoordinates.current.y -= 6;
-          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
-          break;
-        case 'right':
-          tokenCoordinates.current.x += 6;
-          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
-          break;
-        case 'bottom':
-          tokenCoordinates.current.y += 6;
-          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
-          break;
-        case 'left':
-          tokenCoordinates.current.x -= 6;
-          tokenRef.current!.style.transform = `translate(${tokenCoordinates.current.x}rem, ${tokenCoordinates.current.y}rem)`;
-          break;
-        default:
-          break;
-      }
-      currentCell.current = (currentCell.current + 1) % 24;
-      isStart.current = false;
-      await delay(200);
+      await delay(TOKEN_TRANSITION_DELAY);
     }
   };
+
   return (
     <>
       <Board>
@@ -179,7 +183,10 @@ export default function GameBoard() {
           <span>주사위 결과: {dice}</span>
           <RollButton onClick={throwDice}>굴리기</RollButton>
         </Center>
-        <PlayerToken ref={tokenRef} />
+        <PlayerToken ref={tokenRef1} order={1} />
+        <PlayerToken ref={tokenRef2} order={2} />
+        <PlayerToken ref={tokenRef3} order={3} />
+        <PlayerToken ref={tokenRef4} order={4} />
       </Board>
     </>
   );
@@ -241,7 +248,9 @@ const Line4 = styled.div`
 const RollButton = styled.button`
   width: 6rem;
   height: 4rem;
-  background-color: grey;
+  border-radius: ${({ theme: { radius } }) => radius.small};
+  color: ${({ theme: { color } }) => color.neutralText};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;
 
 const Center = styled.div`
@@ -254,15 +263,4 @@ const Center = styled.div`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-`;
-
-const PlayerToken = styled.div`
-  width: 2rem;
-  height: 2rem;
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-  border-radius: 50%;
-  background-color: red;
-  transition: all 0.2s;
 `;

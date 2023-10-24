@@ -10,7 +10,7 @@ import { RefObject, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Cell from './Cell';
 import PlayerToken from './PlayerToken';
-import { CELL, CORNER_CELLS, TOKEN_TRANSITION_DELAY } from './constants';
+import { CORNER_CELLS, TOKEN_TRANSITION_DELAY, directions } from './constants';
 
 export default function GameBoard() {
   const [dice, setDice] = useState(0);
@@ -66,13 +66,6 @@ export default function GameBoard() {
       tokenCoordinates.x += x;
       tokenCoordinates.y += y;
       tokenRef.current!.style.transform = `translate(${tokenCoordinates.x}rem, ${tokenCoordinates.y}rem)`;
-    };
-
-    const directions = {
-      top: { x: 0, y: -CELL.HEIGHT },
-      right: { x: CELL.WIDTH, y: 0 },
-      bottom: { x: 0, y: CELL.HEIGHT },
-      left: { x: -CELL.HEIGHT, y: 0 },
     };
 
     for (let i = diceCount; i > 0; i--) {

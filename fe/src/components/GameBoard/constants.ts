@@ -1,3 +1,5 @@
+import { DirectionType } from '@store/playerToken';
+
 export const CELL = {
   WIDTH: 6,
   HEIGHT: 6,
@@ -13,3 +15,18 @@ export const directions = {
 };
 
 export const TOKEN_TRANSITION_DELAY = 200;
+
+export const changeDirection = (direction: DirectionType) => {
+  switch (direction) {
+    case 'top':
+      return 'right';
+    case 'right':
+      return 'bottom';
+    case 'bottom':
+      return 'left';
+    case 'left':
+      return 'top';
+    default:
+      return 'top';
+  }
+};

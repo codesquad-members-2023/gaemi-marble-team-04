@@ -5,12 +5,17 @@ import {
   usePlayerToken3,
   usePlayerToken4,
 } from '@store/playerToken';
-import { changeDirection, delay } from '@utils/index';
+import { delay } from '@utils/index';
 import { RefObject, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import Cell from './Cell';
 import PlayerToken from './PlayerToken';
-import { CORNER_CELLS, TOKEN_TRANSITION_DELAY, directions } from './constants';
+import {
+  CORNER_CELLS,
+  TOKEN_TRANSITION_DELAY,
+  changeDirection,
+  directions,
+} from './constants';
 
 export default function GameBoard() {
   const [dice, setDice] = useState(0);
@@ -50,6 +55,17 @@ export default function GameBoard() {
     setDice(randomNum);
   };
 
+  const moveToNextCell = (
+    x: number,
+    y: number,
+    tokenRef: RefObject<HTMLDivElement>,
+    tokenAtom: PlayerTokenAtom
+  ) => {
+    tokenAtom.coordinates.x += x;
+    tokenAtom.coordinates.y += y;
+    tokenRef.current!.style.transform = `translate(${tokenAtom.coordinates.x}rem, ${tokenAtom.coordinates.y}rem)`;
+  };
+
   const moveToken = async (
     diceCount: number,
     tokenRef: RefObject<HTMLDivElement>,
@@ -62,15 +78,9 @@ export default function GameBoard() {
     let tokenDirection = tokenAtom.direction;
     let tokenLocation = tokenAtom.location;
 
-    const moveToNextCell = (x: number, y: number) => {
-      tokenCoordinates.x += x;
-      tokenCoordinates.y += y;
-      tokenRef.current!.style.transform = `translate(${tokenCoordinates.x}rem, ${tokenCoordinates.y}rem)`;
-    };
-
     for (let i = diceCount; i > 0; i--) {
       const directionData = directions[tokenDirection];
-      moveToNextCell(directionData.x, directionData.y);
+      moveToNextCell(directionData.x, directionData.y, tokenRef, tokenAtom);
 
       tokenLocation = (tokenLocation + 1) % 24;
       const isCorner = CORNER_CELLS.includes(tokenLocation); // 0, 6, 12, 18 칸에서 방향 전환

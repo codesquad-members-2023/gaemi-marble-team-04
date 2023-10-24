@@ -5,10 +5,10 @@ type Cellprops = {
   theme?: string;
   name: string;
   logo: string;
-  sharePrice?: number;
+  price?: number;
 };
 
-export default function Cell({ theme, name, logo, sharePrice }: Cellprops) {
+export default function Cell({ theme, name, logo, price }: Cellprops) {
   const addCommasToNumber = (number: number): string => {
     return `${number.toLocaleString('ko')}`;
   };
@@ -23,7 +23,7 @@ export default function Cell({ theme, name, logo, sharePrice }: Cellprops) {
       )}
       <Content>
         {!theme && <CellImg src={cellImageMap[logo]} />}
-        {sharePrice && <span>{addCommasToNumber(sharePrice)}</span>}
+        {price && <span>{addCommasToNumber(price)}</span>}
       </Content>
     </Container>
   );

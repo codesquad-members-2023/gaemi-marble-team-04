@@ -7,7 +7,7 @@ import {
 } from '@store/playerToken';
 import { delay } from '@utils/index';
 import { RefObject, useRef, useState } from 'react';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import Cell from './Cell';
 import PlayerToken from './PlayerToken';
 import {
@@ -15,6 +15,7 @@ import {
   TOKEN_TRANSITION_DELAY,
   changeDirection,
   directions,
+  initialBoard,
 } from './constants';
 
 export default function GameBoard() {
@@ -103,108 +104,19 @@ export default function GameBoard() {
   return (
     <>
       <Board>
-        <Line1>
-          <Cell logo="start" name="start" />
-          <Cell
-            theme="it"
-            name="코드스쿼드"
-            logo="codesquad"
-            sharePrice={400000}
-          />
-          <Cell
-            theme="fashion"
-            name="무신사"
-            logo="musinsa"
-            sharePrice={500000}
-          />
-          <Cell
-            theme="travel"
-            name="하나투어"
-            logo="hanatour"
-            sharePrice={600000}
-          />
-          <Cell
-            theme="construction"
-            name="GS건설"
-            logo="gs"
-            sharePrice={700000}
-          />
-          <Cell theme="food" name="농심" logo="nongshim" sharePrice={800000} />
-        </Line1>
-        <Line2>
-          <Cell logo="jail" name="유치장" />
-          <Cell
-            theme="construction"
-            name="현대건설"
-            logo="hyundai"
-            sharePrice={900000}
-          />
-          <Cell
-            theme="military"
-            name="한화디펜스"
-            logo="hanwha"
-            sharePrice={1000000}
-          />
-          <Cell name="황금카드" logo="goldCard" />
-          <Cell
-            theme="travel"
-            name="대한항공"
-            logo="koreanAir"
-            sharePrice={1100000}
-          />
-          <Cell
-            theme="elonMusk"
-            name="트위터"
-            logo="twitter"
-            sharePrice={1200000}
-          />
-        </Line2>
-        <Line3>
-          <Cell logo="goodNews" name="호재" />
-          <Cell
-            theme="pharmaceutical"
-            name="삼성바이오로직스"
-            logo="samsungBio"
-            sharePrice={1300000}
-          />
-          <Cell theme="it" name="구글" logo="google" sharePrice={1400000} />
-          <Cell logo="tax" name="세금" />
-          <Cell
-            theme="fashion"
-            name="에르메스"
-            logo="hermes"
-            sharePrice={1500000}
-          />
-          <Cell
-            theme="food"
-            name="맥도날드"
-            logo="mcdonalds"
-            sharePrice={1600000}
-          />
-        </Line3>
-        <Line4>
-          <Cell logo="rocket" name="순간이동" />
-          <Cell
-            theme="elonMusk"
-            name="테슬라"
-            logo="tesla"
-            sharePrice={1700000}
-          />
-          <Cell
-            theme="pharmaceutical"
-            name="화이자"
-            logo="pfizer"
-            sharePrice={1800000}
-          />
-          <Cell logo="goldCard" name="황금카드" />
-          <Cell
-            theme="military"
-            name="스타크 인더스트리"
-            logo="starkIndustry"
-            sharePrice={1900000}
-          />
-          <Cell theme="it" name="애플" logo="apple" sharePrice={2000000} />
-        </Line4>
+        {initialBoard.map((line, index) => (
+          <Line key={index} $lineNum={index + 1}>
+            {line.map((cell) => (
+              <Cell
+                key={cell.name}
+                theme={cell.theme}
+                logo={cell.logo}
+                name={cell.name}
+                price={cell.price}
+              />
+            ))}
+          </Line>
+        ))}
         <Center>
           <span>주사위 결과: {dice}</span>
           <RollButton onClick={() => throwDice(1)}>주사위1</RollButton>
@@ -228,50 +140,10 @@ const Board = styled.div`
   border-color: ${({ theme: { color } }) => color.accentText};
 `;
 
-const Line1 = styled.div`
+const Line = styled.div<{ $lineNum: number }>`
   position: absolute;
-  top: 6rem;
-  left: 0;
   display: flex;
-  flex-direction: column-reverse;
-
-  div {
-    border-top: none;
-  }
-`;
-
-const Line2 = styled.div`
-  position: absolute;
-  top: 0;
-  display: flex;
-  flex-direction: row;
-
-  div {
-    border-right: none;
-  }
-`;
-
-const Line3 = styled.div`
-  position: absolute;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-
-  div {
-    border-bottom: none;
-  }
-`;
-
-const Line4 = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 6rem;
-  display: flex;
-  flex-direction: row-reverse;
-
-  div {
-    border-left: none;
-  }
+  ${({ $lineNum }) => drawLine($lineNum)}
 `;
 
 const RollButton = styled.button`
@@ -293,3 +165,44 @@ const Center = styled.div`
   justify-content: space-around;
   align-items: center;
 `;
+
+const drawLine = (lineNum: number) => {
+  switch (lineNum) {
+    case 1:
+      return css`
+        top: 6rem;
+        left: 0;
+        flex-direction: column-reverse;
+        div {
+          border-top: none;
+        }
+      `;
+    case 2:
+      return css`
+        top: 0;
+        flex-direction: row;
+        div {
+          border-right: none;
+        }
+      `;
+    case 3:
+      return css`
+        right: 0;
+        flex-direction: column;
+        div {
+          border-bottom: none;
+        }
+      `;
+    case 4:
+      return css`
+        bottom: 0;
+        left: 6rem;
+        flex-direction: row-reverse;
+        div {
+          border-left: none;
+        }
+      `;
+    default:
+      return css``;
+  }
+};

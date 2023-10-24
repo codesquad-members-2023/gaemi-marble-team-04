@@ -175,5 +175,5 @@ export const initialGame = {
   isPlaying: false,
   currentPlayerId: '',
   currentPlayerStatus: { type: 'default' },
-  dice: [],
+  dice: [0, 0],
 };

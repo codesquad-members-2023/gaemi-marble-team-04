@@ -52,6 +52,7 @@ export default function useGameReducer() {
         case 'dice': {
           const payload = action.payload as DicePayloadType;
           const { dice1, dice2 } = payload;
+          console.log('dispatch dice');
 
           return {
             ...prev,

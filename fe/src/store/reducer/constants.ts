@@ -173,7 +173,7 @@ export const initialStock = [
 
 export const initialGame = {
   isPlaying: false,
-  playerId: '',
-  playerStatus: { type: 'default' },
+  currentPlayerId: '',
+  currentPlayerStatus: { type: 'default' },
   dice: [],
 };

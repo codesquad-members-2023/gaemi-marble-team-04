@@ -30,7 +30,7 @@ export default function useGameReducer() {
             ...prev,
             game: {
               ...prev.game,
-              playerId: payload.playerId,
+              currentPlayerId: payload.playerId,
               isPlaying: true,
             },
           };
@@ -43,8 +43,8 @@ export default function useGameReducer() {
             ...prev,
             game: {
               ...prev.game,
-              playerId: payload.nextPlayerId,
-              playerStatus: payload.nextPlayerStatus,
+              currentPlayerId: payload.nextPlayerId,
+              currentPlayerStatus: payload.nextPlayerStatus,
             },
           };
         }

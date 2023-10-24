@@ -19,9 +19,9 @@ export type GameInfoType = {
   // Memo: 현재 게임이 진행중인지
   isPlaying: boolean;
   // Memo: 현재 턴이 누군지
-  playerId: string;
+  currentPlayerId: string;
   // Memo: 턴인 사람의 상태 (default, prison, teleport ...)
-  playerStatus: { type: string; count?: number };
+  currentPlayerStatus: { type: string; count?: number };
   dice: number[];
 };
 

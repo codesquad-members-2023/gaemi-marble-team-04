@@ -42,4 +42,7 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     font-family: 'NeoDunggeunmo', sans-serif;
   }
+  ul {
+    list-style: none;
+  }
 `;

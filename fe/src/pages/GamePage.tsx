@@ -1,34 +1,22 @@
 import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
 import LeftPlayers from '@components/Player/LeftPlayers';
-import PlayerTestModal from '@components/Player/PlayerTestModal';
 import RightPlayers from '@components/Player/RightPlayers';
-import { useState } from 'react';
 import { styled } from 'styled-components';
 
 export default function GamePage() {
   // Memo: 테스트용 임시 모달
-  const [isTestModalOpen, setIsTestModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    setIsTestModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsTestModalOpen(false);
-  };
 
   return (
     <>
       <Container>
-        <GameHeader handleClickTest={handleOpenModal} />
+        <GameHeader />
         <Main>
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
         </Main>
       </Container>
-      {isTestModalOpen && <PlayerTestModal handleClose={handleCloseModal} />}
     </>
   );
 }

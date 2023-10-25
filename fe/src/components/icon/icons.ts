@@ -5,15 +5,17 @@ import antWater from '@assets/icon/antWater.svg?react';
 import exit from '@assets/icon/exit.svg?react';
 import plus from '@assets/icon/plus.svg?react';
 import sample from '@assets/icon/sample.svg?react';
+import statusBoard from '@assets/icon/statusBoard.svg?react';
 
 export const icons = {
-  plus,
-  sample,
-  exit,
   antBasic,
   antFire,
   antWater,
   antHoney,
+  exit,
+  plus,
+  sample,
+  statusBoard,
 };
 
 export type IconsType = keyof typeof icons;

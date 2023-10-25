@@ -2,7 +2,7 @@ import { getCell, postBuy, postEnter, postReady, postSell } from '@api/ws';
 import useOutsideClick from '@hooks/useOutsideClick';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { styled } from 'styled-components';
-import Modal from '../Modal/Modal';
+import Modal from './Modal';
 
 type PlayerTestModalProps = {
   handleClose: () => void;

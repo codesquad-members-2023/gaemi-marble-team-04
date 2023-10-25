@@ -10,6 +10,7 @@ import { GameActionType } from '@store/reducer/type';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { delay } from '@utils/index';
 import { RefObject, useCallback, useEffect, useRef } from 'react';
+import ReactDice, { ReactDiceRef } from 'react-dice-complete';
 import useWebSocket from 'react-use-websocket';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
@@ -29,6 +30,7 @@ export default function GameBoard() {
   // const tokenRef2 = useRef<HTMLDivElement>(null);
   // const tokenRef3 = useRef<HTMLDivElement>(null);
   // const tokenRef4 = useRef<HTMLDivElement>(null);
+  const reactDice = useRef<ReactDiceRef>(null);
 
   const [gameInfo] = useGameInfo();
   const [token1, setToken1] = usePlayerToken1();
@@ -53,6 +55,44 @@ export default function GameBoard() {
       });
     }
   }, [lastMessage]);
+
+  useEffect(() => {
+    if (gameInfo.dice[0] === 0 || gameInfo.dice[1] === 0) return;
+    rollDice(gameInfo.dice[0], gameInfo.dice[1]);
+  }, [gameInfo.dice]);
+
+  const rollDone = () => {
+    moveToken(
+      gameInfo.dice[0] + gameInfo.dice[1],
+      tokenRef1,
+      token1,
+      setToken1
+    );
+  };
+
+  const rollDice = (dice1: number, dice2: number) => {
+    reactDice.current?.rollAll([dice1, dice2]);
+  };
+
+  const throwDice = () => {
+    const message = JSON.stringify({
+      type: 'dice',
+      gameId: 1,
+      playerId: 'fuse12',
+    });
+    sendMessage(message);
+  };
+
+  const moveToNextCell = (
+    x: number,
+    y: number,
+    tokenRef: RefObject<HTMLDivElement>,
+    tokenAtom: PlayerTokenAtom
+  ) => {
+    tokenAtom.coordinates.x += x;
+    tokenAtom.coordinates.y += y;
+    tokenRef.current!.style.transform = `translate(${tokenAtom.coordinates.x}rem, ${tokenAtom.coordinates.y}rem)`;
+  };
 
   const moveToken = useCallback(
     async (
@@ -91,34 +131,6 @@ export default function GameBoard() {
     []
   );
 
-  // dependency에 token, setToken 추가시 무한렌더링
-  useEffect(() => {
-    const diceCount = gameInfo.dice[0] + gameInfo.dice[1];
-    moveToken(diceCount, tokenRef1, token1, setToken1);
-  }, [gameInfo.dice, moveToken]);
-
-  // TODO: 본인 차례에만 주사위 굴리기 버튼이 렌더링되고 클릭 가능하도록 구현
-  // TODO: 자기 차례에 주사위를 굴리면 자신의 말만 이동할 수 있도록 구현
-  const throwDice = () => {
-    const message = JSON.stringify({
-      type: 'dice',
-      gameId: 1,
-      playerId: 'fuse12',
-    });
-    sendMessage(message);
-  };
-
-  const moveToNextCell = (
-    x: number,
-    y: number,
-    tokenRef: RefObject<HTMLDivElement>,
-    tokenAtom: PlayerTokenAtom
-  ) => {
-    tokenAtom.coordinates.x += x;
-    tokenAtom.coordinates.y += y;
-    tokenRef.current!.style.transform = `translate(${tokenAtom.coordinates.x}rem, ${tokenAtom.coordinates.y}rem)`;
-  };
-
   return (
     <>
       <Board>
@@ -137,6 +149,15 @@ export default function GameBoard() {
         ))}
         <Center>
           <span>주사위 결과: {`${gameInfo.dice[0]}, ${gameInfo.dice[1]}`}</span>
+          <ReactDice
+            numDice={2}
+            ref={reactDice}
+            rollDone={rollDone}
+            rollTime={0.5}
+            faceColor="#fff"
+            dotColor="#000"
+            disableIndividual={true}
+          />
           <RollButton onClick={() => throwDice()}>주사위1</RollButton>
         </Center>
         <PlayerToken ref={tokenRef1} order={1} />

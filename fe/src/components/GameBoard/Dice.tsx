@@ -5,7 +5,7 @@ import {
   usePlayerToken3,
   usePlayerToken4,
 } from '@store/playerToken';
-import { useGameInfo, usePlayersValue } from '@store/reducer';
+import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import { delay } from '@utils/index';
 import {
   ForwardedRef,
@@ -29,7 +29,7 @@ export default function Dice() {
   const [token3, setToken3] = usePlayerToken3();
   const [token4, setToken4] = usePlayerToken4();
 
-  const [gameInfo] = useGameInfo();
+  const gameInfo = useGameInfoValue();
   const players = usePlayersValue();
 
   const tokenList: {

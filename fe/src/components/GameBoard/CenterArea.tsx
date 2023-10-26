@@ -1,6 +1,6 @@
 import { BASE_WS_URL } from '@api/fetcher';
 import { usePlayerIdValue } from '@store/index';
-import { useGameInfo } from '@store/reducer';
+import { useGameInfoValue } from '@store/reducer';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
@@ -8,7 +8,7 @@ import Dice from './Dice';
 
 export default function CenterArea() {
   const { gameId } = useParams();
-  const [gameInfo] = useGameInfo();
+  const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
   const { sendJsonMessage } = useWebSocket(BASE_WS_URL, {
     share: true,

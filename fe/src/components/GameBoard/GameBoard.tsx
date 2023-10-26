@@ -1,4 +1,4 @@
-import { useGameInfo, usePlayersValue } from '@store/reducer';
+import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import { useRef } from 'react';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
@@ -12,7 +12,7 @@ export default function GameBoard() {
   const tokenRef3 = useRef<HTMLDivElement | null>(null);
   const tokenRef4 = useRef<HTMLDivElement | null>(null);
 
-  const [gameInfo] = useGameInfo();
+  const gameInfo = useGameInfoValue();
   const players = usePlayersValue();
 
   const setToken = (order: number) => {

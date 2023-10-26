@@ -21,5 +21,3 @@ export const usePlayersValue = () => useAtomValue(playersAtom);
 export const useStocksValue = () => useAtomValue(stocksAtom);
 
 export const useSetPlayers = () => useSetAtom(playersAtom);
-
-export const useGameInfo = () => useAtom(gameInfoAtom);

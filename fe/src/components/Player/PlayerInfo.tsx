@@ -36,6 +36,10 @@ export default function PlayerInfo({ player }: PlayerInfoProps) {
 const UserInfo = styled.div`
   display: flex;
   gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: ${({ theme: { radius } }) => radius.small};
+  color: ${({ theme: { color } }) => color.neutralText};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;
 
 const IconContainer = styled.div`
@@ -66,8 +70,8 @@ const PlayerProperty = styled.div`
   padding: 0.5rem 0 0.5rem 0.2rem;
   border-radius: ${({ theme: { radius } }) => radius.small};
   font-size: ${({ theme: { fontSize } }) => fontSize.xSmall};
-  color: ${({ theme: { color } }) => color.accentText};
-  background-color: ${({ theme: { color } }) => color.accentSecondary};
+  color: ${({ theme: { color } }) => color.neutralText};
+  background-color: ${({ theme: { color } }) => color.neutralBackgroundBold};
 `;
 
 const PropertyText = styled.span`

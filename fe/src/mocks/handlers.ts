@@ -91,15 +91,54 @@ export const handlers = [
       ctx.json({
         type: 'userStatusBoard',
         data: {
-          playerId: 'fuse12',
+          playerId: 'TOMMY',
           userStatusBoard: {
             cashAsset: 0,
             stockAsset: 1000000,
             totalAsset: 1000000,
             stockList: [
               {
-                id: 1,
                 name: 'google',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'starkIndustry',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'codesquad',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'gs',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'hanwha',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'hyundai',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'koreanAir',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'mcdonalds',
+                quantity: 20,
+                price: 50000,
+              },
+              {
+                name: 'pfizer',
                 quantity: 20,
                 price: 50000,
               },

@@ -38,8 +38,10 @@ const handleMessage = (message) => {
       json.data = { dice1, dice2 };
       break;
     case "endTurn":
+      const nextPlayerId =
+        dataFromClient.playerId === "toko123" ? "fuse12" : "toko123";
       json.type = "endTurn";
-      json.data = { nextPlayerId: "toko123" };
+      json.data = { nextPlayerId };
       break;
     default:
       break;

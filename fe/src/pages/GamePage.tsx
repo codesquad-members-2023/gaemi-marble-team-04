@@ -24,6 +24,7 @@ export default function GamePage() {
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
+    share: true,
   });
 
   // dependency에 dispatch 추가시 무한렌더링
@@ -59,7 +60,7 @@ export default function GamePage() {
         <GameHeader handleClickTest={handleOpenModal} />
         <Main>
           <LeftPlayers />
-          <GameBoard sendJsonMessage={sendJsonMessage} />
+          <GameBoard />
           <RightPlayers />
           {!gameInfo.isPlaying && (
             <Button onClick={handleStart}>게임 시작</Button>

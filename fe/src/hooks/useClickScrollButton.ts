@@ -25,12 +25,11 @@ export default function useClickScrollButton<T extends HTMLElement>({
 
   const handleClickScroll = (isRight?: boolean) => {
     if (isRight) {
-      console.log(x);
       setX(ref.current!.scrollLeft + width);
-    } else {
-      console.log(x);
-      setX(ref.current!.scrollLeft - width);
+      return;
     }
+
+    setX(ref.current!.scrollLeft - width);
   };
 
   return { ref, handleClickScroll };

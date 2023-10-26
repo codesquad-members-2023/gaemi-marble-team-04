@@ -27,6 +27,7 @@ jobs:
         run: |
           touch .env
           echo VITE_API_URL=${{ secrets.VITE_API_ENDPOINT }} >> .env
+          echo VITE_WS_URL=${{ secrets.VITE_WS_ENDPOINT }} >> .env
           cat .env
 
       - name: Npm Install

@@ -22,17 +22,21 @@ export default function PlayerCard({ player }: PlayerCardProps) {
         <CardWrapper>
           <PlayerInfo player={player} />
           <StockWrapper>
-            <ArrowButton onClick={() => handleClickScroll()}>
-              <Icon name="arrowLeft" color="accentText" />
-            </ArrowButton>
-            <PlayerStockList ref={ref}>
-              {player.userStatusBoard.stockList.map((stock) => (
-                <PlayerStock key={stock.name} stockInfo={stock} />
-              ))}
-            </PlayerStockList>
-            <ArrowButton onClick={() => handleClickScroll(true)}>
-              <Icon name="arrowRight" color="accentText" />
-            </ArrowButton>
+            {!!player.userStatusBoard.stockList.length && (
+              <>
+                <ArrowButton onClick={() => handleClickScroll()}>
+                  <Icon name="arrowLeft" color="accentText" />
+                </ArrowButton>
+                <PlayerStockList ref={ref}>
+                  {player.userStatusBoard.stockList.map((stock) => (
+                    <PlayerStock key={stock.name} stockInfo={stock} />
+                  ))}
+                </PlayerStockList>
+                <ArrowButton onClick={() => handleClickScroll(true)}>
+                  <Icon name="arrowRight" color="accentText" />
+                </ArrowButton>
+              </>
+            )}
           </StockWrapper>
         </CardWrapper>
       ) : (

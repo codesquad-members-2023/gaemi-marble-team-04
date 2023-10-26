@@ -27,6 +27,10 @@ const handleMessage = (message) => {
   const dataFromClient = JSON.parse(message.toString());
   const json = {};
   switch (dataFromClient.type) {
+    case "start":
+      json.type = "start";
+      json.data = { playerId: "fuse12" };
+      break;
     case "dice":
       const dice1 = Math.floor(Math.random() * 6 + 1);
       const dice2 = Math.floor(Math.random() * 6 + 1);

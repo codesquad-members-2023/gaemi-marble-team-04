@@ -189,24 +189,28 @@ export default function GameBoard({ sendJsonMessage }: GameBoardProps) {
             ))}
           </Line>
         ))}
-        <Center>
-          <span>주사위 결과: {`${gameInfo.dice[0]}, ${gameInfo.dice[1]}`}</span>
-          <ReactDice
-            numDice={2}
-            ref={reactDice}
-            rollDone={rollDone}
-            rollTime={0.5}
-            faceColor="#fff"
-            dotColor="#000"
-            disableIndividual={true}
-          />
-          {playerId === gameInfo.currentPlayerId && (
-            <>
-              <Button onClick={() => throwDice()}>굴리기</Button>
-              <Button onClick={() => endTurn()}>턴종료</Button>
-            </>
-          )}
-        </Center>
+        {gameInfo.isPlaying && (
+          <Center>
+            <span>
+              주사위 결과: {`${gameInfo.dice[0]}, ${gameInfo.dice[1]}`}
+            </span>
+            <ReactDice
+              numDice={2}
+              ref={reactDice}
+              rollDone={rollDone}
+              rollTime={0.5}
+              faceColor="#fff"
+              dotColor="#000"
+              disableIndividual={true}
+            />
+            {playerId === gameInfo.currentPlayerId && (
+              <>
+                <Button onClick={() => throwDice()}>굴리기</Button>
+                <Button onClick={() => endTurn()}>턴종료</Button>
+              </>
+            )}
+          </Center>
+        )}
         {players.map((player) => {
           if (player.playerId === '') return;
           const tokenRef = setToken(player.order);

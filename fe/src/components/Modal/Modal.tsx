@@ -24,23 +24,24 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
 );
 
 const StyledModal = styled.div`
-  width: 20rem;
+  min-width: 20rem;
   position: fixed;
-  top: calc(50% - 10rem);
-  left: calc(50% - 10rem);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  padding: 2rem 0;
+  gap: 2rem;
+  padding: 2rem;
   border-radius: ${({ theme: { radius } }) => radius.medium};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 const ModalHeader = styled.span`
-  font-size: ${({ theme: { fontSize } }) => fontSize.small};
+  font-size: ${({ theme: { fontSize } }) => fontSize.sMedium};
 `;
 
 export default Modal;

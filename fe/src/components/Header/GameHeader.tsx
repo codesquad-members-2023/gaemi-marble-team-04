@@ -1,41 +1,74 @@
+import PlayerTestModal from '@components/Modal/PlayerTestModal';
+import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
 import { Icon } from '@components/icon/Icon';
 import { ROUTE_PATH } from '@router/constants';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
-type GameHeaderProps = {
-  handleClickTest: () => void;
-};
-
-export default function GameHeader({ handleClickTest }: GameHeaderProps) {
+export default function GameHeader() {
   const navigate = useNavigate();
+  const [isTestModalOpen, setIsTestModalOpen] = useState(false);
+  const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
 
   const handleExit = () => {
     navigate(ROUTE_PATH.HOME);
   };
 
+  const handleOpenTestModal = () => {
+    setIsTestModalOpen(true);
+  };
+
+  const handleCloseTestModal = () => {
+    setIsTestModalOpen(false);
+  };
+
+  const handleOpenStatusBoardModal = () => {
+    setIsStatusBoardModalOpen(true);
+  };
+
+  const handleCloseStatusBoardModal = () => {
+    setIsStatusBoardModalOpen(false);
+  };
+
   return (
-    <Header>
-      <Logo>Gaemi Marble</Logo>
-      <Temp>
-        <IconContainer>
-          <Icon
-            name="sample"
-            size="3rem"
-            color="neutralText"
-            onClick={handleClickTest}
-          />
-        </IconContainer>
-        <IconContainer>
-          <Icon
-            name="exit"
-            size="3rem"
-            color="accentText"
-            onClick={handleExit}
-          />
-        </IconContainer>
-      </Temp>
-    </Header>
+    <>
+      <Header>
+        <Logo>Gaemi Marble</Logo>
+        <Temp>
+          <IconContainer>
+            <Icon
+              name="statusBoard"
+              size="3rem"
+              color="neutralText"
+              onClick={handleOpenStatusBoardModal}
+            />
+          </IconContainer>
+          <IconContainer>
+            <Icon
+              name="sample"
+              size="3rem"
+              color="neutralText"
+              onClick={handleOpenTestModal}
+            />
+          </IconContainer>
+          <IconContainer>
+            <Icon
+              name="exit"
+              size="3rem"
+              color="accentText"
+              onClick={handleExit}
+            />
+          </IconContainer>
+        </Temp>
+      </Header>
+      {isTestModalOpen && (
+        <PlayerTestModal handleClose={handleCloseTestModal} />
+      )}
+      {isStatusBoardModalOpen && (
+        <StatusBoardModal handleClose={handleCloseStatusBoardModal} />
+      )}
+    </>
   );
 }
 

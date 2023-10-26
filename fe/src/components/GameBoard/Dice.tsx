@@ -13,8 +13,10 @@ import {
   useCallback,
   useEffect,
   useRef,
+  useState,
 } from 'react';
 import ReactDice, { ReactDiceRef } from 'react-dice-complete';
+import { styled } from 'styled-components';
 import {
   CORNER_CELLS,
   TOKEN_TRANSITION_DELAY,
@@ -23,6 +25,7 @@ import {
 } from './constants';
 
 export default function Dice() {
+  const [diceValue, setDiceValue] = useState(0);
   const reactDice = useRef<ReactDiceRef>(null);
   const [token1, setToken1] = usePlayerToken1();
   const [token2, setToken2] = usePlayerToken2();
@@ -106,6 +109,7 @@ export default function Dice() {
   };
 
   const rollDone = () => {
+    setDiceValue(gameInfo.dice[0] + gameInfo.dice[1]);
     const targetPlayer = players.find(
       (player) => player.playerId === gameInfo.currentPlayerId
     );
@@ -123,14 +127,21 @@ export default function Dice() {
   };
 
   return (
-    <ReactDice
-      numDice={2}
-      ref={reactDice}
-      rollDone={rollDone}
-      rollTime={0.5}
-      faceColor="#fff"
-      dotColor="#000"
-      disableIndividual={true}
-    />
+    <>
+      <ReactDice
+        numDice={2}
+        ref={reactDice}
+        rollDone={rollDone}
+        rollTime={0.5}
+        faceColor="#fff"
+        dotColor="#000"
+        disableIndividual={true}
+      />
+      <DiceValue>{diceValue}</DiceValue>
+    </>
   );
 }
+
+const DiceValue = styled.div`
+  font-size: ${({ theme }) => theme.fontSize.medium};
+`;

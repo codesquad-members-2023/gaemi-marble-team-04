@@ -4,8 +4,8 @@ import GameHeader from '@components/Header/GameHeader';
 import LeftPlayers from '@components/Player/LeftPlayers';
 import PlayerTestModal from '@components/Player/PlayerTestModal';
 import RightPlayers from '@components/Player/RightPlayers';
+import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue } from '@store/reducer';
-// import { usePlayerId } from '@store/index';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -17,11 +17,11 @@ export default function GamePage() {
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const { gameId } = useParams();
   // 후에 실제 웹소켓 서버와 연결할 때는 아래 주소 사용
-  // const playerId = usePlayerId();
-  // const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
+  const playerId = usePlayerIdValue();
+  const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
   const gameInfo = useGameInfoValue();
   const { dispatch } = useGameReducer();
-  const { sendJsonMessage, lastMessage } = useWebSocket(BASE_WS_URL, {
+  const { sendJsonMessage, lastMessage } = useWebSocket(WS_URL, {
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
@@ -48,6 +48,7 @@ export default function GamePage() {
   };
 
   const handleStart = () => {
+    console.log('게임 시작');
     const message = {
       type: 'start',
       gameId,

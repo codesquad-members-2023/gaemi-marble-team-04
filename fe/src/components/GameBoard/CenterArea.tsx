@@ -10,7 +10,8 @@ export default function CenterArea() {
   const { gameId } = useParams();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
-  const { sendJsonMessage } = useWebSocket(BASE_WS_URL, {
+  const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
+  const { sendJsonMessage } = useWebSocket(WS_URL, {
     share: true,
   });
 

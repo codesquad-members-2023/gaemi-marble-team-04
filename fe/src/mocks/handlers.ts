@@ -162,10 +162,8 @@ export const handlers = [
             totalAsset: 1000000,
             stockList: [
               {
-                id: 1,
                 name: 'google',
                 quantity: 10,
-                price: 50000,
               },
             ],
           },

@@ -2,16 +2,22 @@
 import { rest } from 'msw';
 import { API_END_POINT } from '../api/constants';
 
+type PostSignInReqBody = {
+  playerId: string;
+};
+
 export const handlers = [
   rest.post(API_END_POINT.SIGNUP, (_, res, ctx) => {
     return res(ctx.status(201));
   }),
 
-  rest.post(API_END_POINT.SIGNIN, (_, res, ctx) => {
+  rest.post<PostSignInReqBody>(API_END_POINT.SIGNIN, (req, res, ctx) => {
+    const playerId = req.body.playerId;
+
     return res(
       ctx.status(200),
       ctx.json({
-        playerId: 'antman',
+        playerId,
       }),
       ctx.set({
         Authorization:

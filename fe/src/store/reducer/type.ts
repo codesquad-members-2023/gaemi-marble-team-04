@@ -1,3 +1,5 @@
+import { ForwardedRef } from 'react';
+
 export type GameType = {
   game: GameInfoType;
   players: PlayerType[];
@@ -44,6 +46,7 @@ export type PlayerType = {
   order: number;
   isReady: boolean;
   location: number;
+  tokenRef: ForwardedRef<HTMLDivElement> | null;
   userStatusBoard: UserStatusType;
 };
 

@@ -1,4 +1,5 @@
-import { forwardRef } from 'react';
+import { useSetPlayers } from '@store/reducer';
+import { forwardRef, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { DefaultTheme } from 'styled-components/dist/types';
 
@@ -8,6 +9,22 @@ type PlayerTokenProps = {
 
 const PlayerToken = forwardRef<HTMLDivElement, PlayerTokenProps>(
   function PlayerToken({ order }, ref) {
+    const setPlayers = useSetPlayers();
+    useEffect(() => {
+      setPlayers((prev) => {
+        const targetIndex = prev.findIndex((player) => player.order === order);
+        return prev.map((player, index) => {
+          if (index === targetIndex) {
+            return {
+              ...player,
+              tokenRef: ref,
+            };
+          }
+          return player;
+        });
+      });
+    }, [order, ref, setPlayers]);
+
     return (
       <Token ref={ref} $order={order}>
         {order}

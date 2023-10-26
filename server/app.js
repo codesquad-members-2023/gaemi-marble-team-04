@@ -11,8 +11,6 @@ server.listen(port, () => {
 });
 
 const clients = {};
-const users = {};
-let userActivity = [];
 
 const broadcastMessage = (json) => {
   const data = JSON.stringify(json);
@@ -25,17 +23,22 @@ const broadcastMessage = (json) => {
   }
 };
 
-const handleMessage = (message, userId) => {
+const handleMessage = (message) => {
   const dataFromClient = JSON.parse(message.toString());
-  const json = { type: dataFromClient.type };
-  if (dataFromClient.type === "dice") {
-    users[userId] = dataFromClient;
-    userActivity.push(`${dataFromClient.playerId} roll the dice`);
-    const dice1 = Math.floor(Math.random() * 6 + 1);
-    const dice2 = Math.floor(Math.random() * 6 + 1);
-    json.data = { dice1, dice2 };
-  } else {
-    return;
+  const json = {};
+  switch (dataFromClient.type) {
+    case "dice":
+      const dice1 = Math.floor(Math.random() * 6 + 1);
+      const dice2 = Math.floor(Math.random() * 6 + 1);
+      json.type = "dice";
+      json.data = { dice1, dice2 };
+      break;
+    case "endTurn":
+      json.type = "endTurn";
+      json.data = { nextPlayerId: "toko123" };
+      break;
+    default:
+      break;
   }
   broadcastMessage(json);
 };
@@ -43,12 +46,8 @@ const handleMessage = (message, userId) => {
 const handleDisconnect = (userId) => {
   console.log(`${userId} disconnected.`);
   const json = { type: "disconnect" };
-  const username = users[userId]?.username || userId;
-  userActivity.push(`${username} left the game`);
-  json.data = { users, userActivity };
-
+  json.data = { data: userId };
   delete clients[userId];
-  delete users[userId];
   broadcastMessage(json);
 };
 

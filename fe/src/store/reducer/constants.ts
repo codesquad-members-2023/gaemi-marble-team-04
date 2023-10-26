@@ -4,6 +4,7 @@ export const initialPlayer = [
     order: 1,
     isReady: false,
     location: 0,
+    tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
       stockAsset: 0,
@@ -16,6 +17,7 @@ export const initialPlayer = [
     order: 2,
     isReady: false,
     location: 0,
+    tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
       stockAsset: 0,
@@ -28,6 +30,7 @@ export const initialPlayer = [
     order: 3,
     isReady: false,
     location: 0,
+    tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
       stockAsset: 0,
@@ -40,6 +43,7 @@ export const initialPlayer = [
     order: 4,
     isReady: false,
     location: 0,
+    tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
       stockAsset: 0,
@@ -173,7 +177,7 @@ export const initialStock = [
 
 export const initialGame = {
   isPlaying: false,
-  currentPlayerId: '',
+  currentPlayerId: 'fuse12',
   currentPlayerStatus: { type: 'default' },
   dice: [0, 0],
 };

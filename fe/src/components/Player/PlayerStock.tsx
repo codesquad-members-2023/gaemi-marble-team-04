@@ -14,6 +14,13 @@ export default function PlayerStock({ stockInfo }: PlayerStockProps) {
     useTooltipPosition<HTMLImageElement>();
   const { hoverRef, isHover } = useHover();
 
+  const mergeRef = (element: HTMLImageElement | null) => {
+    if (element) {
+      positionRef.current = element;
+      hoverRef.current = element;
+    }
+  };
+
   const handleMouseEnter = (event: React.MouseEvent<HTMLImageElement>) => {
     if (calcPosition) {
       calcPosition(event);
@@ -24,12 +31,7 @@ export default function PlayerStock({ stockInfo }: PlayerStockProps) {
     <>
       <StockImgWrapper>
         <StockImg
-          ref={(element) => {
-            if (element) {
-              positionRef.current = element;
-              hoverRef.current = element;
-            }
-          }}
+          ref={mergeRef}
           src={cellImageMap[stockInfo.name]}
           onMouseEnter={handleMouseEnter}
         />

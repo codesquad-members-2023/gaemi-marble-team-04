@@ -22,6 +22,7 @@ export default function useTooltipPosition<
 
     const halfOfX = window.innerWidth / 2;
 
+    const x = e.clientX;
     const y = e.clientY;
 
     const height = refPositionInfo!.height;
@@ -31,11 +32,12 @@ export default function useTooltipPosition<
     const top = refPositionInfo!.top + height;
     const bottom = window.innerHeight - refPositionInfo!.bottom + height;
 
+    const isOverHalfOfX = x > halfOfX;
     const isOverY = y > window.innerHeight - height;
 
     setPosition({
-      left: halfOfX ? null : left,
-      right: halfOfX ? right : null,
+      left: isOverHalfOfX ? null : left,
+      right: isOverHalfOfX ? right : null,
       top: isOverY ? null : top,
       bottom: isOverY ? bottom : null,
     });

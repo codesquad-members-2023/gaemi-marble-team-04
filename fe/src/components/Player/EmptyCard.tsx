@@ -20,6 +20,7 @@ export default function EmptyCard() {
 }
 
 const StyledEmptyCard = styled.button`
+  width: 10rem;
   padding: 2rem;
   border-radius: ${({ theme }) => theme.radius.medium};
   color: ${({ theme }) => theme.color.neutralText};

@@ -15,7 +15,7 @@ export default function GameBoard() {
   const gameInfo = useGameInfoValue();
   const players = usePlayersValue();
 
-  const setToken = (order: number) => {
+  const findTokenRef = (order: number) => {
     switch (order) {
       case 1:
         return tokenRef1;
@@ -49,7 +49,7 @@ export default function GameBoard() {
         {gameInfo.isPlaying && <CenterArea />}
         {players.map((player) => {
           if (player.playerId === '') return;
-          const tokenRef = setToken(player.order);
+          const tokenRef = findTokenRef(player.order);
           return (
             <PlayerToken
               key={player.playerId}

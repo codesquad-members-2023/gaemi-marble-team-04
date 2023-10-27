@@ -3,21 +3,39 @@ import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
 import LeftPlayers from '@components/Player/LeftPlayers';
 import RightPlayers from '@components/Player/RightPlayers';
-import { usePlayerIdValue } from '@store/index';
-import { useGameInfoValue } from '@store/reducer';
+import { usePlayerIdValue, useSetSocketUrl } from '@store/index';
+import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import useGameReducer from '@store/reducer/useGameReducer';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
 
 export default function GamePage() {
   const { gameId } = useParams();
+  const playersInfo = usePlayersValue();
   const playerId = usePlayerIdValue();
-  const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
   const gameInfo = useGameInfoValue();
+  const setSocketUrl = useSetSocketUrl();
   const { dispatch } = useGameReducer();
-  const { sendJsonMessage, lastMessage } = useWebSocket(WS_URL, {
+
+  // playersInfo에 빈 플레이어 객체일때는 isReady를 체크하지 않음
+  const isEveryoneReady = playersInfo.every(
+    (player) => player.playerId === '' || player.isReady
+  );
+
+  const getSocketUrl = useCallback(() => {
+    const socketUrl = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
+    setSocketUrl(socketUrl);
+
+    return new Promise<string>((resolve) => {
+      setTimeout(() => {
+        resolve(socketUrl);
+      }, 100);
+    });
+  }, [gameId, playerId, setSocketUrl]);
+
+  const { sendJsonMessage, lastMessage } = useWebSocket(getSocketUrl, {
     onOpen: () => {
       console.log('WebSocket connection established.');
     },
@@ -36,7 +54,6 @@ export default function GamePage() {
   }, [lastMessage]);
 
   const handleStart = () => {
-    console.log('게임 시작');
     const message = {
       type: 'start',
       gameId,
@@ -52,7 +69,7 @@ export default function GamePage() {
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
-          {!gameInfo.isPlaying && (
+          {!gameInfo.isPlaying && isEveryoneReady && (
             <Button onClick={handleStart}>게임 시작</Button>
           )}
         </Main>

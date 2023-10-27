@@ -109,7 +109,7 @@ export const handlers = [
                 price: 50000,
               },
               {
-                name: 'starkIndustry',
+                name: 'starkindustry',
                 quantity: 20,
                 price: 50000,
               },
@@ -134,7 +134,7 @@ export const handlers = [
                 price: 50000,
               },
               {
-                name: 'koreanAir',
+                name: 'koreanair',
                 quantity: 20,
                 price: 50000,
               },

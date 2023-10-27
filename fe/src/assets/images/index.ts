@@ -8,7 +8,7 @@ import hanwha from './hanwha.png';
 import hermes from './hermes.png';
 import hyundai from './hyundai.png';
 import jail from './jail.png';
-import koreanair from './koreanAir.png';
+import koreanair from './koreanair.png';
 import mcdonalds from './mcdonalds.png';
 import musinsa from './musinsa.png';
 import nongshim from './nongshim.png';

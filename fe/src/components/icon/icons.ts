@@ -7,6 +7,8 @@ import arrowRight from '@assets/icon/arrowRight.svg?react';
 import exit from '@assets/icon/exit.svg?react';
 import plus from '@assets/icon/plus.svg?react';
 import sample from '@assets/icon/sample.svg?react';
+import soundMute from '@assets/icon/soundMute.svg?react';
+import soundPlaying from '@assets/icon/soundPlaying.svg?react';
 import statusBoard from '@assets/icon/statusBoard.svg?react';
 
 export const icons = {
@@ -19,6 +21,8 @@ export const icons = {
   exit,
   plus,
   sample,
+  soundMute,
+  soundPlaying,
   statusBoard,
 };
 

@@ -24,7 +24,7 @@ export default function GamePage() {
     share: true,
   });
 
-  // dependency에 dispatch 추가시 무한렌더링
+  // Memo: dependency에 dispatch 추가시 무한렌더링
   useEffect(() => {
     if (lastMessage !== null) {
       const messageFromServer = JSON.parse(lastMessage?.data);

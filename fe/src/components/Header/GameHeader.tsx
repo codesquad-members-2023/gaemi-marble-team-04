@@ -3,6 +3,7 @@ import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModa
 import { Icon } from '@components/icon/Icon';
 import { ROUTE_PATH } from '@router/constants';
 import { useState } from 'react';
+import ReactHowler from 'react-howler';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -10,6 +11,7 @@ export default function GameHeader() {
   const navigate = useNavigate();
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
+  const [isSoundPlaying, setIsSoundPlaying] = useState(true);
 
   const handleExit = () => {
     navigate(ROUTE_PATH.HOME);
@@ -31,11 +33,23 @@ export default function GameHeader() {
     setIsStatusBoardModalOpen(false);
   };
 
+  const togglePlayingSound = () => {
+    setIsSoundPlaying((prev) => !prev);
+  };
+
   return (
     <>
       <Header>
         <Logo>Gaemi Marble</Logo>
         <Temp>
+          <IconContainer>
+            <Icon
+              name={isSoundPlaying ? 'soundPlaying' : 'soundMute'}
+              size="3rem"
+              color="neutralText"
+              onClick={togglePlayingSound}
+            />
+          </IconContainer>
           <IconContainer>
             <Icon
               name="statusBoard"
@@ -68,6 +82,13 @@ export default function GameHeader() {
       {isStatusBoardModalOpen && (
         <StatusBoardModal handleClose={handleCloseStatusBoardModal} />
       )}
+      {/* Todo: 구글 정책(오디오 자동 재생 X) 해결하기 */}
+      <ReactHowler
+        src="../src/assets/bgm/game.mp3"
+        playing={true}
+        mute={!isSoundPlaying}
+        volume={0.2}
+      />
     </>
   );
 }

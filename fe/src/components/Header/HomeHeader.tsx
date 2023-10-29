@@ -1,13 +1,12 @@
 import { postLogout } from '@api/index';
 import useHover from '@hooks/useHover';
+import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
 import {
   useSetAccessToken,
   useSetPlayer,
   useSetRefreshToken,
 } from '@store/index';
-import { useState } from 'react';
-import ReactHowler from 'react-howler';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Icon } from '../icon/Icon';
@@ -19,7 +18,13 @@ export default function HomeHeader() {
   const setPlayer = useSetPlayer();
   const setAccessToken = useSetAccessToken();
   const setRefreshToken = useSetRefreshToken();
-  const [isSoundPlaying, setIsSoundPlaying] = useState(true);
+  const {
+    isSoundPlaying,
+    togglePlayingSound,
+    sound: HomeBgm,
+  } = useSound({
+    src: '/src/assets/bgm/home.mp3',
+  });
 
   const handleLogout = async () => {
     const res = await postLogout();
@@ -33,10 +38,6 @@ export default function HomeHeader() {
 
       navigate(ROUTE_PATH.SIGNIN);
     }
-  };
-
-  const togglePlayingSound = () => {
-    setIsSoundPlaying((prev) => !prev);
   };
 
   return (
@@ -61,13 +62,7 @@ export default function HomeHeader() {
           </User>
         </IconWrapper>
       </StyledHeader>
-      {/* Todo: 구글 정책(오디오 자동 재생 X) 해결하기 */}
-      <ReactHowler
-        src="../src/assets/bgm/home.mp3"
-        playing={true}
-        mute={!isSoundPlaying}
-        volume={0.2}
-      />
+      {HomeBgm}
     </>
   );
 }

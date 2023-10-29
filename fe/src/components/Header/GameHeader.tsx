@@ -1,9 +1,9 @@
 import PlayerTestModal from '@components/Modal/PlayerTestModal';
 import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
 import { Icon } from '@components/icon/Icon';
+import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
 import { useState } from 'react';
-import ReactHowler from 'react-howler';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -11,7 +11,13 @@ export default function GameHeader() {
   const navigate = useNavigate();
   const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
-  const [isSoundPlaying, setIsSoundPlaying] = useState(true);
+  const {
+    isSoundPlaying,
+    togglePlayingSound,
+    sound: GameBgm,
+  } = useSound({
+    src: '/src/assets/bgm/game.mp3',
+  });
 
   const handleExit = () => {
     navigate(ROUTE_PATH.HOME);
@@ -31,10 +37,6 @@ export default function GameHeader() {
 
   const handleCloseStatusBoardModal = () => {
     setIsStatusBoardModalOpen(false);
-  };
-
-  const togglePlayingSound = () => {
-    setIsSoundPlaying((prev) => !prev);
   };
 
   return (
@@ -82,18 +84,15 @@ export default function GameHeader() {
       {isStatusBoardModalOpen && (
         <StatusBoardModal handleClose={handleCloseStatusBoardModal} />
       )}
-      {/* Todo: 구글 정책(오디오 자동 재생 X) 해결하기 */}
-      <ReactHowler
-        src="../src/assets/bgm/game.mp3"
-        playing={true}
-        mute={!isSoundPlaying}
-        volume={0.2}
-      />
+      {GameBgm}
     </>
   );
 }
 
 const Header = styled.div`
+  #sound {
+    display: none;
+  }
   width: 100%;
   display: flex;
   position: fixed;

@@ -16,7 +16,7 @@ export default function GameHeader() {
     togglePlayingSound,
     sound: GameBgm,
   } = useSound({
-    src: '/src/assets/bgm/game.mp3',
+    src: '/bgm/game.mp3',
   });
 
   const handleExit = () => {

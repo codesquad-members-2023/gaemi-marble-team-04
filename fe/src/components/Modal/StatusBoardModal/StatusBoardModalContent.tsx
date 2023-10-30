@@ -16,7 +16,7 @@ export default function StatusBoardModalContent() {
       </thead>
       <tbody>
         {stocks.map((stock) => (
-          <tr>
+          <tr key={stock.name}>
             <td>{stock.name}</td>
             <td>{stock.theme}</td>
             <td>{stock.price}</td>

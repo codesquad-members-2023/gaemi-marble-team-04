@@ -1,6 +1,7 @@
 import { useGameInfoValue } from '@store/reducer';
 import { useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
+import { styled } from 'styled-components';
 
 export default function Roulette() {
   const [mustSpin, setMustSpin] = useState(false);
@@ -24,13 +25,27 @@ export default function Roulette() {
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
         data={wheelData}
-        backgroundColors={['#3e3e3e', '#df3428']}
-        textColors={['#ffffff']}
+        fontSize={16}
+        textColors={['#fff', '#000']}
+        pointerProps={{ style: { width: '70px', height: '70px' } }}
+        backgroundColors={['#3e3e3e', '#f4acb7']}
         onStopSpinning={() => {
           setMustSpin(false);
         }}
       />
-      <button onClick={handleSpinClick}>Spin!</button>
+      <Button onClick={handleSpinClick}>Spin!</Button>
     </>
   );
 }
+
+const Button = styled.button`
+  width: 150px;
+  height: 100px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  align-self: flex-end;
+  border: 1px solid ${({ theme }) => theme.color.accentText};
+  border-radius: ${({ theme }) => theme.radius.small};
+  color: ${({ theme }) => theme.color.neutralTextStrong};
+  background-color: ${({ theme }) => theme.color.neutralBackground};
+`;

@@ -92,6 +92,7 @@ export type StockType = {
   theme: string;
   quantity: number;
   price: number;
+  location: number;
 };
 
 export type StockActionType = {

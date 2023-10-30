@@ -59,8 +59,10 @@ export default function StockBuyModalContent({
 
   const cashAsset = currentPlayer!.userStatusBoard.cashAsset;
   const totalPrice = purchaseQuantity * currentStock!.price;
+  const perPrice = 5 * currentStock!.price;
   const isOverLimit =
-    purchaseQuantity >= currentStock!.quantity || totalPrice >= cashAsset;
+    purchaseQuantity >= currentStock!.quantity ||
+    totalPrice >= cashAsset + perPrice;
   const isUnderLimit = purchaseQuantity <= 0;
 
   return (

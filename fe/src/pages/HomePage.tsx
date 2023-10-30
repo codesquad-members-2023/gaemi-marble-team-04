@@ -10,12 +10,6 @@ import {
   usePlayerToken3,
   usePlayerToken4,
 } from '@store/playerToken';
-import { useSetGame } from '@store/reducer';
-import {
-  initialGame,
-  initialPlayer,
-  initialStock,
-} from '@store/reducer/constants';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';

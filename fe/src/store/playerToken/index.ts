@@ -34,17 +34,17 @@ const playerToken4 = atom<PlayerTokenAtom>({
 
 export const usePlayerToken1 = (): [
   PlayerTokenAtom,
-  (value: PlayerTokenAtom) => void,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
 ] => useAtom<PlayerTokenAtom>(playerToken1);
 export const usePlayerToken2 = (): [
   PlayerTokenAtom,
-  (value: PlayerTokenAtom) => void,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
 ] => useAtom<PlayerTokenAtom>(playerToken2);
 export const usePlayerToken3 = (): [
   PlayerTokenAtom,
-  (value: PlayerTokenAtom) => void,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
 ] => useAtom<PlayerTokenAtom>(playerToken3);
 export const usePlayerToken4 = (): [
   PlayerTokenAtom,
-  (value: PlayerTokenAtom) => void,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
 ] => useAtom<PlayerTokenAtom>(playerToken4);

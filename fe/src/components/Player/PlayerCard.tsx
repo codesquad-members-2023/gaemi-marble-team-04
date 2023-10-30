@@ -1,6 +1,11 @@
 import { Icon } from '@components/icon/Icon';
 import useClickScrollButton from '@hooks/useClickScrollButton';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { usePlayerIdValue } from '@store/index';
+import { useGameInfoValue } from '@store/reducer';
 import { PlayerType } from '@store/reducer/type';
+import { useParams } from 'react-router';
+import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
 import EmptyCard from './EmptyCard';
 import PlayerInfo from './PlayerInfo';
@@ -16,14 +21,36 @@ export default function PlayerCard({ player }: PlayerCardProps) {
     width: SCROLL_ONCE,
   });
 
+  const { gameId } = useParams();
+  const gameInfo = useGameInfoValue();
+  const playerId = usePlayerIdValue();
+  const socketUrl = useGetSocketUrl();
+
+  const { sendJsonMessage } = useWebSocket(socketUrl, {
+    share: true,
+  });
+
+  const isReady = player.isReady;
+  const isMyButton = player.playerId === playerId;
+
+  const handleReady = () => {
+    const message = {
+      type: 'ready',
+      gameId,
+      playerId,
+      isReady: !isReady,
+    };
+    sendJsonMessage(message);
+  };
+
   return (
     <>
       {player.playerId ? (
         <CardWrapper>
           <PlayerInfo player={player} />
-          <StockWrapper>
-            {!!player.userStatusBoard.stockList.length && (
-              <>
+          {!!player.userStatusBoard.stockList.length && (
+            <>
+              <StockWrapper>
                 <ArrowButton onClick={() => handleClickScroll()}>
                   <Icon name="arrowLeft" color="accentText" />
                 </ArrowButton>
@@ -35,9 +62,18 @@ export default function PlayerCard({ player }: PlayerCardProps) {
                 <ArrowButton onClick={() => handleClickScroll(true)}>
                   <Icon name="arrowRight" color="accentText" />
                 </ArrowButton>
-              </>
-            )}
-          </StockWrapper>
+              </StockWrapper>
+            </>
+          )}
+          {!gameInfo.isPlaying && (
+            <Button
+              onClick={handleReady}
+              disabled={!isMyButton}
+              $isReady={isReady}
+            >
+              {isReady ? '준비완료' : '준비'}
+            </Button>
+          )}
         </CardWrapper>
       ) : (
         <EmptyCard />
@@ -49,6 +85,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
 const CardWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
 `;
 
@@ -77,4 +114,17 @@ const ArrowButton = styled.button`
   height: 3rem;
   border-radius: ${({ theme: { radius } }) => radius.small};
   background-color: ${({ theme: { color } }) => color.neutralBackgroundBold};
+`;
+
+const Button = styled.button<{ $isReady: boolean }>`
+  width: 6rem;
+  height: 3rem;
+  border-radius: ${({ theme: { radius } }) => radius.small};
+  color: ${({ theme: { color } }) => color.neutralText};
+  background-color: ${({ theme: { color }, $isReady }) =>
+    $isReady ? color.accentTertiary : color.neutralBackground};
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;

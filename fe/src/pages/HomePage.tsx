@@ -3,6 +3,13 @@ import HomeHeader from '@components/Header/HomeHeader';
 import EnterModal from '@components/Modal/EnterModal/EnterModal';
 import { Icon } from '@components/icon/Icon';
 import { ROUTE_PATH } from '@router/constants';
+import {
+  DirectionType,
+  usePlayerToken1,
+  usePlayerToken2,
+  usePlayerToken3,
+  usePlayerToken4,
+} from '@store/playerToken';
 import { useSetGame } from '@store/reducer';
 import {
   initialGame,
@@ -17,6 +24,10 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
   const setGame = useSetGame();
+  const [, setToken1] = usePlayerToken1();
+  const [, setToken2] = usePlayerToken2();
+  const [, setToken3] = usePlayerToken3();
+  const [, setToken4] = usePlayerToken4();
 
   useEffect(() => {
     setGame({
@@ -25,6 +36,18 @@ export default function HomePage() {
       stocks: initialStock,
     });
   }, [setGame]);
+
+  useEffect(() => {
+    const initialToken = {
+      location: 0,
+      direction: 'top' as DirectionType,
+      coordinates: { x: 0, y: 0 },
+    };
+    setToken1(initialToken);
+    setToken2(initialToken);
+    setToken3(initialToken);
+    setToken4(initialToken);
+  }, [setToken1, setToken2, setToken3, setToken4]);
 
   const handleOpenModal = () => {
     // Memo: 현재 버전 - 모달 띄워서 방 번호 입력

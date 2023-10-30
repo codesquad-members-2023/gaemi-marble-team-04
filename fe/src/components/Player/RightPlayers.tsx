@@ -23,4 +23,5 @@ const Players = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  align-items: center;
 `;

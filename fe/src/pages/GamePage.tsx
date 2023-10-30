@@ -1,10 +1,9 @@
-import { BASE_WS_URL } from '@api/fetcher';
 import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
 import LeftPlayers from '@components/Player/LeftPlayers';
 import RightPlayers from '@components/Player/RightPlayers';
-import { usePlayerIdValue } from '@store/index';
-import { useGameInfoValue } from '@store/reducer';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,14 +12,17 @@ import { styled } from 'styled-components';
 
 export default function GamePage() {
   const { gameId } = useParams();
-  const playerId = usePlayerIdValue();
-  const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
+  const playersInfo = usePlayersValue();
   const gameInfo = useGameInfoValue();
   const { dispatch } = useGameReducer();
-  const { sendJsonMessage, lastMessage } = useWebSocket(WS_URL, {
-    onOpen: () => {
-      console.log('WebSocket connection established.');
-    },
+  const socketUrl = useGetSocketUrl();
+
+  // playersInfo에 빈 플레이어 객체일때는 isReady를 체크하지 않음
+  const isEveryoneReady = playersInfo.every(
+    (player) => player.playerId === '' || player.isReady
+  );
+
+  const { sendJsonMessage, lastMessage } = useWebSocket(socketUrl, {
     share: true,
   });
 
@@ -36,7 +38,6 @@ export default function GamePage() {
   }, [lastMessage]);
 
   const handleStart = () => {
-    console.log('게임 시작');
     const message = {
       type: 'start',
       gameId,
@@ -52,7 +53,7 @@ export default function GamePage() {
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
-          {!gameInfo.isPlaying && (
+          {!gameInfo.isPlaying && isEveryoneReady && (
             <Button onClick={handleStart}>게임 시작</Button>
           )}
         </Main>

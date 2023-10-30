@@ -1,21 +1,34 @@
-import { BASE_WS_URL } from '@api/fetcher';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue } from '@store/reducer';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
 import Dice from './Dice';
+import Roulette from './Roulette';
 
 export default function CenterArea() {
   const { gameId } = useParams();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
-  const WS_URL = `${BASE_WS_URL}/api/games/${gameId}/${playerId}`;
-  const { sendJsonMessage } = useWebSocket(WS_URL, {
+  const socketUrl = useGetSocketUrl();
+  const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });
 
+  const eventTime = gameInfo.currentPlayerId === null;
   const isMyTurn = playerId === gameInfo.currentPlayerId;
+
+  useEffect(() => {
+    if (!eventTime) return;
+    if (gameInfo.firstPlayerId !== playerId) return;
+    const message = {
+      type: 'events',
+      gameId,
+    };
+    sendJsonMessage(message);
+  }, [eventTime, gameId, playerId, gameInfo.firstPlayerId, sendJsonMessage]);
 
   const throwDice = () => {
     const message = {
@@ -37,9 +50,9 @@ export default function CenterArea() {
 
   return (
     <Center>
-      <Dice />
-      {/* 이후 이벤트 룰렛 구현 예정 <Roulette /> */}
-      {isMyTurn && (
+      {!eventTime && <Dice />}
+      {eventTime && <Roulette />}
+      {!eventTime && isMyTurn && (
         <>
           <Button onClick={() => throwDice()}>굴리기</Button>
           <Button onClick={() => endTurn()}>턴종료</Button>

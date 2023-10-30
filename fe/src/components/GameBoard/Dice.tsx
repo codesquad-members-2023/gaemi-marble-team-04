@@ -38,9 +38,7 @@ export default function Dice() {
   const tokenList: {
     [key: number]: {
       atom: PlayerTokenAtom;
-      setAtom: (
-        updateFunction: (prev: PlayerTokenAtom) => PlayerTokenAtom
-      ) => void;
+      setAtom: (prev: PlayerTokenAtom) => PlayerTokenAtom;
     };
   } = {
     1: { atom: token1, setAtom: setToken1 },
@@ -72,9 +70,7 @@ export default function Dice() {
       diceCount: number,
       tokenRef: ForwardedRef<HTMLDivElement>,
       tokenAtom: PlayerTokenAtom,
-      setTokenAtom: (
-        updateFunction: (prev: PlayerTokenAtom) => PlayerTokenAtom
-      ) => void
+      setTokenAtom: (prev: PlayerTokenAtom) => PlayerTokenAtom
     ) => {
       const tokenCoordinates = tokenAtom.coordinates;
       let tokenDirection = tokenAtom.direction;
@@ -94,12 +90,11 @@ export default function Dice() {
         await delay(TOKEN_TRANSITION_DELAY);
       }
 
-      setTokenAtom((prev) => ({
-        ...prev,
+      setTokenAtom({
         coordinates: tokenCoordinates,
         direction: tokenDirection,
         location: tokenLocation,
-      }));
+      });
     },
     []
   );

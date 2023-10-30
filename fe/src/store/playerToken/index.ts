@@ -32,7 +32,19 @@ const playerToken4 = atom<PlayerTokenAtom>({
   coordinates: { x: 0, y: 0 },
 });
 
-export const usePlayerToken1 = () => useAtom<PlayerTokenAtom>(playerToken1);
-export const usePlayerToken2 = () => useAtom<PlayerTokenAtom>(playerToken2);
-export const usePlayerToken3 = () => useAtom<PlayerTokenAtom>(playerToken3);
-export const usePlayerToken4 = () => useAtom<PlayerTokenAtom>(playerToken4);
+export const usePlayerToken1 = (): [
+  PlayerTokenAtom,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
+] => useAtom<PlayerTokenAtom>(playerToken1);
+export const usePlayerToken2 = (): [
+  PlayerTokenAtom,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
+] => useAtom<PlayerTokenAtom>(playerToken2);
+export const usePlayerToken3 = (): [
+  PlayerTokenAtom,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
+] => useAtom<PlayerTokenAtom>(playerToken3);
+export const usePlayerToken4 = (): [
+  PlayerTokenAtom,
+  (prev: PlayerTokenAtom) => PlayerTokenAtom,
+] => useAtom<PlayerTokenAtom>(playerToken4);

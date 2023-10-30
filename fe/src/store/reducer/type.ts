@@ -15,16 +15,23 @@ export type GameActionType = {
   userStatusBoard: UserStatusPayloadType;
   cell: CellPayloadType;
   statusBoard: StatusBoardPayloadType;
+  events: EventsPayloadType;
+  eventResult: EventResultPayloadType;
 };
 
 export type GameInfoType = {
   // Memo: 현재 게임이 진행중인지
   isPlaying: boolean;
+  // Memo: 선턴인 사람의 id
+  firstPlayerId: string;
   // Memo: 현재 턴이 누군지
-  currentPlayerId: string;
+  currentPlayerId: string | null;
   // Memo: 턴인 사람의 상태 (default, prison, teleport ...)
   currentPlayerStatus: { type: string; count?: number };
   dice: number[];
+  eventList: RouletteEvent[];
+  eventResult: string;
+  isSpin: boolean;
 };
 
 export type StartPayloadType = {
@@ -67,11 +74,12 @@ export type PlayerActionType = {
 export type EnterPayloadType = {
   order: number;
   playerId: string;
+  isReady: boolean;
 };
 
 export type ReadyPayloadType = {
   playerId: string;
-  isReady: true;
+  isReady: boolean;
 };
 
 export type UserStatusPayloadType = {
@@ -84,6 +92,14 @@ export type CellPayloadType = {
   location: number;
   salary: number;
   dividend: number;
+};
+
+export type EventsPayloadType = {
+  events: RouletteEvent[];
+};
+
+export type EventResultPayloadType = {
+  name: string;
 };
 
 export type StockType = {
@@ -101,4 +117,10 @@ export type StockActionType = {
 
 export type StatusBoardPayloadType = {
   stockStatusBoard: Omit<StockType, 'logo'>[];
+};
+
+export type RouletteEvent = {
+  title: string;
+  content: string;
+  impact: string;
 };

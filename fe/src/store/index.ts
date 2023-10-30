@@ -27,10 +27,9 @@ const refreshTokenAtomWithStorage = atom(
   }
 );
 
+export const useAuth = () => useAtomValue(accessTokenAtom);
 export const usePlayerIdValue = () => useAtomValue(playerIdAtom);
 
 export const useSetPlayer = () => useSetAtom(playerIdAtomWithStorage);
 export const useSetAccessToken = () => useSetAtom(accessTokenAtomWithStorage);
 export const useSetRefreshToken = () => useSetAtom(refreshTokenAtomWithStorage);
-
-export const useAuth = () => useAtomValue(accessTokenAtom);

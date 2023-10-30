@@ -27,6 +27,13 @@ const handleMessage = (message) => {
   const dataFromClient = JSON.parse(message.toString());
   const json = {};
   switch (dataFromClient.type) {
+    case "ready":
+      json.type = "ready";
+      json.data = {
+        playerId: dataFromClient.playerId,
+        isReady: dataFromClient.isReady,
+      };
+      break;
     case "start":
       json.type = "start";
       json.data = { playerId: "fuse12" };
@@ -39,9 +46,53 @@ const handleMessage = (message) => {
       break;
     case "endTurn":
       const nextPlayerId =
-        dataFromClient.playerId === "toko123" ? "fuse12" : "toko123";
+        dataFromClient.playerId === "fuse12" ? "toko123" : null;
       json.type = "endTurn";
       json.data = { nextPlayerId };
+      break;
+    case "events":
+      const events = [
+        {
+          title: "이벤트1",
+          content: "내용1",
+          impact: "효과1",
+        },
+        {
+          title: "이벤트2",
+          content: "내용2",
+          impact: "효과2",
+        },
+        {
+          title: "이벤트3",
+          content: "내용3",
+          impact: "효과3",
+        },
+        {
+          title: "이벤트4",
+          content: "내용4",
+          impact: "효과4",
+        },
+        {
+          title: "이벤트5",
+          content: "내용5",
+          impact: "효과5",
+        },
+        {
+          title: "이벤트6",
+          content: "내용6",
+          impact: "효과6",
+        },
+      ];
+      json.type = "events";
+      json.data = { events };
+      break;
+    case "eventResult":
+      const newPrizeNumber = Math.floor(
+        Math.random() * dataFromClient.events.length
+      );
+      const eventName = dataFromClient.events[newPrizeNumber];
+      json.type = "eventResult";
+      json.data = { eventName };
       break;
     default:
       break;

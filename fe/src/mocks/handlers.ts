@@ -63,14 +63,6 @@ export const handlers = [
           },
           {
             order: 2,
-            playerId: 'TOMMY',
-          },
-          {
-            order: 3,
-            playerId: 'MOVIE99',
-          },
-          {
-            order: 4,
             playerId: 'toko123',
           },
         ],

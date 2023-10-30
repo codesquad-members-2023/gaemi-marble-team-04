@@ -4,6 +4,8 @@ import {
   DicePayloadType,
   EndTurnPayloadType,
   EnterPayloadType,
+  EventResultPayloadType,
+  EventsPayloadType,
   GameActionType,
   ReadyPayloadType,
   StartPayloadType,
@@ -30,6 +32,7 @@ export default function useGameReducer() {
             ...prev,
             game: {
               ...prev.game,
+              firstPlayerId: payload.playerId,
               currentPlayerId: payload.playerId,
               isPlaying: true,
             },
@@ -52,7 +55,6 @@ export default function useGameReducer() {
         case 'dice': {
           const payload = action.payload as DicePayloadType;
           const { dice1, dice2 } = payload;
-          console.log('dispatch dice');
 
           return {
             ...prev,
@@ -76,6 +78,7 @@ export default function useGameReducer() {
               return {
                 ...player,
                 playerId: payload[index].playerId,
+                isReady: payload[index].isReady,
               };
             }),
           };
@@ -178,6 +181,30 @@ export default function useGameReducer() {
                 price: newStock.price,
               };
             }),
+          };
+        }
+
+        case 'events': {
+          const payload = action.payload as EventsPayloadType;
+
+          return {
+            ...prev,
+            game: {
+              ...prev.game,
+              eventList: [...payload.events],
+            },
+          };
+        }
+
+        case 'eventResult': {
+          const payload = action.payload as EventResultPayloadType;
+
+          return {
+            ...prev,
+            game: {
+              ...prev.game,
+              eventResult: payload.name,
+            },
           };
         }
 

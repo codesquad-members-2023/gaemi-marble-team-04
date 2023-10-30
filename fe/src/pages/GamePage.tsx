@@ -23,9 +23,6 @@ export default function GamePage() {
   );
 
   const { sendJsonMessage, lastMessage } = useWebSocket(socketUrl, {
-    onOpen: () => {
-      console.log('WebSocket connection established.');
-    },
     share: true,
   });
 

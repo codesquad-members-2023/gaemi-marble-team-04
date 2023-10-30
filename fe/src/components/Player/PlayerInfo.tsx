@@ -1,6 +1,8 @@
 import { Icon } from '@components/icon/Icon';
 import { antList } from '@pages/constants';
+import { useGameInfoValue, useStocksValue } from '@store/reducer';
 import { PlayerType } from '@store/reducer/type';
+import { addCommasToNumber } from '@utils/index';
 import { styled } from 'styled-components';
 
 type PlayerInfoProps = {
@@ -9,9 +11,24 @@ type PlayerInfoProps = {
 
 export default function PlayerInfo({ player }: PlayerInfoProps) {
   const antName = antList.find((ant) => ant.order === player?.order)!.antName;
+  const { currentPlayerId } = useGameInfoValue();
+  const stocks = useStocksValue();
+  const isCurrentPlayer = currentPlayerId === player.playerId;
+
+  const playerStocks = player.userStatusBoard.stockList;
+  const stockAsset = playerStocks.reduce((totalAsset, playerStock) => {
+    const stock = stocks.find(
+      (stockItem) => stockItem.name === playerStock.name
+    );
+    if (stock) {
+      const stockValue = stock.price * playerStock.quantity;
+      return totalAsset + stockValue;
+    }
+    return totalAsset;
+  }, 0);
 
   return (
-    <UserInfo>
+    <UserInfo $isCurrentPlayer={isCurrentPlayer}>
       <IconContainer>
         <Icon name={antName} size="8rem" />
       </IconContainer>
@@ -19,13 +36,14 @@ export default function PlayerInfo({ player }: PlayerInfoProps) {
         <PlayerId>{player.playerId}</PlayerId>
         <PlayerProperty>
           <PropertyText>
-            보유 현금: {player.userStatusBoard.cashAsset}원
+            보유 현금: {addCommasToNumber(player.userStatusBoard.cashAsset)}원
           </PropertyText>
           <PropertyText>
-            주식 가치: {player.userStatusBoard.stockAsset}원
+            주식 가치: {addCommasToNumber(stockAsset)}원
           </PropertyText>
           <PropertyText>
-            총 자산: {player.userStatusBoard.totalAsset}원
+            총 자산:
+            {addCommasToNumber(player.userStatusBoard.cashAsset + stockAsset)}원
           </PropertyText>
         </PlayerProperty>
       </PlayerInfoContainer>
@@ -33,10 +51,12 @@ export default function PlayerInfo({ player }: PlayerInfoProps) {
   );
 }
 
-const UserInfo = styled.div`
+const UserInfo = styled.div<{ $isCurrentPlayer: boolean }>`
   display: flex;
   gap: 0.5rem;
   padding: 0.5rem;
+  border: ${({ $isCurrentPlayer, theme: { color } }) =>
+    $isCurrentPlayer ? `3px solid ${color.systemWarning}` : 'none'};
   border-radius: ${({ theme: { radius } }) => radius.small};
   color: ${({ theme: { color } }) => color.neutralText};
   background-color: ${({ theme: { color } }) => color.neutralBackground};

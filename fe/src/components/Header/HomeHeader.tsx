@@ -23,7 +23,7 @@ export default function HomeHeader() {
     togglePlayingSound,
     sound: HomeBgm,
   } = useSound({
-    src: '/src/assets/bgm/home.mp3',
+    src: '../src/assets/bgm/home.mp3',
   });
 
   const handleLogout = async () => {

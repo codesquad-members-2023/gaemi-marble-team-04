@@ -16,6 +16,7 @@ export type GameActionType = {
   cell: CellPayloadType;
   statusBoard: StatusBoardPayloadType;
   events: EventsPayloadType;
+  eventResult: EventResultPayloadType;
 };
 
 export type GameInfoType = {
@@ -29,6 +30,8 @@ export type GameInfoType = {
   currentPlayerStatus: { type: string; count?: number };
   dice: number[];
   eventList: RouletteEvent[];
+  eventResult: string;
+  isSpin: boolean;
 };
 
 export type StartPayloadType = {
@@ -93,6 +96,10 @@ export type CellPayloadType = {
 
 export type EventsPayloadType = {
   events: RouletteEvent[];
+};
+
+export type EventResultPayloadType = {
+  name: string;
 };
 
 export type StockType = {

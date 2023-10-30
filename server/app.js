@@ -47,7 +47,6 @@ const handleMessage = (message) => {
     case "endTurn":
       const nextPlayerId =
         dataFromClient.playerId === "fuse12" ? "toko123" : null;
-      // const nextPlayerId = null;
       json.type = "endTurn";
       json.data = { nextPlayerId };
       break;
@@ -86,6 +85,15 @@ const handleMessage = (message) => {
       ];
       json.type = "events";
       json.data = { events };
+      break;
+    case "eventResult":
+      const newPrizeNumber = Math.floor(
+        Math.random() * dataFromClient.events.length
+      );
+      const eventName = dataFromClient.events[newPrizeNumber];
+      json.type = "eventResult";
+      json.data = { eventName };
+      break;
     default:
       break;
   }

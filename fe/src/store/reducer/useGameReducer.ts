@@ -4,6 +4,7 @@ import {
   DicePayloadType,
   EndTurnPayloadType,
   EnterPayloadType,
+  EventResultPayloadType,
   EventsPayloadType,
   GameActionType,
   ReadyPayloadType,
@@ -183,6 +184,18 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               eventList: [...payload.events],
+            },
+          };
+        }
+
+        case 'eventResult': {
+          const payload = action.payload as EventResultPayloadType;
+
+          return {
+            ...prev,
+            game: {
+              ...prev.game,
+              eventResult: payload.name,
             },
           };
         }

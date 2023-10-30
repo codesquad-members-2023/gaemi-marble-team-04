@@ -182,4 +182,6 @@ export const initialGame = {
   currentPlayerStatus: { type: 'default' },
   dice: [0, 0],
   eventList: [],
+  eventResult: '',
+  isSpin: false,
 };

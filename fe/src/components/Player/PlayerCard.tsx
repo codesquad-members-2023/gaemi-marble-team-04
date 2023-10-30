@@ -1,6 +1,7 @@
 import { Icon } from '@components/icon/Icon';
 import useClickScrollButton from '@hooks/useClickScrollButton';
-import { usePlayerIdValue, useSocketUrlValue } from '@store/index';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue } from '@store/reducer';
 import { PlayerType } from '@store/reducer/type';
 import { useParams } from 'react-router';
@@ -23,8 +24,8 @@ export default function PlayerCard({ player }: PlayerCardProps) {
   const { gameId } = useParams();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
+  const socketUrl = useGetSocketUrl();
 
-  const socketUrl = useSocketUrlValue();
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });

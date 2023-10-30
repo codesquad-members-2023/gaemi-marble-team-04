@@ -1,4 +1,5 @@
-import { usePlayerIdValue, useSocketUrlValue } from '@store/index';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue } from '@store/reducer';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -11,7 +12,7 @@ export default function CenterArea() {
   const { gameId } = useParams();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
-  const socketUrl = useSocketUrlValue();
+  const socketUrl = useGetSocketUrl();
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });

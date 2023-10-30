@@ -62,7 +62,7 @@ export default function StockBuyModalContent({
   const perPrice = 5 * currentStock!.price;
   const isOverLimit =
     purchaseQuantity >= currentStock!.quantity ||
-    totalPrice >= cashAsset + perPrice;
+    totalPrice + perPrice > cashAsset;
   const isUnderLimit = purchaseQuantity <= 0;
 
   return (

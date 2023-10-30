@@ -77,6 +77,7 @@ export default function useGameReducer() {
               return {
                 ...player,
                 playerId: payload[index].playerId,
+                isReady: payload[index].isReady,
               };
             }),
           };

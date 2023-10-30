@@ -22,9 +22,6 @@ export default function CenterArea() {
 
   useEffect(() => {
     if (!eventTime) return;
-    // 이벤트 목록 요청은 1명만 보내야 응답이 한번만 온다.
-    // 마지막으로 턴종료 누른 사람만 보내게 할 순 없나? -> 이미 currentPlayerId가 null이라 못찾음
-    // 아니면 1명만 보내게 만든다면 선턴 플레이어만 보내도 되지 않을까?
     if (gameInfo.firstPlayerId !== playerId) return;
     const message = {
       type: 'events',

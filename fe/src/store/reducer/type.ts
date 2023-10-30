@@ -71,11 +71,12 @@ export type PlayerActionType = {
 export type EnterPayloadType = {
   order: number;
   playerId: string;
+  isReady: boolean;
 };
 
 export type ReadyPayloadType = {
   playerId: string;
-  isReady: true; // 여긴 왜 true 인가요?
+  isReady: boolean;
 };
 
 export type UserStatusPayloadType = {

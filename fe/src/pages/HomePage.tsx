@@ -3,13 +3,28 @@ import HomeHeader from '@components/Header/HomeHeader';
 import EnterModal from '@components/Modal/EnterModal/EnterModal';
 import { Icon } from '@components/icon/Icon';
 import { ROUTE_PATH } from '@router/constants';
-import { useState } from 'react';
+import { useSetGame } from '@store/reducer';
+import {
+  initialGame,
+  initialPlayer,
+  initialStock,
+} from '@store/reducer/constants';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 export default function HomePage() {
   const navigate = useNavigate();
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
+  const setGame = useSetGame();
+
+  useEffect(() => {
+    setGame({
+      game: initialGame,
+      players: initialPlayer,
+      stocks: initialStock,
+    });
+  }, [setGame]);
 
   const handleOpenModal = () => {
     // Memo: 현재 버전 - 모달 띄워서 방 번호 입력

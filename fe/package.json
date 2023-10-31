@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
     "axios": "^1.5.1",
     "jotai": "^2.4.3",
+    "jotai-devtools": "^0.7.0",
     "react": "^18.2.0",
     "react-custom-roulette": "^1.4.1",
     "react-dice-complete": "^2.2.0",

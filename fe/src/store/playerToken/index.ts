@@ -13,24 +13,28 @@ const playerToken1 = atom<PlayerTokenAtom>({
   direction: 'top',
   coordinates: { x: 0, y: 0 },
 });
+playerToken1.debugLabel = 'playerToken1';
 
 const playerToken2 = atom<PlayerTokenAtom>({
   location: 0,
   direction: 'top',
   coordinates: { x: 0, y: 0 },
 });
+playerToken2.debugLabel = 'playerToken2';
 
 const playerToken3 = atom<PlayerTokenAtom>({
   location: 0,
   direction: 'top',
   coordinates: { x: 0, y: 0 },
 });
+playerToken3.debugLabel = 'playerToken3';
 
 const playerToken4 = atom<PlayerTokenAtom>({
   location: 0,
   direction: 'top',
   coordinates: { x: 0, y: 0 },
 });
+playerToken4.debugLabel = 'playerToken4';
 
 export const usePlayerToken1 = (): [
   PlayerTokenAtom,

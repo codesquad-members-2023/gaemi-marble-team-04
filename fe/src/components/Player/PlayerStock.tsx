@@ -1,18 +1,20 @@
 import { cellImageMap } from '@assets/images';
 import useHover from '@hooks/useHover';
 import useTooltipPosition from '@hooks/useTooltipPosition';
+import { useStocksValue } from '@store/reducer';
 import { StockType } from '@store/reducer/type';
 import { styled } from 'styled-components';
 import PlayerStockTooltip from './PlayerStockTooltip';
 
 type PlayerStockProps = {
-  stockInfo: StockType;
+  stockInfo: Pick<StockType, 'name' | 'quantity'>;
 };
 
 export default function PlayerStock({ stockInfo }: PlayerStockProps) {
   const { positionRef, position, calcPosition } =
     useTooltipPosition<HTMLImageElement>();
   const { hoverRef, isHover } = useHover();
+  const stockList = useStocksValue();
 
   const mergeRef = (element: HTMLImageElement | null) => {
     if (element) {
@@ -27,12 +29,16 @@ export default function PlayerStock({ stockInfo }: PlayerStockProps) {
     }
   };
 
+  const stockLogo = stockList.find(
+    (stock) => stock.name === stockInfo.name
+  )!.logo;
+
   return (
     <>
       <StockImgWrapper>
         <StockImg
           ref={mergeRef}
-          src={cellImageMap[stockInfo.name]}
+          src={cellImageMap[stockLogo]}
           onMouseEnter={handleMouseEnter}
         />
       </StockImgWrapper>

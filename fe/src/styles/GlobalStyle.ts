@@ -37,9 +37,6 @@ export const GlobalStyle = createGlobalStyle`
     &:active {
       opacity: 0.64;
     }
-    &:disabled {
-      opacity: 0.32;
-    }
   }
   a {
     text-decoration: none

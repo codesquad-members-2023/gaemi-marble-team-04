@@ -7,8 +7,6 @@ export const initialPlayer = [
     tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
-      stockAsset: 0,
-      totalAsset: 0,
       stockList: [],
     },
   },
@@ -20,8 +18,6 @@ export const initialPlayer = [
     tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
-      stockAsset: 0,
-      totalAsset: 0,
       stockList: [],
     },
   },
@@ -33,8 +29,6 @@ export const initialPlayer = [
     tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
-      stockAsset: 0,
-      totalAsset: 0,
       stockList: [],
     },
   },
@@ -46,8 +40,6 @@ export const initialPlayer = [
     tokenRef: null,
     userStatusBoard: {
       cashAsset: 0,
-      stockAsset: 0,
-      totalAsset: 0,
       stockList: [],
     },
   },

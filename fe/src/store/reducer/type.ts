@@ -59,9 +59,7 @@ export type PlayerType = {
 
 type UserStatusType = {
   cashAsset: number;
-  stockAsset: number;
-  totalAsset: number;
-  stockList: StockType[];
+  stockList: Pick<StockType, 'name' | 'quantity'>[];
 };
 
 export type PlayerActionType = {

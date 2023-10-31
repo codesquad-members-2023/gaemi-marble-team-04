@@ -128,20 +128,6 @@ export default function useGameReducer() {
               const { salary, dividend } = payload;
               const bonus = salary + dividend;
 
-              const currentPlayer = prev.players.find(
-                (player) => player.playerId === payload.playerId
-              );
-              const playerStocksName =
-                currentPlayer?.userStatusBoard.stockList.map(
-                  (stock) => stock.name
-                );
-              const playerStocks = prev.stocks.filter(
-                (stock) => playerStocksName?.includes(stock.name)
-              );
-              const playerStockAsset = playerStocks.reduce((acc, cur) => {
-                return acc + cur.price * cur.quantity;
-              }, 0);
-
               if (player.playerId !== payload.playerId) {
                 return player;
               }
@@ -152,9 +138,6 @@ export default function useGameReducer() {
                 userStatusBoard: {
                   ...player.userStatusBoard,
                   cashAsset: player.userStatusBoard.cashAsset + bonus,
-                  stockAsset: playerStockAsset,
-                  totalAsset:
-                    player.userStatusBoard.cashAsset + playerStockAsset + bonus,
                 },
               };
             }),

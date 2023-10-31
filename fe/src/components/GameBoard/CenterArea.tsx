@@ -1,7 +1,7 @@
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import { usePlayerIdValue } from '@store/index';
-import { useGameInfoValue } from '@store/reducer';
-import { useEffect } from 'react';
+import { useGameInfoValue, usePlayersValue } from '@store/reducer';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
@@ -9,7 +9,11 @@ import Dice from './Dice';
 import Roulette from './Roulette';
 
 export default function CenterArea() {
+  const [isMoveFinished, setIsMoveFinished] = useState(false);
+  const [isBailMouseEnter, setIsBailMouseEnter] = useState(false);
+  const [isEscapeMouseEnter, setIsEscapeMouseEnter] = useState(false);
   const { gameId } = useParams();
+  const players = usePlayersValue();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
   const socketUrl = useGetSocketUrl();
@@ -19,6 +23,13 @@ export default function CenterArea() {
 
   const eventTime = gameInfo.currentPlayerId === null;
   const isMyTurn = playerId === gameInfo.currentPlayerId;
+  const currentPlayerLocation = players.find(
+    (player) => player.playerId === gameInfo.currentPlayerId
+  )?.location;
+  const isPrison = currentPlayerLocation === 6;
+  const defaultStart = !eventTime && isMyTurn && !isPrison && !isMoveFinished;
+  const prisonStart = !eventTime && isMyTurn && isPrison && !isMoveFinished;
+  // TODO: teleport 구현 필요
 
   useEffect(() => {
     if (!eventTime) return;
@@ -40,6 +51,7 @@ export default function CenterArea() {
   };
 
   const endTurn = () => {
+    setIsMoveFinished(false);
     const message = {
       type: 'endTurn',
       gameId,
@@ -48,16 +60,52 @@ export default function CenterArea() {
     sendJsonMessage(message);
   };
 
+  const handleFinishMove = useCallback(() => {
+    setIsMoveFinished(true);
+  }, []);
+
+  const handleBail = () => {};
+
+  const handleEscape = () => {};
+
   return (
     <Center>
-      {!eventTime && <Dice />}
       {eventTime && <Roulette />}
-      {!eventTime && isMyTurn && (
+      {!eventTime && <Dice finishMove={handleFinishMove} />}
+      {defaultStart && (
         <>
-          <Button onClick={() => throwDice()}>굴리기</Button>
-          <Button onClick={() => endTurn()}>턴종료</Button>
+          <Button onClick={() => throwDice()} disabled={isMoveFinished}>
+            굴리기
+          </Button>
         </>
       )}
+      {prisonStart && (
+        <Wrapper>
+          <Button
+            onClick={handleBail}
+            onMouseEnter={() => {
+              setIsBailMouseEnter(true);
+            }}
+            onMouseLeave={() => {
+              setIsBailMouseEnter(false);
+            }}
+          >
+            {isBailMouseEnter ? '-5,000,000₩' : '보석금 지불'}
+          </Button>
+          <Button
+            onClick={handleEscape}
+            onMouseEnter={() => {
+              setIsEscapeMouseEnter(true);
+            }}
+            onMouseLeave={() => {
+              setIsEscapeMouseEnter(false);
+            }}
+          >
+            {isEscapeMouseEnter ? '주사위 더블시 탈출' : '굴려서 탈출'}
+          </Button>
+        </Wrapper>
+      )}
+      {isMoveFinished && <Button onClick={() => endTurn()}>턴종료</Button>}
     </Center>
   );
 }
@@ -74,10 +122,20 @@ const Center = styled.div`
   align-items: center;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
 const Button = styled.button`
-  width: 6rem;
+  width: 8rem;
   height: 4rem;
+  padding: 0.5rem;
   border-radius: ${({ theme: { radius } }) => radius.small};
   color: ${({ theme: { color } }) => color.neutralText};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
+
+  &:disabled {
+    opacity: 0.6;
+  }
 `;

@@ -11,7 +11,11 @@ import {
   directions,
 } from './constants';
 
-export default function Dice() {
+type DiceProps = {
+  finishMove: () => void;
+};
+
+export default function Dice({ finishMove }: DiceProps) {
   const [diceValue, setDiceValue] = useState(0);
   const reactDice = useRef<ReactDiceRef>(null);
   const [players, setPlayers] = usePlayers();
@@ -20,7 +24,8 @@ export default function Dice() {
   useEffect(() => {
     if (gameInfo.dice[0] === 0 || gameInfo.dice[1] === 0) return;
     rollDice(gameInfo.dice[0], gameInfo.dice[1]);
-  }, [gameInfo.dice]);
+    finishMove();
+  }, [gameInfo.dice, finishMove]);
 
   const moveToNextCell = (
     x: number,

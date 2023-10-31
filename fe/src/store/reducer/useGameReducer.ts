@@ -170,7 +170,7 @@ export default function useGameReducer() {
               return {
                 ...stock,
                 quantity: payload.stockStatusBoard[index].quantity,
-                price: prev.stocks[index].price,
+                price: payload.stockStatusBoard[index].price,
               };
             }),
           };

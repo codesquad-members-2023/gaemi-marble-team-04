@@ -1,4 +1,8 @@
-import { useGameInfoValue, usePlayersValue } from '@store/reducer';
+import {
+  useGameInfoValue,
+  usePlayersValue,
+  useStocksValue,
+} from '@store/reducer';
 import { useRef } from 'react';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
@@ -14,6 +18,7 @@ export default function GameBoard() {
 
   const gameInfo = useGameInfoValue();
   const players = usePlayersValue();
+  const stockList = useStocksValue();
 
   const findTokenRef = (order: number) => {
     switch (order) {
@@ -35,15 +40,20 @@ export default function GameBoard() {
       <Board>
         {initialBoard.map((line, index) => (
           <Line key={index} $lineNum={index + 1}>
-            {line.map((cell) => (
-              <Cell
-                key={cell.name}
-                theme={cell.theme}
-                logo={cell.logo}
-                name={cell.name}
-                price={cell.price}
-              />
-            ))}
+            {line.map((cell) => {
+              const stockPrice = stockList.find(
+                (stock) => stock.logo === cell.logo
+              )?.price;
+              return (
+                <Cell
+                  key={cell.name}
+                  theme={cell.theme}
+                  logo={cell.logo}
+                  name={cell.name}
+                  price={stockPrice}
+                />
+              );
+            })}
           </Line>
         ))}
         {gameInfo.isPlaying && <CenterArea />}

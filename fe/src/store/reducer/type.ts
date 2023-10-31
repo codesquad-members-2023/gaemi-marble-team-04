@@ -1,4 +1,3 @@
-import { DirectionType } from '@store/playerToken';
 import { MutableRefObject } from 'react';
 
 export type GameType = {
@@ -131,4 +130,12 @@ export type RouletteEvent = {
   title: string;
   content: string;
   impact: string;
+};
+
+export type DirectionType = 'top' | 'right' | 'bottom' | 'left';
+
+export type PlayerTokenAtom = {
+  location: number;
+  direction: DirectionType;
+  coordinates: { x: number; y: number };
 };

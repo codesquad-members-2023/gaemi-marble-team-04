@@ -1,4 +1,4 @@
-import { DirectionType } from '@store/playerToken';
+import { DirectionType } from './type';
 
 export const initialPlayer = [
   {

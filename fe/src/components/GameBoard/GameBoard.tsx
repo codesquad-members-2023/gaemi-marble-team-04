@@ -1,9 +1,9 @@
 import {
+  playerAtomsAtom,
   useGameInfoValue,
-  usePlayersValue,
   useStocksValue,
 } from '@store/reducer';
-import { useRef } from 'react';
+import { useAtom } from 'jotai';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
 import CenterArea from './CenterArea';
@@ -11,29 +11,9 @@ import PlayerToken from './PlayerToken';
 import { initialBoard } from './constants';
 
 export default function GameBoard() {
-  const tokenRef1 = useRef<HTMLDivElement | null>(null);
-  const tokenRef2 = useRef<HTMLDivElement | null>(null);
-  const tokenRef3 = useRef<HTMLDivElement | null>(null);
-  const tokenRef4 = useRef<HTMLDivElement | null>(null);
-
   const gameInfo = useGameInfoValue();
-  const players = usePlayersValue();
   const stockList = useStocksValue();
-
-  const findTokenRef = (order: number) => {
-    switch (order) {
-      case 1:
-        return tokenRef1;
-      case 2:
-        return tokenRef2;
-      case 3:
-        return tokenRef3;
-      case 4:
-        return tokenRef4;
-      default:
-        return null;
-    }
-  };
+  const [playerAtoms] = useAtom(playerAtomsAtom);
 
   return (
     <>
@@ -57,16 +37,8 @@ export default function GameBoard() {
           </Line>
         ))}
         {gameInfo.isPlaying && <CenterArea />}
-        {players.map((player) => {
-          if (player.playerId === '') return;
-          const tokenRef = findTokenRef(player.order);
-          return (
-            <PlayerToken
-              key={player.playerId}
-              ref={tokenRef}
-              order={player.order}
-            />
-          );
+        {playerAtoms.map((playerAtom) => {
+          return <PlayerToken key={`${playerAtom}`} playerAtom={playerAtom} />;
         })}
       </Board>
     </>

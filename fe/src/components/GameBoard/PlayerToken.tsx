@@ -1,39 +1,37 @@
-import { useSetPlayers } from '@store/reducer';
-import { forwardRef, useEffect } from 'react';
+import { PlayerType } from '@store/reducer/type';
+import { PrimitiveAtom, useAtom } from 'jotai';
+import { useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
 import { DefaultTheme } from 'styled-components/dist/types';
 
-type PlayerTokenProps = {
-  order: number;
+type PlayerTokenWithAtomProps = {
+  playerAtom: PrimitiveAtom<PlayerType>;
 };
 
-const PlayerToken = forwardRef<HTMLDivElement, PlayerTokenProps>(
-  function PlayerToken({ order }, ref) {
-    const setPlayers = useSetPlayers();
-    useEffect(() => {
-      setPlayers((prev) => {
-        const targetIndex = prev.findIndex((player) => player.order === order);
-        return prev.map((player, index) => {
-          if (index === targetIndex) {
-            return {
-              ...player,
-              tokenRef: ref,
-            };
-          }
-          return player;
-        });
-      });
-    }, [order, ref, setPlayers]);
+export default function PlayerToken({ playerAtom }: PlayerTokenWithAtomProps) {
+  const tokenRef = useRef<HTMLDivElement>(null);
+  const [player, setPlayer] = useAtom(playerAtom);
 
-    return (
-      <Token ref={ref} $order={order}>
-        {order}
-      </Token>
-    );
-  }
-);
+  useEffect(() => {
+    setPlayer((prev) => {
+      return {
+        ...prev,
+        gameboard: {
+          ...prev.gameboard,
+          ref: tokenRef,
+        },
+      };
+    });
+  }, [setPlayer]);
 
-export default PlayerToken;
+  if (player.playerId === '') return null;
+
+  return (
+    <Token ref={tokenRef} $order={player.order}>
+      {player.order}
+    </Token>
+  );
+}
 
 const Token = styled.div<{ $order: number }>`
   width: 2rem;

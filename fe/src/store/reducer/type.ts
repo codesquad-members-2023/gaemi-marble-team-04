@@ -1,4 +1,5 @@
-import { ForwardedRef } from 'react';
+import { DirectionType } from '@store/playerToken';
+import { MutableRefObject } from 'react';
 
 export type GameType = {
   game: GameInfoType;
@@ -53,8 +54,8 @@ export type PlayerType = {
   order: number;
   isReady: boolean;
   location: number;
-  tokenRef: ForwardedRef<HTMLDivElement> | null;
   userStatusBoard: UserStatusType;
+  gameboard: GameBoardType;
 };
 
 type UserStatusType = {
@@ -62,6 +63,13 @@ type UserStatusType = {
   stockAsset: number;
   totalAsset: number;
   stockList: StockType[];
+};
+
+export type GameBoardType = {
+  ref: MutableRefObject<HTMLDivElement | null> | null;
+  location: number;
+  direction: DirectionType;
+  coordinates: { x: number; y: number };
 };
 
 export type PlayerActionType = {

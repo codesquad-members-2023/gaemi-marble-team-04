@@ -135,7 +135,7 @@ const StockInfoTable = styled.table`
     border: 1px solid ${({ theme }) => theme.color.neutralBorderStrong};
 
     &.price {
-      width: 20%;
+      width: 15%;
     }
   }
 

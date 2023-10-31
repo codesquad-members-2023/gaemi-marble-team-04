@@ -31,6 +31,12 @@ export const GlobalStyle = createGlobalStyle`
     background: none;
     border: 0;
     cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+    &:active {
+      opacity: 0.64;
+    }
   }
   a {
     text-decoration: none

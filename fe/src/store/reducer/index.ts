@@ -43,5 +43,6 @@ export const useGameInfoValue = () => useAtomValue(gameInfoAtom);
 export const usePlayersValue = () => useAtomValue(playersAtom);
 export const useStocksValue = () => useAtomValue(stocksAtom);
 
+export const useSetGame = () => useSetAtom(gameAtom);
 export const useSetPlayers = () => useSetAtom(playersAtom);
 export const useResetEventRound = () => useSetAtom(resetEventRoundAtom);

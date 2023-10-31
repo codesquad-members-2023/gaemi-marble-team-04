@@ -82,6 +82,7 @@ export const initialStock = [
     theme: 'it',
     quantity: 0,
     price: 0,
+    location: 1,
   },
   {
     logo: 'musinsa',
@@ -89,6 +90,7 @@ export const initialStock = [
     theme: 'fashion',
     quantity: 0,
     price: 0,
+    location: 2,
   },
   {
     logo: 'hanatour',
@@ -96,6 +98,7 @@ export const initialStock = [
     theme: 'trip',
     quantity: 0,
     price: 0,
+    location: 3,
   },
   {
     logo: 'gs',
@@ -103,6 +106,7 @@ export const initialStock = [
     theme: 'construction',
     quantity: 0,
     price: 0,
+    location: 4,
   },
   {
     logo: 'nongshim',
@@ -110,6 +114,7 @@ export const initialStock = [
     theme: 'food',
     quantity: 0,
     price: 0,
+    location: 5,
   },
   {
     logo: 'hyundai',
@@ -117,6 +122,7 @@ export const initialStock = [
     theme: 'construction',
     quantity: 0,
     price: 0,
+    location: 7,
   },
   {
     logo: 'hanwha',
@@ -124,6 +130,7 @@ export const initialStock = [
     theme: 'military',
     quantity: 0,
     price: 0,
+    location: 8,
   },
   {
     logo: 'koreanair',
@@ -131,6 +138,7 @@ export const initialStock = [
     theme: 'trip',
     quantity: 0,
     price: 0,
+    location: 10,
   },
   {
     logo: 'twitter',
@@ -138,6 +146,7 @@ export const initialStock = [
     theme: 'elonmusk',
     quantity: 0,
     price: 0,
+    location: 11,
   },
   {
     logo: 'samsungbio',
@@ -145,6 +154,7 @@ export const initialStock = [
     theme: 'pharmaceutical',
     quantity: 0,
     price: 0,
+    location: 13,
   },
   {
     logo: 'google',
@@ -152,6 +162,7 @@ export const initialStock = [
     theme: 'it',
     quantity: 0,
     price: 0,
+    location: 14,
   },
   {
     logo: 'hermes',
@@ -159,6 +170,7 @@ export const initialStock = [
     theme: 'fashion',
     quantity: 0,
     price: 0,
+    location: 16,
   },
   {
     logo: 'mcdonalds',
@@ -166,6 +178,7 @@ export const initialStock = [
     theme: 'food',
     quantity: 0,
     price: 0,
+    location: 17,
   },
   {
     logo: 'tesla',
@@ -173,6 +186,7 @@ export const initialStock = [
     theme: 'elonmusk',
     quantity: 0,
     price: 0,
+    location: 19,
   },
   {
     logo: 'pfizer',
@@ -180,6 +194,7 @@ export const initialStock = [
     theme: 'pharmaceutical',
     quantity: 0,
     price: 0,
+    location: 20,
   },
   {
     logo: 'starkindustry',
@@ -187,6 +202,7 @@ export const initialStock = [
     theme: 'military',
     quantity: 0,
     price: 0,
+    location: 22,
   },
   {
     logo: 'apple',
@@ -194,6 +210,7 @@ export const initialStock = [
     theme: 'it',
     quantity: 0,
     price: 0,
+    location: 23,
   },
 ];
 

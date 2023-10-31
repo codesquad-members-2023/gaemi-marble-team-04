@@ -1,5 +1,5 @@
-import PlayerTestModal from '@components/Modal/PlayerTestModal';
 import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
+import StockBuyModal from '@components/Modal/StockModal/StockBuyModal';
 import { Icon } from '@components/icon/Icon';
 import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
@@ -9,8 +9,8 @@ import { styled } from 'styled-components';
 
 export default function GameHeader() {
   const navigate = useNavigate();
-  const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
+  const [isStockBuyModalOpen, setIsStockBuyModalOpen] = useState(false);
   const {
     isSoundPlaying,
     togglePlayingSound,
@@ -23,14 +23,6 @@ export default function GameHeader() {
     navigate(ROUTE_PATH.HOME);
   };
 
-  const handleOpenTestModal = () => {
-    setIsTestModalOpen(true);
-  };
-
-  const handleCloseTestModal = () => {
-    setIsTestModalOpen(false);
-  };
-
   const handleOpenStatusBoardModal = () => {
     setIsStatusBoardModalOpen(true);
   };
@@ -39,11 +31,16 @@ export default function GameHeader() {
     setIsStatusBoardModalOpen(false);
   };
 
+  const toggleStockBuyModal = () => {
+    setIsStockBuyModalOpen((prev) => !prev);
+  };
+
   return (
     <>
       <Header>
         <Logo>Gaemi Marble</Logo>
         <Temp>
+          <IconContainer onClick={toggleStockBuyModal}>칸도착</IconContainer>
           <IconContainer>
             <Icon
               name={isSoundPlaying ? 'soundPlaying' : 'soundMute'}
@@ -62,14 +59,6 @@ export default function GameHeader() {
           </IconContainer>
           <IconContainer>
             <Icon
-              name="sample"
-              size="3rem"
-              color="neutralText"
-              onClick={handleOpenTestModal}
-            />
-          </IconContainer>
-          <IconContainer>
-            <Icon
               name="exit"
               size="3rem"
               color="accentText"
@@ -78,11 +67,11 @@ export default function GameHeader() {
           </IconContainer>
         </Temp>
       </Header>
-      {isTestModalOpen && (
-        <PlayerTestModal handleClose={handleCloseTestModal} />
-      )}
       {isStatusBoardModalOpen && (
         <StatusBoardModal handleClose={handleCloseStatusBoardModal} />
+      )}
+      {isStockBuyModalOpen && (
+        <StockBuyModal handleClose={toggleStockBuyModal} />
       )}
       {GameBgm}
     </>
@@ -115,11 +104,15 @@ const Temp = styled.div`
 const IconContainer = styled.div`
   width: 3rem;
   height: 3rem;
+  display: flex;
+  align-items: center;
   border-radius: ${({ theme: { radius } }) => radius.half};
+  color: ${({ theme: { color } }) => color.neutralText};
   background-color: ${({ theme: { color } }) => color.neutralBackground};
   cursor: pointer;
 
   &:hover {
+    color: ${({ theme: { color } }) => color.accentText};
     background-color: ${({ theme: { color } }) => color.accentSecondary};
 
     svg path {

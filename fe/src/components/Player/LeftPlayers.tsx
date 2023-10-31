@@ -19,8 +19,10 @@ export default function LeftPlayers() {
 }
 
 const Players = styled.div`
+  width: 22rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   align-items: center;
 `;

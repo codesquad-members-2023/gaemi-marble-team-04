@@ -10,6 +10,12 @@ import {
   usePlayerToken3,
   usePlayerToken4,
 } from '@store/playerToken';
+import { useSetGame } from '@store/reducer';
+import {
+  initialGame,
+  initialPlayer,
+  initialStock,
+} from '@store/reducer/constants';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
@@ -17,10 +23,19 @@ import { styled } from 'styled-components';
 export default function HomePage() {
   const navigate = useNavigate();
   const [isEnterModalOpen, setIsEnterModalOpen] = useState(false);
+  const setGame = useSetGame();
   const [, setToken1] = usePlayerToken1();
   const [, setToken2] = usePlayerToken2();
   const [, setToken3] = usePlayerToken3();
   const [, setToken4] = usePlayerToken4();
+
+  useEffect(() => {
+    setGame({
+      game: initialGame,
+      players: initialPlayer,
+      stocks: initialStock,
+    });
+  }, [setGame]);
 
   useEffect(() => {
     const initialToken = {

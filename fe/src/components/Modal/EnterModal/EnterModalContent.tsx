@@ -18,6 +18,7 @@ export default function EnterModalContent() {
     const res = await getGameCheck(gameId);
 
     if (!(res.status === 200)) {
+      // Todo: 방 입장 실패 시 토스트 띄우기
       return;
     }
 

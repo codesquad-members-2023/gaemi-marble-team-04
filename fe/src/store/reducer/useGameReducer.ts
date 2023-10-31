@@ -166,11 +166,19 @@ export default function useGameReducer() {
 
           return {
             ...prev,
-            stocks: prev.stocks.map((stock, index) => {
+            stocks: prev.stocks.map((stock) => {
+              const newStock = payload.stockStatusBoard.find(
+                (resStock) => resStock.name === stock.name
+              );
+
+              if (!newStock) {
+                return stock;
+              }
+
               return {
                 ...stock,
-                quantity: payload.stockStatusBoard[index].quantity,
-                price: payload.stockStatusBoard[index].price,
+                quantity: newStock.quantity,
+                price: newStock.price,
               };
             }),
           };

@@ -97,7 +97,7 @@ export default function StockSellModalContent({
             ))}
         </tbody>
       </StockInfoTable>
-      <div>총 매도 가격: {addCommasToNumber(totalPrice)}</div>
+      <span>총 매도 가격: {addCommasToNumber(totalPrice)}</span>
       {playerId === game.currentPlayerId && (
         <ButtonWrapper>
           <Button className="close" onClick={handleClose}>
@@ -118,6 +118,11 @@ const ModalContent = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+
+  span {
+    font-size: ${({ theme }) => theme.fontSize.sMedium};
+    margin: auto 0 auto auto;
+  }
 `;
 
 const StockInfoTable = styled.table`

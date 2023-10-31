@@ -177,6 +177,7 @@ const Button = styled.button`
 const PurchaseQuantityWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const PurchaseQuantity = styled.div`

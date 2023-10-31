@@ -1,5 +1,7 @@
+import EventModal from '@components/Modal/EventModal/EventModal';
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
-import { useGameInfo } from '@store/reducer';
+import { useGameInfo, useResetEventRound } from '@store/reducer';
+import { delay } from '@utils/index';
 import { useEffect, useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import { useParams } from 'react-router-dom';
@@ -8,10 +10,12 @@ import { styled } from 'styled-components';
 
 export default function Roulette() {
   const [mustSpin, setMustSpin] = useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const { gameId } = useParams();
-  const [gameInfo, setGameInfo] = useGameInfo();
+  const [gameInfo] = useGameInfo();
   const socketUrl = useGetSocketUrl();
+  const resetGameInfo = useResetEventRound();
 
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
@@ -41,6 +45,14 @@ export default function Roulette() {
     sendJsonMessage(message);
   };
 
+  const handleSpinDone = async () => {
+    setIsEventModalOpen(true);
+    await delay(5000);
+    resetGameInfo();
+    setMustSpin(false);
+    setIsEventModalOpen(false);
+  };
+
   return (
     <>
       <Wheel
@@ -52,17 +64,10 @@ export default function Roulette() {
         textColors={['#fff', '#000']}
         pointerProps={{ style: { width: '70px', height: '70px' } }}
         backgroundColors={['#3e3e3e', '#f4acb7']}
-        onStopSpinning={() => {
-          setGameInfo((prev) => ({
-            ...prev,
-            dice: [0, 0],
-            eventResult: '',
-            currentPlayerId: gameInfo.firstPlayerId,
-          }));
-          setMustSpin(false);
-        }}
+        onStopSpinning={handleSpinDone}
       />
       <Button onClick={handleSpinClick}>Spin!</Button>
+      {isEventModalOpen && <EventModal />}
     </>
   );
 }

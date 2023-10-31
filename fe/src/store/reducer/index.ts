@@ -8,12 +8,28 @@ export const gameAtom = atom<GameType>({
   players: initialPlayer,
   stocks: initialStock,
 });
+gameAtom.debugLabel = 'gameAtom';
 
 export const gameInfoAtom = focusAtom(gameAtom, (optic) => optic.prop('game'));
 export const playersAtom = focusAtom(gameAtom, (optic) =>
   optic.prop('players')
 );
 export const stocksAtom = focusAtom(gameAtom, (optic) => optic.prop('stocks'));
+
+gameInfoAtom.debugLabel = 'gameInfoAtom';
+playersAtom.debugLabel = 'playersAtom';
+stocksAtom.debugLabel = 'stocksAtom';
+
+const resetEventRoundAtom = atom(null, (_get, set) => {
+  set(gameInfoAtom, (prev) => {
+    return {
+      ...prev,
+      dice: [0, 0],
+      eventResult: '',
+      currentPlayerId: prev.firstPlayerId,
+    };
+  });
+});
 
 export const useGameInfo = () => useAtom(gameInfoAtom);
 
@@ -23,3 +39,4 @@ export const usePlayersValue = () => useAtomValue(playersAtom);
 export const useStocksValue = () => useAtomValue(stocksAtom);
 
 export const useSetPlayers = () => useSetAtom(playersAtom);
+export const useResetEventRound = () => useSetAtom(resetEventRoundAtom);

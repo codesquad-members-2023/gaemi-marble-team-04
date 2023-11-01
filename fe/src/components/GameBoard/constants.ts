@@ -1,4 +1,4 @@
-import { DirectionType } from '@store/playerToken';
+import { DirectionType } from '@store/reducer/type';
 
 export const initialBoard = [
   [

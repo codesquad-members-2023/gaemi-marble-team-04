@@ -1,4 +1,5 @@
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import useHover from '@hooks/useHover';
 import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import { useCallback, useEffect, useState } from 'react';
@@ -10,8 +11,10 @@ import Roulette from './Roulette';
 
 export default function CenterArea() {
   const [isMoveFinished, setIsMoveFinished] = useState(false);
-  const [isBailMouseEnter, setIsBailMouseEnter] = useState(false);
-  const [isEscapeMouseEnter, setIsEscapeMouseEnter] = useState(false);
+  const { hoverRef: bailRef, isHover: isBailBtnHover } =
+    useHover<HTMLButtonElement>();
+  const { hoverRef: escapeRef, isHover: isEscapeBtnHover } =
+    useHover<HTMLButtonElement>();
   const { gameId } = useParams();
   const players = usePlayersValue();
   const gameInfo = useGameInfoValue();
@@ -95,27 +98,11 @@ export default function CenterArea() {
       )}
       {prisonStart && (
         <Wrapper>
-          <Button
-            onClick={handleBail}
-            onMouseEnter={() => {
-              setIsBailMouseEnter(true);
-            }}
-            onMouseLeave={() => {
-              setIsBailMouseEnter(false);
-            }}
-          >
-            {isBailMouseEnter ? '-5,000,000₩' : '보석금 지불'}
+          <Button ref={bailRef} onClick={handleBail}>
+            {isBailBtnHover ? '-5,000,000₩' : '보석금 지불'}
           </Button>
-          <Button
-            onClick={handleEscape}
-            onMouseEnter={() => {
-              setIsEscapeMouseEnter(true);
-            }}
-            onMouseLeave={() => {
-              setIsEscapeMouseEnter(false);
-            }}
-          >
-            {isEscapeMouseEnter ? '주사위 더블시 탈출' : '굴려서 탈출'}
+          <Button ref={escapeRef} onClick={handleEscape}>
+            {isEscapeBtnHover ? '주사위 더블시 탈출' : '굴려서 탈출'}
           </Button>
         </Wrapper>
       )}

@@ -1,5 +1,6 @@
 import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
-import StockBuyModal from '@components/Modal/StockModal/StockBuyModal';
+import StockBuyModal from '@components/Modal/StockBuyModal/StockBuyModal';
+import StockSellModal from '@components/Modal/StockSellModal/StockSellModal';
 import { Icon } from '@components/icon/Icon';
 import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
@@ -11,6 +12,7 @@ export default function GameHeader() {
   const navigate = useNavigate();
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
   const [isStockBuyModalOpen, setIsStockBuyModalOpen] = useState(false);
+  const [isStockSellModalOpen, setIsStockSellModalOpen] = useState(false);
   const {
     isSoundPlaying,
     togglePlayingSound,
@@ -23,16 +25,16 @@ export default function GameHeader() {
     navigate(ROUTE_PATH.HOME);
   };
 
-  const handleOpenStatusBoardModal = () => {
-    setIsStatusBoardModalOpen(true);
-  };
-
-  const handleCloseStatusBoardModal = () => {
-    setIsStatusBoardModalOpen(false);
+  const toggleStatusBoardModal = () => {
+    setIsStatusBoardModalOpen((prev) => !prev);
   };
 
   const toggleStockBuyModal = () => {
     setIsStockBuyModalOpen((prev) => !prev);
+  };
+
+  const toggleStockSellModal = () => {
+    setIsStockSellModalOpen((prev) => !prev);
   };
 
   return (
@@ -40,6 +42,7 @@ export default function GameHeader() {
       <Header>
         <Logo>Gaemi Marble</Logo>
         <Temp>
+          <IconContainer onClick={toggleStockSellModal}>매도하기</IconContainer>
           <IconContainer onClick={toggleStockBuyModal}>칸도착</IconContainer>
           <IconContainer>
             <Icon
@@ -54,7 +57,7 @@ export default function GameHeader() {
               name="statusBoard"
               size="3rem"
               color="neutralText"
-              onClick={handleOpenStatusBoardModal}
+              onClick={toggleStatusBoardModal}
             />
           </IconContainer>
           <IconContainer>
@@ -68,10 +71,13 @@ export default function GameHeader() {
         </Temp>
       </Header>
       {isStatusBoardModalOpen && (
-        <StatusBoardModal handleClose={handleCloseStatusBoardModal} />
+        <StatusBoardModal handleClose={toggleStatusBoardModal} />
       )}
       {isStockBuyModalOpen && (
         <StockBuyModal handleClose={toggleStockBuyModal} />
+      )}
+      {isStockSellModalOpen && (
+        <StockSellModal handleClose={toggleStockSellModal} />
       )}
       {GameBgm}
     </>

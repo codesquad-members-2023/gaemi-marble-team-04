@@ -1,4 +1,5 @@
 import { useStocksValue } from '@store/reducer';
+import { addCommasToNumber } from '@utils/index';
 import { styled } from 'styled-components';
 
 export default function StatusBoardModalContent() {
@@ -19,7 +20,7 @@ export default function StatusBoardModalContent() {
           <tr key={stock.name}>
             <td>{stock.name}</td>
             <td>{stock.theme}</td>
-            <td>{stock.price}</td>
+            <td>{addCommasToNumber(stock.price)}</td>
             <td>{stock.quantity}</td>
           </tr>
         ))}

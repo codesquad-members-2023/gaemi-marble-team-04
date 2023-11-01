@@ -1,4 +1,6 @@
+import { useStocksValue } from '@store/reducer';
 import { StockType } from '@store/reducer/type';
+import { addCommasToNumber } from '@utils/index';
 import { styled } from 'styled-components';
 
 type Position = {
@@ -9,7 +11,7 @@ type Position = {
 };
 
 type PlayerStockTooltipProps = {
-  stockInfo: StockType;
+  stockInfo: Pick<StockType, 'name' | 'quantity'>;
   position: Position;
 };
 
@@ -17,16 +19,23 @@ export default function PlayerStockTooltip({
   stockInfo,
   position,
 }: PlayerStockTooltipProps) {
+  const stocks = useStocksValue();
+
+  const stockPrice = stocks.find(
+    (stock) => stock.name === stockInfo.name
+  )!.price;
+
   return (
     <StockTooltip $position={position}>
       <div>이름: {stockInfo.name}</div>
       <div>수량: {stockInfo.quantity}</div>
-      <div>1주당 가격: {stockInfo.price}</div>
+      <div>1주당 가격: {addCommasToNumber(stockPrice)}</div>
     </StockTooltip>
   );
 }
 
 const StockTooltip = styled.div<{ $position: Position }>`
+  z-index: 1;
   position: fixed;
   left: ${({ $position }) => $position && $position.left}px;
   right: ${({ $position }) => $position && $position.right}px;

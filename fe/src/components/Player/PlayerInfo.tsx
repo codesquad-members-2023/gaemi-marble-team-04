@@ -16,15 +16,15 @@ export default function PlayerInfo({ player }: PlayerInfoProps) {
   const isCurrentPlayer = currentPlayerId === player.playerId;
 
   const playerStocks = player.userStatusBoard.stockList;
-  const stockAsset = playerStocks.reduce((totalAsset, playerStock) => {
+  const stockAsset = playerStocks.reduce((acc, playerStock) => {
     const stock = stocks.find(
       (stockItem) => stockItem.name === playerStock.name
     );
     if (stock) {
       const stockValue = stock.price * playerStock.quantity;
-      return totalAsset + stockValue;
+      return acc + stockValue;
     }
-    return totalAsset;
+    return acc;
   }, 0);
 
   return (

@@ -1,6 +1,6 @@
-import { BASE_WS_URL } from '@api/fetcher';
 import { cellImageMap } from '@assets/images';
 import { Icon } from '@components/icon/Icon';
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import { usePlayerIdValue } from '@store/index';
 import { useGameValue } from '@store/reducer';
 import { addCommasToNumber } from '@utils/index';
@@ -16,21 +16,14 @@ type StockBuyModalContentProps = {
 export default function StockBuyModalContent({
   handleClose,
 }: StockBuyModalContentProps) {
-  // 이름, 테마, 현재 가격, 잔여 주식수
-  // 취소, 매수버튼
-  // 수량 조절 & 수량에 따른 가격
-  // 현재 어떤 타입의 응답을 처리중인지 상태로 둘까?? 모든 사람이 공유할수 있도록
   const { game, players, stocks } = useGameValue();
   const playerId = usePlayerIdValue();
   const { gameId } = useParams();
   const [purchaseQuantity, setPurchaseQuantity] = useState(0);
-
-  const { sendJsonMessage } = useWebSocket(
-    `${BASE_WS_URL}/api/games/${gameId}/${playerId}`,
-    {
-      share: true,
-    }
-  );
+  const socketUrl = useGetSocketUrl();
+  const { sendJsonMessage } = useWebSocket(socketUrl, {
+    share: true,
+  });
 
   const handleBuyStock = () => {
     const message = {
@@ -41,6 +34,8 @@ export default function StockBuyModalContent({
       quantity: purchaseQuantity,
     };
     sendJsonMessage(message);
+
+    handleClose();
   };
 
   const handlePurchaseQuantity = (perQuantity: number) => {
@@ -84,7 +79,7 @@ export default function StockBuyModalContent({
           </tr>
           <tr>
             <th>잔여 수량</th>
-            <td>{currentStock!.quantity}</td>
+            <td>{currentStock!.quantity - purchaseQuantity}</td>
           </tr>
           <tr>
             <th>보유 현금</th>
@@ -182,6 +177,7 @@ const Button = styled.button`
 const PurchaseQuantityWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const PurchaseQuantity = styled.div`

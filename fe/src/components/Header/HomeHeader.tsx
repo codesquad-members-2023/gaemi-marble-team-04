@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Icon } from '../icon/Icon';
 
-// Memo: 홈 화면에만 적용시켜야 할듯?
 export default function HomeHeader() {
   const navigate = useNavigate();
   const { hoverRef, isHover } = useHover<HTMLDivElement>();

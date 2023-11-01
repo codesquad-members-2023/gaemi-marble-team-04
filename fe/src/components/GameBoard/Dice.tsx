@@ -74,6 +74,7 @@ export default function Dice({ finishMove }: DiceProps) {
       const targetPlayerIndex = prev.findIndex(
         (player) => player.playerId === gameInfo.currentPlayerId
       );
+      const hasEscaped = tokenLocation === 6 ? false : true;
 
       return prev.map((player, index) => {
         if (index !== targetPlayerIndex) return player;
@@ -84,6 +85,7 @@ export default function Dice({ finishMove }: DiceProps) {
             location: tokenLocation,
             coordinates: tokenCoordinates,
             direction: tokenDirection,
+            hasEscaped,
           },
         };
       });
@@ -102,6 +104,7 @@ export default function Dice({ finishMove }: DiceProps) {
     );
 
     if (!targetPlayer) return;
+    if (!targetPlayer.gameboard.hasEscaped) return;
 
     moveToken(totalDiceValue, targetPlayer.gameboard);
   };

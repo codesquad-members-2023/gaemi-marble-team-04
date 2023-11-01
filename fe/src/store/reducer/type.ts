@@ -71,6 +71,7 @@ export type GameBoardType = {
   location: number;
   direction: DirectionType;
   coordinates: { x: number; y: number };
+  hasEscaped: boolean;
 };
 
 export type PlayerActionType = {
@@ -148,6 +149,7 @@ export type ExpensePayloadType = {
 };
 
 export type PrisonDicePayloadType = {
+  playerId: string;
   dice1: number;
   dice2: number;
   hasEscaped: boolean;

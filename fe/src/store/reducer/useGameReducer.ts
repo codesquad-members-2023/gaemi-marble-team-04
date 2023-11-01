@@ -240,8 +240,25 @@ export default function useGameReducer() {
           const { dice1, dice2 } = payload;
 
           if (!payload.hasEscaped) {
-            // 탈출 실패시 주사위 값 변경은 시키되 moveToken은 막는다.
-            return prev;
+            return {
+              ...prev,
+              game: {
+                ...prev.game,
+                dice: [dice1, dice2],
+              },
+              players: prev.players.map((player) => {
+                if (player.playerId !== payload.playerId) {
+                  return player;
+                }
+                return {
+                  ...player,
+                  gameboard: {
+                    ...player.gameboard,
+                    hasEscaped: false,
+                  },
+                };
+              }),
+            };
           }
 
           return {
@@ -250,6 +267,18 @@ export default function useGameReducer() {
               ...prev.game,
               dice: [dice1, dice2],
             },
+            players: prev.players.map((player) => {
+              if (player.playerId !== payload.playerId) {
+                return player;
+              }
+              return {
+                ...player,
+                gameboard: {
+                  ...player.gameboard,
+                  hasEscaped: true,
+                },
+              };
+            }),
           };
         }
 

@@ -17,6 +17,7 @@ export const initialPlayer = [
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
+      hasEscaped: true,
     },
   },
   {
@@ -35,6 +36,7 @@ export const initialPlayer = [
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
+      hasEscaped: true,
     },
   },
   {
@@ -47,12 +49,14 @@ export const initialPlayer = [
       stockAsset: 0,
       totalAsset: 0,
       stockList: [],
+      hasEscaped: true,
     },
     gameboard: {
       ref: null,
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
+      hasEscaped: true,
     },
   },
   {
@@ -71,6 +75,7 @@ export const initialPlayer = [
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
+      hasEscaped: true,
     },
   },
 ];

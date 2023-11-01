@@ -60,8 +60,8 @@ export default function StockSellModalContent({
     );
   };
 
-  const player = players.find((player) => player.playerId === playerId);
-  const playerStocks = player?.userStatusBoard.stockList;
+  const playerInfo = players.find((player) => player.playerId === playerId);
+  const playerStocks = playerInfo?.userStatusBoard.stockList;
   const totalPrice = salesList.reduce((acc, saleInfo) => {
     const stock = stocks.find((stock) => stock.name === saleInfo.name);
     if (!stock) {

@@ -1,9 +1,11 @@
 import {
   playerAtomsAtom,
   useGameInfoValue,
+  usePlayersValue,
   useStocksValue,
 } from '@store/reducer';
 import { useAtom } from 'jotai';
+import { useState } from 'react';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
 import CenterArea from './CenterArea';
@@ -11,9 +13,24 @@ import PlayerToken from './PlayerToken';
 import { initialBoard } from './constants';
 
 export default function GameBoard() {
+  const [teleportLocation, setTeleportLocation] = useState<number | null>(null);
   const gameInfo = useGameInfoValue();
   const stockList = useStocksValue();
+  const players = usePlayersValue();
   const [playerAtoms] = useAtom(playerAtomsAtom);
+
+  const currentPlayer = players.find(
+    (player) => player.playerId === gameInfo.currentPlayerId
+  );
+  const currentPlayerStatus = currentPlayer?.gameboard.status ?? 'event';
+
+  const handleTeleportLocation = (location: number) => {
+    setTeleportLocation(location);
+  };
+
+  const resetTeleportLocation = () => {
+    setTeleportLocation(null);
+  };
 
   return (
     <>
@@ -27,16 +44,22 @@ export default function GameBoard() {
               return (
                 <Cell
                   key={cell.name}
-                  theme={cell.theme}
-                  logo={cell.logo}
-                  name={cell.name}
+                  cell={cell}
                   price={stockPrice}
+                  playerStatus={currentPlayerStatus}
+                  handleTeleportLocation={handleTeleportLocation}
                 />
               );
             })}
           </Line>
         ))}
-        {gameInfo.isPlaying && <CenterArea />}
+        {gameInfo.isPlaying && (
+          <CenterArea
+            currentStatus={currentPlayerStatus}
+            teleportLocation={teleportLocation}
+            resetTeleportLocation={resetTeleportLocation}
+          />
+        )}
         {playerAtoms.map((playerAtom) => {
           return <PlayerToken key={`${playerAtom}`} playerAtom={playerAtom} />;
         })}

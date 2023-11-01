@@ -12,6 +12,7 @@ export const initialPlayer = [
     },
     gameboard: {
       ref: null,
+      status: 'default',
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
@@ -29,6 +30,7 @@ export const initialPlayer = [
     },
     gameboard: {
       ref: null,
+      status: 'default',
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
@@ -47,6 +49,7 @@ export const initialPlayer = [
     },
     gameboard: {
       ref: null,
+      status: 'default',
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },
@@ -64,6 +67,7 @@ export const initialPlayer = [
     },
     gameboard: {
       ref: null,
+      status: 'default',
       location: 0,
       direction: 'top' as DirectionType,
       coordinates: { x: 0, y: 0 },

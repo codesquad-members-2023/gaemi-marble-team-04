@@ -8,6 +8,7 @@ import {
   EventsPayloadType,
   ExpensePayloadType,
   GameActionType,
+  PlayerStatusType,
   PrisonDicePayloadType,
   ReadyPayloadType,
   StartPayloadType,
@@ -133,6 +134,12 @@ export default function useGameReducer() {
               const payload = action.payload as CellPayloadType;
               const { salary, dividend } = payload;
               const bonus = salary + dividend;
+              const playerStatus =
+                payload.location === 6
+                  ? 'prison'
+                  : payload.location === 18
+                  ? 'teleport'
+                  : 'default';
 
               if (player.playerId !== payload.playerId) {
                 return player;
@@ -144,6 +151,10 @@ export default function useGameReducer() {
                 userStatusBoard: {
                   ...player.userStatusBoard,
                   cashAsset: player.userStatusBoard.cashAsset + bonus,
+                },
+                gameboard: {
+                  ...player.gameboard,
+                  status: playerStatus as PlayerStatusType,
                 },
               };
             }),

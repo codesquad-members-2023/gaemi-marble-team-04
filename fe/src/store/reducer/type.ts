@@ -65,6 +65,7 @@ type UserStatusType = {
 
 export type GameBoardType = {
   ref: MutableRefObject<HTMLDivElement | null> | null;
+  status: PlayerStatusType;
   location: number;
   direction: DirectionType;
   coordinates: { x: number; y: number };
@@ -131,6 +132,8 @@ export type RouletteEvent = {
   content: string;
   impact: string;
 };
+
+export type PlayerStatusType = 'default' | 'prison' | 'teleport' | 'event';
 
 export type DirectionType = 'top' | 'right' | 'bottom' | 'left';
 

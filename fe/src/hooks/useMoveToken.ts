@@ -1,6 +1,7 @@
 import {
   CORNER_CELLS,
-  TOKEN_TRANSITION_DELAY,
+  DICE_MOVE_DELAY,
+  TELEPORT_MOVE_DELAY,
   changeDirection,
   directions,
 } from '@components/GameBoard/constants';
@@ -28,8 +29,11 @@ export default function useMoveToken() {
 
   const moveToken = async (
     diceCount: number,
-    playerGameBoardData: GameBoardType
+    playerGameBoardData: GameBoardType,
+    type: 'dice' | 'teleport' = 'dice'
   ) => {
+    const delayTime =
+      type === 'teleport' ? TELEPORT_MOVE_DELAY : DICE_MOVE_DELAY;
     const tokenCoordinates = {
       x: playerGameBoardData.coordinates.x,
       y: playerGameBoardData.coordinates.y,
@@ -53,7 +57,7 @@ export default function useMoveToken() {
         tokenDirection = changeDirection(tokenDirection);
       }
 
-      await delay(TOKEN_TRANSITION_DELAY);
+      await delay(delayTime);
     }
 
     setPlayers((prev) => {

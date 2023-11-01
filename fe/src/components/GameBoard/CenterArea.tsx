@@ -1,5 +1,6 @@
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import useHover from '@hooks/useHover';
+import useMoveToken from '@hooks/useMoveToken';
 import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import { useEffect } from 'react';
@@ -19,6 +20,7 @@ export default function CenterArea() {
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
   const socketUrl = useGetSocketUrl();
+  const moveToken = useMoveToken();
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });
@@ -36,6 +38,9 @@ export default function CenterArea() {
     isMyTurn && !eventTime && !isPrison && !isTeleport && !isMoveFinished;
   const prisonStart = isMyTurn && !eventTime && isPrison && !isMoveFinished;
   const teleportStart = isMyTurn && !eventTime && isTeleport && !isMoveFinished;
+
+  // TODO: 순간이동 칸에서 턴 시작시 이동할 칸을 선택하도록 구현
+  const targetLocation = 6;
 
   useEffect(() => {
     if (!eventTime) return;
@@ -67,7 +72,7 @@ export default function CenterArea() {
 
   const handleBail = () => {
     const message = {
-      type: 'expense',
+      type: 'bail',
       gameId,
       playerId,
     };
@@ -83,11 +88,34 @@ export default function CenterArea() {
     sendJsonMessage(message);
   };
 
+  const handleTeleport = () => {
+    const message = {
+      type: 'teleport',
+      gameId,
+      playerId,
+      location: targetLocation,
+    };
+    sendJsonMessage(message);
+    teleportToken();
+  };
+
+  const teleportToken = () => {
+    const playerInfo = players.find((player) => player.playerId === playerId);
+    if (!playerInfo) return;
+    const cellCount = calculateCellCount(targetLocation, playerInfo.location);
+    moveToken(cellCount, playerInfo.gameboard, 'teleport');
+  };
+
+  const calculateCellCount = (targetCell: number, currentCell: number) => {
+    const cellCount = (24 + targetCell - currentCell) % 24;
+    return cellCount;
+  };
+
   return (
     <Center>
       {eventTime && <Roulette />}
       {!eventTime && <Dice />}
-      {defaultStart && (
+      {teleportStart && (
         <>
           <Button onClick={() => throwDice()} disabled={isMoveFinished}>
             굴리기
@@ -105,7 +133,12 @@ export default function CenterArea() {
           </Button>
         </Wrapper>
       )}
-      {teleportStart && <div>이동할 칸을 선택해주세요</div>}
+      {defaultStart && (
+        <>
+          <div>이동할 칸을 선택해주세요</div>
+          <Button onClick={() => handleTeleport()}>이동하기</Button>
+        </>
+      )}
       {isMyTurn && isMoveFinished && (
         <Button onClick={() => endTurn()}>턴종료</Button>
       )}

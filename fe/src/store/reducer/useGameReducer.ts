@@ -208,10 +208,6 @@ export default function useGameReducer() {
                 userStatusBoard: {
                   ...player.userStatusBoard,
                   cashAsset: player.userStatusBoard.cashAsset - payload.amount,
-                  totalAsset:
-                    player.userStatusBoard.cashAsset +
-                    player.userStatusBoard.stockAsset -
-                    payload.amount,
                 },
               };
             }),

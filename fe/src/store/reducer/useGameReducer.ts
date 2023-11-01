@@ -6,6 +6,7 @@ import {
   EnterPayloadType,
   EventResultPayloadType,
   EventsPayloadType,
+  ExpensePayloadType,
   GameActionType,
   ReadyPayloadType,
   StartPayloadType,
@@ -205,6 +206,31 @@ export default function useGameReducer() {
               ...prev.game,
               eventResult: payload.name,
             },
+          };
+        }
+
+        case 'expense': {
+          const payload = action.payload as ExpensePayloadType;
+
+          return {
+            ...prev,
+            players: prev.players.map((player) => {
+              if (player.playerId !== payload.playerId) {
+                return player;
+              }
+
+              return {
+                ...player,
+                userStatusBoard: {
+                  ...player.userStatusBoard,
+                  cashAsset: player.userStatusBoard.cashAsset - payload.amount,
+                  totalAsset:
+                    player.userStatusBoard.cashAsset +
+                    player.userStatusBoard.stockAsset -
+                    payload.amount,
+                },
+              };
+            }),
           };
         }
 

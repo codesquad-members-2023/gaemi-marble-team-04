@@ -64,7 +64,14 @@ export default function CenterArea() {
     setIsMoveFinished(true);
   }, []);
 
-  const handleBail = () => {};
+  const handleBail = () => {
+    const message = {
+      type: 'expense',
+      gameId,
+      playerId,
+    };
+    sendJsonMessage(message);
+  };
 
   const handleEscape = () => {};
 

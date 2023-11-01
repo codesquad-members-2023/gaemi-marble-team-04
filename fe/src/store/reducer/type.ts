@@ -17,6 +17,7 @@ export type GameActionType = {
   statusBoard: StatusBoardPayloadType;
   events: EventsPayloadType;
   eventResult: EventResultPayloadType;
+  expense: ExpensePayloadType;
 };
 
 export type GameInfoType = {
@@ -138,4 +139,9 @@ export type PlayerTokenAtom = {
   location: number;
   direction: DirectionType;
   coordinates: { x: number; y: number };
+};
+
+export type ExpensePayloadType = {
+  playerId: string;
+  amount: number;
 };

@@ -18,6 +18,7 @@ export type GameActionType = {
   events: EventsPayloadType;
   eventResult: EventResultPayloadType;
   expense: ExpensePayloadType;
+  prisonDice: PrisonDicePayloadType;
 };
 
 export type GameInfoType = {
@@ -144,4 +145,10 @@ export type PlayerTokenAtom = {
 export type ExpensePayloadType = {
   playerId: string;
   amount: number;
+};
+
+export type PrisonDicePayloadType = {
+  dice1: number;
+  dice2: number;
+  hasEscaped: boolean;
 };

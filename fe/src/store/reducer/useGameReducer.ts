@@ -8,6 +8,7 @@ import {
   EventsPayloadType,
   ExpensePayloadType,
   GameActionType,
+  PrisonDicePayloadType,
   ReadyPayloadType,
   StartPayloadType,
   StatusBoardPayloadType,
@@ -231,6 +232,24 @@ export default function useGameReducer() {
                 },
               };
             }),
+          };
+        }
+
+        case 'prisonDice': {
+          const payload = action.payload as PrisonDicePayloadType;
+          const { dice1, dice2 } = payload;
+
+          if (!payload.hasEscaped) {
+            // 탈출 실패시 주사위 값 변경은 시키되 moveToken은 막는다.
+            return prev;
+          }
+
+          return {
+            ...prev,
+            game: {
+              ...prev.game,
+              dice: [dice1, dice2],
+            },
           };
         }
 

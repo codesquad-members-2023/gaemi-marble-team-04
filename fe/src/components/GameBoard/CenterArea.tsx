@@ -73,7 +73,14 @@ export default function CenterArea() {
     sendJsonMessage(message);
   };
 
-  const handleEscape = () => {};
+  const handleEscape = () => {
+    const message = {
+      type: 'prisonDice',
+      gameId,
+      playerId,
+    };
+    sendJsonMessage(message);
+  };
 
   return (
     <Center>

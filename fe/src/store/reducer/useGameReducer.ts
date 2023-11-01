@@ -63,7 +63,6 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               dice: [dice1, dice2],
-              isMoveFinished: true,
             },
           };
         }
@@ -126,6 +125,10 @@ export default function useGameReducer() {
         case 'cell': {
           return {
             ...prev,
+            game: {
+              ...prev.game,
+              isMoveFinished: true,
+            },
             players: prev.players.map((player) => {
               const payload = action.payload as CellPayloadType;
               const { salary, dividend } = payload;
@@ -209,6 +212,10 @@ export default function useGameReducer() {
                 userStatusBoard: {
                   ...player.userStatusBoard,
                   cashAsset: player.userStatusBoard.cashAsset - payload.amount,
+                },
+                gameboard: {
+                  ...player.gameboard,
+                  hasEscaped: true,
                 },
               };
             }),

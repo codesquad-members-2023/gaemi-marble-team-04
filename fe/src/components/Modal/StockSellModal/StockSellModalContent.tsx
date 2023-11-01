@@ -1,4 +1,3 @@
-// import { cellImageMap } from '@assets/images';
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import { usePlayerIdValue } from '@store/index';
 import { useGameValue } from '@store/reducer';

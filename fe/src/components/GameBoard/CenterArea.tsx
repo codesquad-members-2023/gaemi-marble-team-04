@@ -2,7 +2,7 @@ import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import useHover from '@hooks/useHover';
 import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue, usePlayersValue } from '@store/reducer';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
@@ -10,7 +10,6 @@ import Dice from './Dice';
 import Roulette from './Roulette';
 
 export default function CenterArea() {
-  const [isMoveFinished, setIsMoveFinished] = useState(false);
   const { hoverRef: bailRef, isHover: isBailBtnHover } =
     useHover<HTMLButtonElement>();
   const { hoverRef: escapeRef, isHover: isEscapeBtnHover } =
@@ -24,15 +23,19 @@ export default function CenterArea() {
     share: true,
   });
 
-  const eventTime = gameInfo.currentPlayerId === null;
   const isMyTurn = playerId === gameInfo.currentPlayerId;
+  const eventTime = gameInfo.currentPlayerId === null;
   const currentPlayerLocation = players.find(
     (player) => player.playerId === gameInfo.currentPlayerId
   )?.location;
   const isPrison = currentPlayerLocation === 6;
-  const defaultStart = !eventTime && isMyTurn && !isPrison && !isMoveFinished;
-  const prisonStart = !eventTime && isMyTurn && isPrison && !isMoveFinished;
-  // TODO: teleport 구현 필요
+  const isTeleport = currentPlayerLocation === 18;
+  const isMoveFinished = gameInfo.isMoveFinished;
+
+  const defaultStart =
+    isMyTurn && !eventTime && !isPrison && !isTeleport && !isMoveFinished;
+  const prisonStart = isMyTurn && !eventTime && isPrison && !isMoveFinished;
+  const teleportStart = isMyTurn && !eventTime && isTeleport && !isMoveFinished;
 
   useEffect(() => {
     if (!eventTime) return;
@@ -54,7 +57,6 @@ export default function CenterArea() {
   };
 
   const endTurn = () => {
-    setIsMoveFinished(false);
     const message = {
       type: 'endTurn',
       gameId,
@@ -62,10 +64,6 @@ export default function CenterArea() {
     };
     sendJsonMessage(message);
   };
-
-  const handleFinishMove = useCallback(() => {
-    setIsMoveFinished(true);
-  }, []);
 
   const handleBail = () => {
     const message = {
@@ -88,7 +86,7 @@ export default function CenterArea() {
   return (
     <Center>
       {eventTime && <Roulette />}
-      {!eventTime && <Dice finishMove={handleFinishMove} />}
+      {!eventTime && <Dice />}
       {defaultStart && (
         <>
           <Button onClick={() => throwDice()} disabled={isMoveFinished}>
@@ -99,6 +97,7 @@ export default function CenterArea() {
       {prisonStart && (
         <Wrapper>
           <Button ref={bailRef} onClick={handleBail}>
+            {/* Memo: 호버시 내부 텍스트가 안 바뀌는 버그 발견 */}
             {isBailBtnHover ? '-5,000,000₩' : '보석금 지불'}
           </Button>
           <Button ref={escapeRef} onClick={handleEscape}>
@@ -106,7 +105,10 @@ export default function CenterArea() {
           </Button>
         </Wrapper>
       )}
-      {isMoveFinished && <Button onClick={() => endTurn()}>턴종료</Button>}
+      {teleportStart && <div>이동할 칸을 선택해주세요</div>}
+      {isMyTurn && isMoveFinished && (
+        <Button onClick={() => endTurn()}>턴종료</Button>
+      )}
     </Center>
   );
 }

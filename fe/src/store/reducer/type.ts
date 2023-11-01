@@ -28,12 +28,11 @@ export type GameInfoType = {
   firstPlayerId: string;
   // Memo: 현재 턴이 누군지
   currentPlayerId: string | null;
-  // Memo: 턴인 사람의 상태 (default, prison, teleport ...)
-  currentPlayerStatus: { type: string; count?: number };
   dice: number[];
   eventList: RouletteEvent[];
   eventResult: string;
   isSpin: boolean;
+  isMoveFinished: boolean;
 };
 
 export type StartPayloadType = {

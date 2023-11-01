@@ -49,7 +49,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               currentPlayerId: payload.nextPlayerId,
-              currentPlayerStatus: payload.nextPlayerStatus,
+              isMoveFinished: false,
             },
           };
         }
@@ -63,6 +63,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               dice: [dice1, dice2],
+              isMoveFinished: true,
             },
           };
         }

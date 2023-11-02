@@ -1,6 +1,5 @@
 import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
 import StockBuyModal from '@components/Modal/StockBuyModal/StockBuyModal';
-import StockSellModal from '@components/Modal/StockSellModal/StockSellModal';
 import { Icon } from '@components/icon/Icon';
 import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
@@ -12,7 +11,7 @@ export default function GameHeader() {
   const navigate = useNavigate();
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
   const [isStockBuyModalOpen, setIsStockBuyModalOpen] = useState(false);
-  const [isStockSellModalOpen, setIsStockSellModalOpen] = useState(false);
+
   const {
     isSoundPlaying,
     togglePlayingSound,
@@ -33,16 +32,11 @@ export default function GameHeader() {
     setIsStockBuyModalOpen((prev) => !prev);
   };
 
-  const toggleStockSellModal = () => {
-    setIsStockSellModalOpen((prev) => !prev);
-  };
-
   return (
     <>
       <Header>
         <Logo>Gaemi Marble</Logo>
         <Temp>
-          <IconContainer onClick={toggleStockSellModal}>매도하기</IconContainer>
           <IconContainer onClick={toggleStockBuyModal}>칸도착</IconContainer>
           <IconContainer>
             <Icon
@@ -75,9 +69,6 @@ export default function GameHeader() {
       )}
       {isStockBuyModalOpen && (
         <StockBuyModal handleClose={toggleStockBuyModal} />
-      )}
-      {isStockSellModalOpen && (
-        <StockSellModal handleClose={toggleStockSellModal} />
       )}
       {GameBgm}
     </>

@@ -15,7 +15,7 @@ type StockSellModalContentProps = {
 export default function StockSellModalContent({
   handleClose,
 }: StockSellModalContentProps) {
-  const { game, players, stocks } = useGameValue();
+  const { players, stocks } = useGameValue();
   const playerId = usePlayerIdValue();
   const { gameId } = useParams();
   const socketUrl = useGetSocketUrl();
@@ -86,27 +86,30 @@ export default function StockSellModalContent({
           </tr>
         </thead>
         <tbody>
-          {!!playerStocks?.length &&
+          {playerStocks?.length ? (
             playerStocks.map((stock) => (
               <StockSellTableData
                 stock={stock}
                 salesList={salesList}
                 handleSalesQuantity={handleSalesQuantity}
               />
-            ))}
+            ))
+          ) : (
+            <EmptyTable>
+              <td colSpan={7}>보유한 주식이 없습니다.</td>
+            </EmptyTable>
+          )}
         </tbody>
       </StockInfoTable>
       <span>총 매도 가격: {addCommasToNumber(totalPrice)}</span>
-      {playerId === game.currentPlayerId && (
-        <ButtonWrapper>
-          <Button className="close" onClick={handleClose}>
-            닫기
-          </Button>
-          <Button className="sell" onClick={handleSellStock}>
-            매도
-          </Button>
-        </ButtonWrapper>
-      )}
+      <ButtonWrapper>
+        <Button className="close" onClick={handleClose}>
+          닫기
+        </Button>
+        <Button className="sell" onClick={handleSellStock}>
+          매도
+        </Button>
+      </ButtonWrapper>
     </ModalContent>
   );
 }
@@ -140,6 +143,12 @@ const StockInfoTable = styled.table`
 
   td {
     text-align: right;
+  }
+`;
+
+const EmptyTable = styled.tr`
+  td {
+    text-align: center;
   }
 `;
 

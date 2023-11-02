@@ -35,9 +35,6 @@ export default function GamePage() {
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
-          {/* {!gameInfo.isPlaying && isEveryoneReady && (
-            <Button onClick={handleStart}>게임 시작</Button>
-          )} */}
         </Main>
       </Container>
     </>

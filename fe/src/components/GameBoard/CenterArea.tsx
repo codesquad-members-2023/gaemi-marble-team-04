@@ -6,6 +6,7 @@ import {
   useGameInfoValue,
   usePlayersValue,
   useResetTeleportLocation,
+  useSetGameInfo,
 } from '@store/reducer';
 import { PlayerStatusType } from '@store/reducer/type';
 import { useEffect } from 'react';
@@ -34,6 +35,7 @@ export default function CenterArea({
   const players = usePlayersValue();
   const gameInfo = useGameInfoValue();
   const playerId = usePlayerIdValue();
+  const setGameInfo = useSetGameInfo();
   const socketUrl = useGetSocketUrl();
   const moveToken = useMoveToken();
   const resetTeleportLocation = useResetTeleportLocation();
@@ -66,13 +68,21 @@ export default function CenterArea({
     sendJsonMessage(message);
   }, [eventTime, gameId, playerId, gameInfo.firstPlayerId, sendJsonMessage]);
 
-  const teleportToken = () => {
+  const teleportToken = async () => {
     if (!currentPlayerInfo || !gameInfo.teleportLocation) return;
     const cellCount = calculateCellCount(
       gameInfo.teleportLocation,
       currentPlayerInfo.gameboard.location
     );
-    moveToken(cellCount, currentPlayerInfo.gameboard, 'teleport');
+
+    await moveToken(cellCount, currentPlayerInfo.gameboard, 'teleport');
+
+    setGameInfo((prev) => {
+      return {
+        ...prev,
+        isArrived: true,
+      };
+    });
     resetTargetLocation();
     resetTeleportLocation();
   };

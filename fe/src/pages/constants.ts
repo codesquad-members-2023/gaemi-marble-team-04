@@ -1,8 +1,8 @@
 import { IconsType } from './../components/icon/icons';
 
 export const leftPlayerOrderList = [1, 4];
-
 export const rightPlayerOrderList = [2, 3];
+export const goldCardLocation = [9, 21];
 
 export const antList: {
   order: number;

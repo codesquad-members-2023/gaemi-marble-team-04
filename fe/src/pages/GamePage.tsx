@@ -1,19 +1,29 @@
 import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
+import GoldCardModal from '@components/Modal/GoldCardModal/GoldCardModal';
 import LeftPlayers from '@components/Player/LeftPlayers';
 import RightPlayers from '@components/Player/RightPlayers';
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
+import { goldCardLocation } from './constants';
 
 export default function GamePage() {
   const { gameId } = useParams();
   const playersInfo = usePlayersValue();
-  const gameInfo = useGameInfoValue();
+  const playerId = usePlayerIdValue();
+  const {
+    isMoveFinished,
+    currentPlayerId,
+    isPlaying,
+    goldCardInfo,
+    isArrived,
+  } = useGameInfoValue();
   const { dispatch } = useGameReducer();
   const socketUrl = useGetSocketUrl();
 
@@ -45,6 +55,12 @@ export default function GamePage() {
     sendJsonMessage(message);
   };
 
+  const isCurrentPlayer = currentPlayerId === playerId;
+  const currentLocation = playersInfo.find(
+    (player) => player.playerId === playerId
+  )?.location;
+  const isLocateGoldCard = goldCardLocation.includes(currentLocation ?? 0);
+
   return (
     <>
       <Container>
@@ -53,11 +69,16 @@ export default function GamePage() {
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
-          {!gameInfo.isPlaying && isEveryoneReady && (
+          {!isPlaying && isEveryoneReady && (
             <Button onClick={handleStart}>게임 시작</Button>
           )}
         </Main>
       </Container>
+      {isLocateGoldCard &&
+        isMoveFinished &&
+        isCurrentPlayer &&
+        isArrived &&
+        goldCardInfo.title && <GoldCardModal />}
     </>
   );
 }

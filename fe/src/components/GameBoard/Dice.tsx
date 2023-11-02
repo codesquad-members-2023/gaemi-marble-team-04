@@ -1,5 +1,5 @@
 import useMoveToken from '@hooks/useMoveToken';
-import { useGameInfoValue, usePlayers } from '@store/reducer';
+import { useGameInfoValue, usePlayers, useSetGameInfo } from '@store/reducer';
 import { useEffect, useRef, useState } from 'react';
 import ReactDice, { ReactDiceRef } from 'react-dice-complete';
 import { styled } from 'styled-components';
@@ -10,6 +10,7 @@ export default function Dice() {
   const [players] = usePlayers();
   const gameInfo = useGameInfoValue();
   const moveToken = useMoveToken();
+  const setGameInfo = useSetGameInfo();
 
   useEffect(() => {
     if (gameInfo.dice[0] === 0 || gameInfo.dice[1] === 0) return;
@@ -20,7 +21,7 @@ export default function Dice() {
     reactDice.current?.rollAll([dice1, dice2]);
   };
 
-  const rollDone = () => {
+  const rollDone = async () => {
     const totalDiceValue = gameInfo.dice[0] + gameInfo.dice[1];
     setDiceValue(totalDiceValue);
     const targetPlayer = players.find(
@@ -30,7 +31,14 @@ export default function Dice() {
     if (!targetPlayer) return;
     if (!targetPlayer.gameboard.hasEscaped) return;
 
-    moveToken(totalDiceValue, targetPlayer.gameboard);
+    await moveToken(totalDiceValue, targetPlayer.gameboard);
+
+    setGameInfo((prev) => {
+      return {
+        ...prev,
+        isArrived: true,
+      };
+    });
   };
 
   return (

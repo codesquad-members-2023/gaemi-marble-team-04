@@ -9,6 +9,7 @@ import {
   ExpensePayloadType,
   GameActionType,
   PlayerStatusType,
+  GoldCardPayloadType,
   PrisonDicePayloadType,
   ReadyPayloadType,
   StartPayloadType,
@@ -52,6 +53,7 @@ export default function useGameReducer() {
               ...prev.game,
               currentPlayerId: payload.nextPlayerId,
               isMoveFinished: false,
+              isArrived: false,
             },
           };
         }
@@ -65,6 +67,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               dice: [dice1, dice2],
+              isArrived: false,
             },
           };
         }
@@ -194,6 +197,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               eventList: [...payload.events],
+              isArrived: false,
             },
           };
         }
@@ -206,6 +210,22 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               eventResult: payload.name,
+              isArrived: false,
+            },
+          };
+        }
+
+        case 'goldCard': {
+          const payload = action.payload as GoldCardPayloadType;
+
+          return {
+            ...prev,
+            game: {
+              ...prev.game,
+              goldCardInfo: {
+                title: payload.title,
+                description: payload.description,
+              },
             },
           };
         }
@@ -215,6 +235,10 @@ export default function useGameReducer() {
 
           return {
             ...prev,
+            game: {
+              ...prev.game,
+              isArrived: false,
+            },
             players: prev.players.map((player) => {
               if (player.playerId !== payload.playerId) {
                 return player;
@@ -245,6 +269,7 @@ export default function useGameReducer() {
               game: {
                 ...prev.game,
                 dice: [dice1, dice2],
+                isArrived: false,
               },
               players: prev.players.map((player) => {
                 if (player.playerId !== payload.playerId) {
@@ -266,6 +291,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               dice: [dice1, dice2],
+              isArrived: false,
             },
             players: prev.players.map((player) => {
               if (player.playerId !== payload.playerId) {
@@ -290,6 +316,7 @@ export default function useGameReducer() {
             game: {
               ...prev.game,
               teleportLocation: payload.location,
+              isArrived: false,
             },
           };
         }

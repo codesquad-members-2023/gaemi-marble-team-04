@@ -32,7 +32,6 @@ export type GameInfoType = {
   dice: number[];
   eventList: RouletteEvent[];
   eventResult: string;
-  isSpin: boolean;
   isMoveFinished: boolean;
   teleportLocation: number | null;
 };

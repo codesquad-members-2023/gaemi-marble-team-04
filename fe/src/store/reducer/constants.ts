@@ -222,7 +222,6 @@ export const initialGame = {
   dice: [0, 0],
   eventList: [],
   eventResult: '',
-  isSpin: false,
   isMoveFinished: false,
   teleportLocation: null,
 };

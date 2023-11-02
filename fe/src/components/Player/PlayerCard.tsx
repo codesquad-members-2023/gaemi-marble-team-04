@@ -36,6 +36,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
   const isReady = player.isReady;
   const isMyButton = player.playerId === playerId;
   const eventTime = gameInfo.currentPlayerId === null;
+  const beforeRouletteSpin = gameInfo.eventResult === '';
 
   const handleReady = () => {
     const message = {
@@ -82,7 +83,7 @@ export default function PlayerCard({ player }: PlayerCardProps) {
               {isReady ? '준비완료' : '준비'}
             </Button>
           )}
-          {isMyButton && eventTime && (
+          {isMyButton && eventTime && beforeRouletteSpin && (
             <StockSellButton onClick={toggleStockSellModal}>
               매도하기
             </StockSellButton>

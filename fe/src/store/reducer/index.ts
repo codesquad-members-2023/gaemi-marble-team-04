@@ -29,6 +29,7 @@ const resetEventRoundAtom = atom(null, (_get, set) => {
     return {
       ...prev,
       dice: [0, 0],
+      eventList: [],
       eventResult: '',
       currentPlayerId: prev.firstPlayerId,
     };

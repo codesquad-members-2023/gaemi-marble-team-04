@@ -43,11 +43,11 @@ export default function Cell({
     >
       {cell.theme && (
         <Header>
-          <Logo src={cellImageMap[cell.logo]} />
           <Name>{cell.name}</Name>
         </Header>
       )}
       <Content>
+        {cell.theme && <Logo src={cellImageMap[cell.logo]} />}
         {!cell.theme && <CellImg src={cellImageMap[cell.logo]} />}
         {price && <span>{addCommasToNumber(price)}</span>}
       </Content>
@@ -71,8 +71,10 @@ const Container = styled.div<{
 `;
 
 const Header = styled.div`
+  min-height: 2rem;
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: ${({ theme: { color } }) => color.accentText};
 `;
 
@@ -94,6 +96,6 @@ const Content = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 `;

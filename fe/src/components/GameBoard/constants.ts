@@ -32,7 +32,7 @@ export const initialBoard = [
     {
       theme: 'pharmaceutical',
       logo: 'samsungbio',
-      name: '삼성바이오로직스',
+      name: '삼성바이오',
       location: 13,
     },
     { theme: 'it', logo: 'google', name: '구글', location: 14 },

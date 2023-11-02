@@ -1,6 +1,7 @@
 import GameBoard from '@components/GameBoard/GameBoard';
 import GameHeader from '@components/Header/GameHeader';
 import GoldCardModal from '@components/Modal/GoldCardModal/GoldCardModal';
+import StockBuyModal from '@components/Modal/StockBuyModal/StockBuyModal';
 import LeftPlayers from '@components/Player/LeftPlayers';
 import RightPlayers from '@components/Player/RightPlayers';
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
@@ -10,7 +11,7 @@ import useGameReducer from '@store/reducer/useGameReducer';
 import { useEffect } from 'react';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
-import { goldCardLocation } from './constants';
+import { GOLD_CARD_LOCATIONS, STOCK_LOCATION } from './constants';
 
 export default function GamePage() {
   const playersInfo = usePlayersValue();
@@ -39,7 +40,8 @@ export default function GamePage() {
   const currentLocation = playersInfo.find(
     (player) => player.playerId === playerId
   )?.location;
-  const isLocateGoldCard = goldCardLocation.includes(currentLocation ?? 0);
+  const isLocatedGoldCard = GOLD_CARD_LOCATIONS.includes(currentLocation ?? 0);
+  const isLocatedStockCell = STOCK_LOCATION.includes(currentLocation ?? 0);
 
   return (
     <>
@@ -51,11 +53,14 @@ export default function GamePage() {
           <RightPlayers />
         </Main>
       </Container>
-      {isLocateGoldCard &&
+      {isLocatedGoldCard &&
         isMoveFinished &&
         isCurrentPlayer &&
         isArrived &&
         goldCardInfo.title && <GoldCardModal />}
+      {isLocatedStockCell && isMoveFinished && isCurrentPlayer && isArrived && (
+        <StockBuyModal />
+      )}
     </>
   );
 }

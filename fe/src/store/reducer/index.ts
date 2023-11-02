@@ -35,6 +35,24 @@ const resetEventRoundAtom = atom(null, (_get, set) => {
   });
 });
 
+const setTeleportLocationAtom = atom(null, (_get, set, location: number) => {
+  set(gameInfoAtom, (prev) => {
+    return {
+      ...prev,
+      teleportLocation: location,
+    };
+  });
+});
+
+const resetTeleportLocationAtom = atom(null, (_get, set) => {
+  set(gameInfoAtom, (prev) => {
+    return {
+      ...prev,
+      teleportLocation: null,
+    };
+  });
+});
+
 export const useGameInfo = () => useAtom(gameInfoAtom);
 export const usePlayers = () => useAtom(playersAtom);
 
@@ -45,4 +63,8 @@ export const useStocksValue = () => useAtomValue(stocksAtom);
 
 export const useSetGame = () => useSetAtom(gameAtom);
 export const useSetPlayers = () => useSetAtom(playersAtom);
+
 export const useResetEventRound = () => useSetAtom(resetEventRoundAtom);
+export const useSetTeleportLocation = () => useSetAtom(setTeleportLocationAtom);
+export const useResetTeleportLocation = () =>
+  useSetAtom(resetTeleportLocationAtom);

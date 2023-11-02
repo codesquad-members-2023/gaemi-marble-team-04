@@ -13,7 +13,7 @@ import PlayerToken from './PlayerToken';
 import { initialBoard } from './constants';
 
 export default function GameBoard() {
-  const [teleportLocation, setTeleportLocation] = useState<number | null>(null);
+  const [targetLocation, setTargetLocation] = useState<number | null>(null);
   const gameInfo = useGameInfoValue();
   const stockList = useStocksValue();
   const players = usePlayersValue();
@@ -24,12 +24,12 @@ export default function GameBoard() {
   );
   const currentPlayerStatus = currentPlayer?.gameboard.status ?? 'event';
 
-  const handleTeleportLocation = (location: number) => {
-    setTeleportLocation(location);
+  const selectTargetLocation = (location: number) => {
+    setTargetLocation(location);
   };
 
-  const resetTeleportLocation = () => {
-    setTeleportLocation(null);
+  const resetTargetLocation = () => {
+    setTargetLocation(null);
   };
 
   return (
@@ -47,7 +47,8 @@ export default function GameBoard() {
                   cell={cell}
                   price={stockPrice}
                   playerStatus={currentPlayerStatus}
-                  handleTeleportLocation={handleTeleportLocation}
+                  targetLocation={targetLocation}
+                  selectTargetLocation={selectTargetLocation}
                 />
               );
             })}
@@ -56,8 +57,8 @@ export default function GameBoard() {
         {gameInfo.isPlaying && (
           <CenterArea
             currentStatus={currentPlayerStatus}
-            teleportLocation={teleportLocation}
-            resetTeleportLocation={resetTeleportLocation}
+            targetLocation={targetLocation}
+            resetTargetLocation={resetTargetLocation}
           />
         )}
         {playerAtoms.map((playerAtom) => {

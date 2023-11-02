@@ -2,7 +2,11 @@ import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import useHover from '@hooks/useHover';
 import useMoveToken from '@hooks/useMoveToken';
 import { usePlayerIdValue } from '@store/index';
-import { useGameInfoValue, usePlayersValue } from '@store/reducer';
+import {
+  useGameInfoValue,
+  usePlayersValue,
+  useResetTeleportLocation,
+} from '@store/reducer';
 import { PlayerStatusType } from '@store/reducer/type';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,14 +17,14 @@ import Roulette from './Roulette';
 
 type CenterAreaProps = {
   currentStatus: PlayerStatusType;
-  teleportLocation: number | null;
-  resetTeleportLocation: () => void;
+  targetLocation: number | null;
+  resetTargetLocation: () => void;
 };
 
 export default function CenterArea({
   currentStatus,
-  teleportLocation,
-  resetTeleportLocation,
+  targetLocation,
+  resetTargetLocation,
 }: CenterAreaProps) {
   const { hoverRef: bailRef, isHover: isBailBtnHover } =
     useHover<HTMLButtonElement>();
@@ -32,6 +36,7 @@ export default function CenterArea({
   const playerId = usePlayerIdValue();
   const socketUrl = useGetSocketUrl();
   const moveToken = useMoveToken();
+  const resetTeleportLocation = useResetTeleportLocation();
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });
@@ -47,6 +52,10 @@ export default function CenterArea({
   const prisonStart = isMyTurn && !eventTime && isPrison && !isMoveFinished;
   const teleportStart = isMyTurn && !eventTime && isTeleport && !isMoveFinished;
 
+  const currentPlayerInfo = players.find(
+    (player) => player.playerId === gameInfo.currentPlayerId
+  );
+
   useEffect(() => {
     if (!eventTime) return;
     if (gameInfo.firstPlayerId !== playerId) return;
@@ -56,6 +65,22 @@ export default function CenterArea({
     };
     sendJsonMessage(message);
   }, [eventTime, gameId, playerId, gameInfo.firstPlayerId, sendJsonMessage]);
+
+  const teleportToken = () => {
+    if (!currentPlayerInfo || !gameInfo.teleportLocation) return;
+    const cellCount = calculateCellCount(
+      gameInfo.teleportLocation,
+      currentPlayerInfo.gameboard.location
+    );
+    moveToken(cellCount, currentPlayerInfo.gameboard, 'teleport');
+    resetTargetLocation();
+    resetTeleportLocation();
+  };
+
+  useEffect(() => {
+    if (!gameInfo.teleportLocation) return;
+    teleportToken();
+  }, [gameInfo.teleportLocation]);
 
   const throwDice = () => {
     const message = {
@@ -94,7 +119,7 @@ export default function CenterArea({
   };
 
   const handleTeleport = () => {
-    if (!teleportLocation) {
+    if (!targetLocation) {
       alert('이동할 칸을 선택해주세요.');
       return;
     }
@@ -102,18 +127,9 @@ export default function CenterArea({
       type: 'teleport',
       gameId,
       playerId,
-      location: teleportLocation,
+      location: targetLocation,
     };
     sendJsonMessage(message);
-    teleportToken();
-  };
-
-  const teleportToken = () => {
-    const playerInfo = players.find((player) => player.playerId === playerId);
-    if (!playerInfo || !teleportLocation) return;
-    const cellCount = calculateCellCount(teleportLocation, playerInfo.location);
-    moveToken(cellCount, playerInfo.gameboard, 'teleport');
-    resetTeleportLocation();
   };
 
   const calculateCellCount = (targetCell: number, currentCell: number) => {

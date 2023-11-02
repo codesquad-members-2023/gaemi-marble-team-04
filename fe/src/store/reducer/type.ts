@@ -19,6 +19,7 @@ export type GameActionType = {
   eventResult: EventResultPayloadType;
   expense: ExpensePayloadType;
   prisonDice: PrisonDicePayloadType;
+  teleport: TeleportPayloadType;
 };
 
 export type GameInfoType = {
@@ -33,6 +34,7 @@ export type GameInfoType = {
   eventResult: string;
   isSpin: boolean;
   isMoveFinished: boolean;
+  teleportLocation: number | null;
 };
 
 export type StartPayloadType = {
@@ -153,4 +155,8 @@ export type PrisonDicePayloadType = {
   dice1: number;
   dice2: number;
   hasEscaped: boolean;
+};
+
+export type TeleportPayloadType = {
+  location: number;
 };

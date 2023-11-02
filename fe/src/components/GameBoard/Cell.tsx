@@ -1,5 +1,4 @@
 import { cellImageMap } from '@assets/images';
-import useHover from '@hooks/useHover';
 import { PlayerStatusType } from '@store/reducer/type';
 import { addCommasToNumber } from '@utils/index';
 import { styled } from 'styled-components';
@@ -15,25 +14,26 @@ type Cellprops = {
   cell: CellType;
   price?: number;
   playerStatus: PlayerStatusType;
-  handleTeleportLocation: (location: number) => void;
+  targetLocation: number | null;
+  selectTargetLocation: (location: number) => void;
 };
 
 export default function Cell({
   cell,
   price,
   playerStatus,
-  handleTeleportLocation,
+  targetLocation,
+  selectTargetLocation,
 }: Cellprops) {
-  const { hoverRef, isHover } = useHover<HTMLDivElement>();
+  const isSelected = targetLocation === cell.location;
 
   return (
     <Container
-      ref={hoverRef}
-      $isHover={isHover}
       $status={playerStatus}
+      $isSelected={isSelected}
       onClick={() => {
         if (playerStatus === 'teleport') {
-          handleTeleportLocation(cell.location);
+          selectTargetLocation(cell.location);
           return;
         }
       }}
@@ -52,16 +52,19 @@ export default function Cell({
   );
 }
 
-const Container = styled.div<{ $isHover: boolean; $status: PlayerStatusType }>`
+const Container = styled.div<{
+  $status: PlayerStatusType;
+  $isSelected: boolean;
+}>`
   width: 6rem;
   height: 6rem;
   display: flex;
   flex-direction: column;
-  border-width: ${({ $isHover, $status }) =>
-    $isHover && $status === 'teleport' ? '3px' : '1px'};
-  border-style: ${({ $isHover, $status }) =>
-    $isHover && $status === 'teleport' ? 'inset' : 'solid'};
+  border-width: 1px;
+  border-style: solid;
   border-color: ${({ theme }) => theme.color.accentText};
+  background-color: ${({ theme, $isSelected }) =>
+    $isSelected ? theme.color.accentTertiary : theme.color.accentPrimary};
 `;
 
 const Header = styled.div`

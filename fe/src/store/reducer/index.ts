@@ -24,6 +24,15 @@ stocksAtom.debugLabel = 'stocksAtom';
 
 export const playerAtomsAtom = splitAtom(playersAtom);
 
+const resetGoldCardAtom = atom(null, (_get, set) => {
+  set(gameInfoAtom, (prev) => {
+    return {
+      ...prev,
+      goldCardInfo: { title: '', description: '' },
+    };
+  });
+});
+
 const resetEventRoundAtom = atom(null, (_get, set) => {
   set(gameInfoAtom, (prev) => {
     return {
@@ -31,6 +40,7 @@ const resetEventRoundAtom = atom(null, (_get, set) => {
       dice: [0, 0],
       eventResult: '',
       currentPlayerId: prev.firstPlayerId,
+      isArrived: false,
     };
   });
 });
@@ -62,9 +72,12 @@ export const usePlayersValue = () => useAtomValue(playersAtom);
 export const useStocksValue = () => useAtomValue(stocksAtom);
 
 export const useSetGame = () => useSetAtom(gameAtom);
+export const useSetGameInfo = () => useSetAtom(gameInfoAtom);
 export const useSetPlayers = () => useSetAtom(playersAtom);
 
 export const useResetEventRound = () => useSetAtom(resetEventRoundAtom);
 export const useSetTeleportLocation = () => useSetAtom(setTeleportLocationAtom);
 export const useResetTeleportLocation = () =>
   useSetAtom(resetTeleportLocationAtom);
+
+export const useResetGoldCard = () => useSetAtom(resetGoldCardAtom);

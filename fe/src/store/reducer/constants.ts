@@ -225,4 +225,6 @@ export const initialGame = {
   isSpin: false,
   isMoveFinished: false,
   teleportLocation: null,
+  goldCardInfo: { title: '', description: '' },
+  isArrived: false,
 };

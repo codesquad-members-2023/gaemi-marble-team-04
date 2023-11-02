@@ -1,4 +1,4 @@
-import { leftPlayerOrderList } from '@pages/constants';
+import { LEFT_PLAYER_ORDERS } from '@pages/constants';
 import { usePlayersValue } from '@store/reducer';
 import { styled } from 'styled-components';
 import PlayerCard from './PlayerCard';
@@ -6,7 +6,7 @@ import PlayerCard from './PlayerCard';
 export default function LeftPlayers() {
   const playersInfo = usePlayersValue();
   const leftPlayersInfo = playersInfo.filter((player) =>
-    leftPlayerOrderList.includes(player.order)
+    LEFT_PLAYER_ORDERS.includes(player.order)
   );
 
   return (

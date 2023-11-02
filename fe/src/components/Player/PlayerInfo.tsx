@@ -1,5 +1,5 @@
 import { Icon } from '@components/icon/Icon';
-import { antList } from '@pages/constants';
+import { ANT_LIST } from '@pages/constants';
 import { useGameInfoValue, useStocksValue } from '@store/reducer';
 import { PlayerType } from '@store/reducer/type';
 import { addCommasToNumber } from '@utils/index';
@@ -10,7 +10,7 @@ type PlayerInfoProps = {
 };
 
 export default function PlayerInfo({ player }: PlayerInfoProps) {
-  const antName = antList.find((ant) => ant.order === player?.order)!.antName;
+  const antName = ANT_LIST.find((ant) => ant.order === player?.order)!.antName;
   const { currentPlayerId } = useGameInfoValue();
   const stocks = useStocksValue();
   const isCurrentPlayer = currentPlayerId === player.playerId;

@@ -66,6 +66,7 @@ export const CELL = {
 };
 
 export const CORNER_CELLS = [0, 6, 12, 18];
+export const PRISON_CELL = 6;
 
 export const directions = {
   top: { x: 0, y: -CELL.HEIGHT },

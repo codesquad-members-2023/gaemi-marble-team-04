@@ -2,6 +2,7 @@ import { cellImageMap } from '@assets/images';
 import { PlayerStatusType } from '@store/reducer/type';
 import { addCommasToNumber } from '@utils/index';
 import { styled } from 'styled-components';
+import { PRISON_CELL } from './constants';
 
 type CellType = {
   theme?: string;
@@ -26,11 +27,13 @@ export default function Cell({
   selectTargetLocation,
 }: Cellprops) {
   const isSelected = targetLocation === cell.location;
+  const isPrison = cell.location === PRISON_CELL;
 
   return (
     <Container
       $status={playerStatus}
       $isSelected={isSelected}
+      $isPrison={isPrison}
       onClick={() => {
         if (playerStatus !== 'teleport') return;
         if (cell.location === 18) {
@@ -58,16 +61,17 @@ export default function Cell({
 const Container = styled.div<{
   $status: PlayerStatusType;
   $isSelected: boolean;
+  $isPrison: boolean;
 }>`
   width: 6rem;
   height: 6rem;
   display: flex;
   flex-direction: column;
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${({ theme }) => theme.color.accentText};
+  border: ${({ theme }) => `1px solid ${theme.color.neutralBackgroundBold}`};
   background-color: ${({ theme, $isSelected }) =>
-    $isSelected ? theme.color.accentTertiary : theme.color.accentPrimary};
+    $isSelected ? theme.color.accentTertiary : theme.color.accentText};
+  box-shadow: ${({ $isPrison }) =>
+    $isPrison ? 'none' : '10px 5px 5px rgba(0, 0, 0, 1)'};
 `;
 
 const Header = styled.div`
@@ -75,12 +79,11 @@ const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ theme: { color } }) => color.accentText};
 `;
 
 const Logo = styled.img`
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
 `;
 
 const CellImg = styled.img`
@@ -89,7 +92,7 @@ const CellImg = styled.img`
 `;
 
 const Name = styled.div`
-  color: ${({ theme: { color } }) => color.accentPrimary};
+  color: ${({ theme: { color } }) => color.neutralText};
 `;
 
 const Content = styled.div`
@@ -98,4 +101,5 @@ const Content = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  color: ${({ theme: { color } }) => color.neutralText};
 `;

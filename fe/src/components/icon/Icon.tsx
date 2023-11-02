@@ -3,12 +3,12 @@ import { styled } from 'styled-components';
 import { designSystem } from '../../styles/designSystem';
 import { IconsType, icons } from './icons';
 
-interface IconProps {
+type IconProps = {
   name: IconsType;
   size?: string;
   color?: keyof typeof designSystem.color;
   onClick?: (event: MouseEvent) => void;
-}
+};
 
 export function Icon({ name, size = '2rem', color, onClick }: IconProps) {
   const IconComponent = icons[name];

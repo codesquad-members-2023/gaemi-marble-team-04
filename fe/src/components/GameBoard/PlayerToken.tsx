@@ -1,8 +1,9 @@
+import { Icon } from '@components/icon/Icon';
+import { ANT_LIST } from '@pages/constants';
 import { PlayerType } from '@store/reducer/type';
 import { PrimitiveAtom, useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
 import { styled } from 'styled-components';
-import { DefaultTheme } from 'styled-components/dist/types';
 
 type PlayerTokenWithAtomProps = {
   playerAtom: PrimitiveAtom<PlayerType>;
@@ -11,6 +12,7 @@ type PlayerTokenWithAtomProps = {
 export default function PlayerToken({ playerAtom }: PlayerTokenWithAtomProps) {
   const tokenRef = useRef<HTMLDivElement>(null);
   const [player, setPlayer] = useAtom(playerAtom);
+  const antName = ANT_LIST.find((ant) => ant.order === player?.order)!.antName;
 
   useEffect(() => {
     setPlayer((prev) => {
@@ -28,14 +30,14 @@ export default function PlayerToken({ playerAtom }: PlayerTokenWithAtomProps) {
 
   return (
     <Token ref={tokenRef} $order={player.order}>
-      {player.order}
+      <Icon name={antName} size="2.5rem" />
     </Token>
   );
 }
 
 const Token = styled.div<{ $order: number }>`
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
   position: absolute;
   bottom: ${({ $order }) => ($order === 1 || $order === 2 ? 3 : 0.5)}rem;
   left: ${({ $order }) => ($order === 2 || $order === 3 ? 3 : 0.5)}rem;
@@ -43,7 +45,6 @@ const Token = styled.div<{ $order: number }>`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: ${({ theme, $order }) =>
-    theme.color[`player${$order}` as keyof DefaultTheme['color']]};
+  background-color: ${({ theme }) => theme.color.accentTertiary};
   transition: transform 0.2s;
 `;

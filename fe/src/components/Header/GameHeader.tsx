@@ -1,5 +1,4 @@
 import StatusBoardModal from '@components/Modal/StatusBoardModal/StatusBoardModal';
-import StockBuyModal from '@components/Modal/StockBuyModal/StockBuyModal';
 import { Icon } from '@components/icon/Icon';
 import useSound from '@hooks/useSound';
 import { ROUTE_PATH } from '@router/constants';
@@ -10,7 +9,6 @@ import { styled } from 'styled-components';
 export default function GameHeader() {
   const navigate = useNavigate();
   const [isStatusBoardModalOpen, setIsStatusBoardModalOpen] = useState(false);
-  const [isStockBuyModalOpen, setIsStockBuyModalOpen] = useState(false);
 
   const {
     isSoundPlaying,
@@ -28,16 +26,17 @@ export default function GameHeader() {
     setIsStatusBoardModalOpen((prev) => !prev);
   };
 
-  const toggleStockBuyModal = () => {
-    setIsStockBuyModalOpen((prev) => !prev);
-  };
-
   return (
     <>
       <Header>
         <Logo>Gaemi Marble</Logo>
-        <Temp>
-          <IconContainer onClick={toggleStockBuyModal}>칸도착</IconContainer>
+        <IconContainer
+          className="status-board"
+          onClick={toggleStatusBoardModal}
+        >
+          <Icon name="statusBoard" size="3rem" color="neutralText" />
+        </IconContainer>
+        <Navigation>
           <IconContainer>
             <Icon
               name={isSoundPlaying ? 'soundPlaying' : 'soundMute'}
@@ -48,27 +47,16 @@ export default function GameHeader() {
           </IconContainer>
           <IconContainer>
             <Icon
-              name="statusBoard"
-              size="3rem"
-              color="neutralText"
-              onClick={toggleStatusBoardModal}
-            />
-          </IconContainer>
-          <IconContainer>
-            <Icon
               name="exit"
               size="3rem"
               color="accentText"
               onClick={handleExit}
             />
           </IconContainer>
-        </Temp>
+        </Navigation>
       </Header>
       {isStatusBoardModalOpen && (
         <StatusBoardModal handleClose={toggleStatusBoardModal} />
-      )}
-      {isStockBuyModalOpen && (
-        <StockBuyModal handleClose={toggleStockBuyModal} />
       )}
       {GameBgm}
     </>
@@ -76,9 +64,6 @@ export default function GameHeader() {
 }
 
 const Header = styled.div`
-  #sound {
-    display: none;
-  }
   width: 100%;
   display: flex;
   top: 0.5rem;
@@ -92,8 +77,7 @@ const Logo = styled.h1`
   color: ${({ theme: { color } }) => color.accentText};
 `;
 
-// Todo: have to delete!!!
-const Temp = styled.div`
+const Navigation = styled.div`
   display: flex;
   gap: 1rem;
 `;
@@ -115,5 +99,11 @@ const IconContainer = styled.div`
     svg path {
       fill: ${({ theme: { color } }) => color.accentText};
     }
+  }
+
+  &.status-board {
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
   }
 `;

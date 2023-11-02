@@ -1,4 +1,5 @@
 import useMoveToken from '@hooks/useMoveToken';
+import useSound from '@hooks/useSound';
 import { useGameInfoValue, usePlayers, useSetGameInfo } from '@store/reducer';
 import { useEffect, useRef, useState } from 'react';
 import ReactDice, { ReactDiceRef } from 'react-dice-complete';
@@ -11,6 +12,10 @@ export default function Dice() {
   const gameInfo = useGameInfoValue();
   const moveToken = useMoveToken();
   const setGameInfo = useSetGameInfo();
+  const [isRolling, setIsRolling] = useState(false);
+  const { sound: DiceRollSound } = useSound({
+    src: '/sound/roll.mp3',
+  });
 
   useEffect(() => {
     if (gameInfo.dice[0] === 0 || gameInfo.dice[1] === 0) return;
@@ -19,6 +24,7 @@ export default function Dice() {
 
   const rollDice = (dice1: number, dice2: number) => {
     reactDice.current?.rollAll([dice1, dice2]);
+    setIsRolling(true);
   };
 
   const rollDone = async () => {
@@ -27,6 +33,7 @@ export default function Dice() {
     const targetPlayer = players.find(
       (player) => player.playerId === gameInfo.currentPlayerId
     );
+    setIsRolling(false);
 
     if (!targetPlayer) return;
     if (!targetPlayer.gameboard.hasEscaped) return;
@@ -47,12 +54,13 @@ export default function Dice() {
         numDice={2}
         ref={reactDice}
         rollDone={rollDone}
-        rollTime={0.5}
+        rollTime={1}
         faceColor="#fff"
         dotColor="#000"
         disableIndividual={true}
       />
       <DiceValue>{diceValue}</DiceValue>
+      {isRolling && DiceRollSound}
     </>
   );
 }

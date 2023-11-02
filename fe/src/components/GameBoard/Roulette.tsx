@@ -1,5 +1,6 @@
 import EventModal from '@components/Modal/EventModal/EventModal';
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import useSound from '@hooks/useSound';
 import { usePlayerIdValue } from '@store/index';
 import { useGameInfo, useResetEventRound } from '@store/reducer';
 import { delay } from '@utils/index';
@@ -24,6 +25,11 @@ export default function Roulette() {
     share: true,
   });
 
+  const [isRolling, setIsRolling] = useState(false);
+  const { sound: RouletteRollingSound } = useSound({
+    src: '/sound/roulette.mp3',
+  });
+
   const startSpin = useCallback(() => {
     const eventListData = gameInfo.eventList.map((event) => event.title);
     if (eventListData.length === 0) return;
@@ -34,6 +40,7 @@ export default function Roulette() {
       events: eventListData,
     };
     sendJsonMessage(message);
+    setIsRolling(true);
   }, [
     gameId,
     playerId,
@@ -76,6 +83,7 @@ export default function Roulette() {
 
   const handleSpinDone = async () => {
     setIsEventModalOpen(true);
+    setIsRolling(false);
     await delay(5000);
     resetGameInfo();
     setMustSpin(false);
@@ -102,6 +110,7 @@ export default function Roulette() {
         <Button onClick={startSpin}>룰렛 테스트 버튼</Button>
       </Wrapper>
       {isEventModalOpen && <EventModal />}
+      {isRolling && RouletteRollingSound}
     </>
   );
 }

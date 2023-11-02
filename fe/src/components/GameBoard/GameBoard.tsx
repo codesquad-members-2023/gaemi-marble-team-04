@@ -1,3 +1,4 @@
+import useGetSocketUrl from '@hooks/useGetSocketUrl';
 import {
   playerAtomsAtom,
   useGameInfoValue,
@@ -6,6 +7,8 @@ import {
 } from '@store/reducer';
 import { useAtom } from 'jotai';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import useWebSocket from 'react-use-websocket';
 import { css, styled } from 'styled-components';
 import Cell from './Cell';
 import CenterArea from './CenterArea';
@@ -18,11 +21,27 @@ export default function GameBoard() {
   const stockList = useStocksValue();
   const players = usePlayersValue();
   const [playerAtoms] = useAtom(playerAtomsAtom);
+  const socketUrl = useGetSocketUrl();
+  const { gameId } = useParams();
+  const { sendJsonMessage } = useWebSocket(socketUrl, {
+    share: true,
+  });
 
+  const isEveryoneReady = players.every(
+    (player) => player.playerId === '' || player.isReady
+  );
   const currentPlayer = players.find(
     (player) => player.playerId === gameInfo.currentPlayerId
   );
   const currentPlayerStatus = currentPlayer?.gameboard.status ?? 'event';
+
+  const handleStart = () => {
+    const message = {
+      type: 'start',
+      gameId,
+    };
+    sendJsonMessage(message);
+  };
 
   const selectTargetLocation = (location: number) => {
     setTargetLocation(location);
@@ -33,7 +52,7 @@ export default function GameBoard() {
   };
 
   return (
-    <>
+    <Container>
       <Board>
         {initialBoard.map((line, index) => (
           <Line key={index} $lineNum={index + 1}>
@@ -54,6 +73,9 @@ export default function GameBoard() {
             })}
           </Line>
         ))}
+        {!gameInfo.isPlaying && isEveryoneReady && (
+          <Button onClick={handleStart}>게임 시작</Button>
+        )}
         {gameInfo.isPlaying && (
           <CenterArea
             currentStatus={currentPlayerStatus}
@@ -65,11 +87,20 @@ export default function GameBoard() {
           return <PlayerToken key={`${playerAtom}`} playerAtom={playerAtom} />;
         })}
       </Board>
-    </>
+    </Container>
   );
 }
 
+const Container = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Board = styled.div`
+  width: 42rem;
+  height: 42rem;
   min-width: 42rem;
   min-height: 42rem;
   position: relative;
@@ -80,6 +111,18 @@ const Line = styled.div<{ $lineNum: number }>`
   position: absolute;
   display: flex;
   ${({ $lineNum }) => drawLine($lineNum)}
+`;
+
+const Button = styled.button`
+  width: 6rem;
+  height: 4rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: ${({ theme: { radius } }) => radius.small};
+  color: ${({ theme: { color } }) => color.neutralText};
+  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;
 
 const drawLine = (lineNum: number) => {

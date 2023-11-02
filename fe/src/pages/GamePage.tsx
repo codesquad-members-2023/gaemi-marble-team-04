@@ -8,31 +8,19 @@ import { usePlayerIdValue } from '@store/index';
 import { useGameInfoValue, usePlayersValue } from '@store/reducer';
 import useGameReducer from '@store/reducer/useGameReducer';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { styled } from 'styled-components';
 import { goldCardLocation } from './constants';
 
 export default function GamePage() {
-  const { gameId } = useParams();
   const playersInfo = usePlayersValue();
   const playerId = usePlayerIdValue();
-  const {
-    isMoveFinished,
-    currentPlayerId,
-    isPlaying,
-    goldCardInfo,
-    isArrived,
-  } = useGameInfoValue();
+  const { isMoveFinished, currentPlayerId, goldCardInfo, isArrived } =
+    useGameInfoValue();
   const { dispatch } = useGameReducer();
   const socketUrl = useGetSocketUrl();
 
-  // playersInfo에 빈 플레이어 객체일때는 isReady를 체크하지 않음
-  const isEveryoneReady = playersInfo.every(
-    (player) => player.playerId === '' || player.isReady
-  );
-
-  const { sendJsonMessage, lastMessage } = useWebSocket(socketUrl, {
+  const { lastMessage } = useWebSocket(socketUrl, {
     share: true,
   });
 
@@ -46,14 +34,6 @@ export default function GamePage() {
       });
     }
   }, [lastMessage]);
-
-  const handleStart = () => {
-    const message = {
-      type: 'start',
-      gameId,
-    };
-    sendJsonMessage(message);
-  };
 
   const isCurrentPlayer = currentPlayerId === playerId;
   const currentLocation = playersInfo.find(
@@ -69,9 +49,6 @@ export default function GamePage() {
           <LeftPlayers />
           <GameBoard />
           <RightPlayers />
-          {!isPlaying && isEveryoneReady && (
-            <Button onClick={handleStart}>게임 시작</Button>
-          )}
         </Main>
       </Container>
       {isLocateGoldCard &&
@@ -88,28 +65,16 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  gap: 16px;
+  flex: 1;
   color: ${({ theme: { color } }) => color.accentText};
-  background-color: ${({ theme: { color } }) => color.accentPrimary};
 `;
 
 const Main = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-between;
+  flex: 1;
   padding: 0 1rem;
-`;
-
-const Button = styled.button`
-  width: 6rem;
-  height: 4rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: ${({ theme: { radius } }) => radius.small};
-  color: ${({ theme: { color } }) => color.neutralText};
-  background-color: ${({ theme: { color } }) => color.neutralBackground};
 `;

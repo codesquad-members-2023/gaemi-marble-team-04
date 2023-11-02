@@ -19,7 +19,7 @@ export default function LeftPlayers() {
 }
 
 const Players = styled.div`
-  width: 22rem;
+  min-width: 22rem;
   display: flex;
   flex-direction: column;
   align-items: center;

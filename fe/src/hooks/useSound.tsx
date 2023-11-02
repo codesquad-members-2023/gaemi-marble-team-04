@@ -11,7 +11,11 @@ type UseSoundType = {
 };
 
 export default function useSound({ src }: UseSoundType): SoundReturnType {
-  const [isSoundPlaying, setIsSoundPlaying] = useState(true);
+  const [isSoundPlaying, setIsSoundPlaying] = useState<boolean>(() => {
+    const storedIsSoundPlaying = localStorage.getItem('isSoundPlaying');
+    return storedIsSoundPlaying ? JSON.parse(storedIsSoundPlaying) : true;
+  });
+
   const soundRef = useRef<HTMLAudioElement>(null);
   const isBgm = src.includes('bgm');
 
@@ -23,6 +27,10 @@ export default function useSound({ src }: UseSoundType): SoundReturnType {
       soundElement.volume = 0.2;
     }
   }, [soundRef]);
+
+  useEffect(() => {
+    localStorage.setItem('isSoundPlaying', JSON.stringify(isSoundPlaying));
+  }, [isSoundPlaying]);
 
   const togglePlayingSound = () => {
     setIsSoundPlaying((prev) => !prev);

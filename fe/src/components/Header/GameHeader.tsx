@@ -90,9 +90,9 @@ const Header = styled.div`
   }
   width: 100%;
   display: flex;
-  position: fixed;
   top: 0.5rem;
   padding: 0 2rem;
+  margin: 1rem 0;
   justify-content: space-between;
 `;
 

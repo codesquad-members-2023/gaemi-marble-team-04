@@ -10,8 +10,10 @@ export default function Layout() {
 }
 
 const Page = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: max-content;
+  height: max-content;
+  min-width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   color: ${({ theme: { color } }) => color.accentText};

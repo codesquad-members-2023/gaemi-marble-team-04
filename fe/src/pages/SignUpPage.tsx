@@ -70,6 +70,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 16px;
+  flex: 1;
 `;
 
 const Title = styled.h1`

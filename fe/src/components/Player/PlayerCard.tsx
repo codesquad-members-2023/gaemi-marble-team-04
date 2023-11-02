@@ -76,7 +76,9 @@ export default function PlayerCard({ player }: PlayerCardProps) {
           )}
         </CardWrapper>
       ) : (
-        <EmptyCard />
+        <EmptyCardWrapper>
+          <EmptyCard />
+        </EmptyCardWrapper>
       )}
     </>
   );
@@ -127,4 +129,8 @@ const Button = styled.button<{ $isReady: boolean }>`
   &:disabled {
     cursor: not-allowed;
   }
+`;
+
+const EmptyCardWrapper = styled(CardWrapper)`
+  margin: 4.5rem 0;
 `;

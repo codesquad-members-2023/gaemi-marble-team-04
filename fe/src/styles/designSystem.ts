@@ -62,6 +62,7 @@ export const designSystem = {
     accentPrimary: colors.royalBlue,
     accentSecondary: colors.purple,
     accentTertiary: colors.green,
+    accentGold: colors.yellow,
 
     systemWarning: colors.red,
     systemBackground: colors.white,

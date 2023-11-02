@@ -32,10 +32,13 @@ export default function Cell({
       $status={playerStatus}
       $isSelected={isSelected}
       onClick={() => {
-        if (playerStatus === 'teleport') {
-          selectTargetLocation(cell.location);
+        if (playerStatus !== 'teleport') return;
+        if (cell.location === 18) {
+          alert('이동할 수 없는 위치입니다.');
           return;
         }
+        selectTargetLocation(cell.location);
+        return;
       }}
     >
       {cell.theme && (

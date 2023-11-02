@@ -77,9 +77,6 @@ export const directions = {
 export const DICE_MOVE_DELAY = 200;
 export const TELEPORT_MOVE_DELAY = 100;
 
-// 매도시간 30초
-export const ROULETTE_TIMER = 30000;
-
 export const changeDirection = (direction: DirectionType) => {
   switch (direction) {
     case 'top':

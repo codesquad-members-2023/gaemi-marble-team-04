@@ -102,8 +102,9 @@ const IconContainer = styled.div`
   }
 
   &.status-board {
-    justify-content: center;
     width: 4rem;
     height: 4rem;
+    justify-content: center;
+    margin-right: 75px;
   }
 `;

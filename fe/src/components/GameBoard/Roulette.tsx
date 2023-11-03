@@ -13,7 +13,7 @@ import { styled } from 'styled-components';
 export default function Roulette() {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
-  const [stockSellTime, setStockSellTime] = useState(30);
+  const [stockSellTime, setStockSellTime] = useState(20);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
   const { gameId } = useParams();
@@ -107,7 +107,6 @@ export default function Roulette() {
       />
       <Wrapper>
         <Timer>남은 매도시간: {stockSellTime}</Timer>
-        <Button onClick={startSpin}>룰렛 테스트 버튼</Button>
       </Wrapper>
       {isEventModalOpen && <EventModal />}
       {isRolling && RouletteRollingSound}
@@ -123,15 +122,4 @@ const Wrapper = styled.div`
 
 const Timer = styled.div`
   font-size: ${({ theme }) => theme.fontSize.sMedium};
-`;
-
-const Button = styled.button`
-  width: 150px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  align-self: flex-end;
-  border: 1px solid ${({ theme }) => theme.color.accentText};
-  border-radius: ${({ theme }) => theme.radius.small};
-  color: ${({ theme }) => theme.color.neutralTextStrong};
-  background-color: ${({ theme }) => theme.color.neutralBackground};
 `;

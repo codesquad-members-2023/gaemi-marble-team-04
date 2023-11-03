@@ -28,6 +28,8 @@ export default function Dice() {
   };
 
   const rollDone = async () => {
+    if (gameInfo.dice[0] === 0 || gameInfo.dice[1] === 0) return;
+
     const totalDiceValue = gameInfo.dice[0] + gameInfo.dice[1];
     setDiceValue(totalDiceValue);
     const targetPlayer = players.find(

@@ -1,4 +1,5 @@
 import useGetSocketUrl from '@hooks/useGetSocketUrl';
+import { usePlayerIdValue } from '@store/index';
 import {
   playerAtomsAtom,
   useGameInfoValue,
@@ -23,6 +24,7 @@ export default function GameBoard() {
   const [playerAtoms] = useAtom(playerAtomsAtom);
   const socketUrl = useGetSocketUrl();
   const { gameId } = useParams();
+  const playerId = usePlayerIdValue();
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     share: true,
   });
@@ -34,6 +36,8 @@ export default function GameBoard() {
     (player) => player.playerId === gameInfo.currentPlayerId
   );
   const currentPlayerStatus = currentPlayer?.gameboard.status ?? 'event';
+  const isCaptain =
+    players.find((player) => player.playerId === playerId)!.order === 1;
 
   const handleStart = () => {
     const message = {
@@ -73,7 +77,7 @@ export default function GameBoard() {
             })}
           </Line>
         ))}
-        {!gameInfo.isPlaying && isEveryoneReady && (
+        {!gameInfo.isPlaying && isEveryoneReady && isCaptain && (
           <Button onClick={handleStart}>게임 시작</Button>
         )}
         {gameInfo.isPlaying && (

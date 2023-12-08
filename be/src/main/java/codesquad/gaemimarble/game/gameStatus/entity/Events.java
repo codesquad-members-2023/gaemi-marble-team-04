@@ -1,7 +1,8 @@
-package codesquad.gaemimarble.game.entity;
+package codesquad.gaemimarble.game.gameStatus.entity;
 
 import java.util.Map;
 
+import codesquad.gaemimarble.game.stock.entity.Theme;
 import lombok.Getter;
 
 @Getter

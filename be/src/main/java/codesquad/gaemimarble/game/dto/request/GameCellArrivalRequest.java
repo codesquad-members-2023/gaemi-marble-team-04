@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GameBailRequest {
-	Long gameId;
-	String playerId;
+public class GameCellArrivalRequest {
+	private Long gameId;
+	private String playerId;
 
 	@Builder
-	public GameBailRequest(Long gameId, String playerId) {
+	public GameCellArrivalRequest(Long gameId, String playerId) {
 		this.gameId = gameId;
 		this.playerId = playerId;
 	}

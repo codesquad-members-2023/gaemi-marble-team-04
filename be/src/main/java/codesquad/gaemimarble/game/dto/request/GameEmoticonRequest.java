@@ -1,18 +1,18 @@
 package codesquad.gaemimarble.game.dto.request;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GamePrisonDiceRequest {
+public class GameEmoticonRequest {
 	private Long gameId;
 	private String playerId;
+	private String name;
 
-	@Builder
-	public GamePrisonDiceRequest(Long gameId, String playerId) {
+	public GameEmoticonRequest(Long gameId, String playerId, String name) {
 		this.gameId = gameId;
 		this.playerId = playerId;
+		this.name = name;
 	}
 }

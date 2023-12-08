@@ -4,12 +4,12 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class GameCellResponse {
-	private String playerId;
-	private Integer location;
+public class GameLocationResponse {
+	private final String playerId;
+	private final Integer location;
 
 	@Builder
-	public GameCellResponse(String playerId, Integer location) {
+	GameLocationResponse(String playerId, Integer location) {
 		this.playerId = playerId;
 		this.location = location;
 	}

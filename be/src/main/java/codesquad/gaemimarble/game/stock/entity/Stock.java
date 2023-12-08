@@ -1,16 +1,13 @@
-package codesquad.gaemimarble.game.entity;
-
-import java.util.ArrayList;
-import java.util.List;
+package codesquad.gaemimarble.game.stock.entity;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 public class Stock {
-	private Theme theme;
-	private String name;
-	private Integer startPrice;
+	private final Theme theme;
+	private final String name;
+	private final Integer startPrice;
 	private Integer currentPrice;
 	private Integer remainingStock;
 	private Boolean wasBought = false;
@@ -32,23 +29,6 @@ public class Stock {
 		this.remainingStock = 100;
 	}
 
-	public static List<Stock> initStocks() {
-		List<Stock> stocks = new ArrayList<>();
-		for (Share share : Share.values()) {
-			stocks.add(new Stock(share));
-		}
-		return stocks;
-	}
-
-	public void changePrice(Integer percentage) {
-		Integer changingPrice = this.currentPrice + ((this.startPrice * percentage) / 100);
-		if (changingPrice <= 0) {
-			currentPrice = 0;
-			return;
-		}
-		this.currentPrice += ((this.startPrice * percentage) / 100);
-	}
-
 	public void decrementQuantity(Integer quantity) {
 		wasBought = true;
 		remainingStock -= quantity;
@@ -56,5 +36,9 @@ public class Stock {
 
 	public void incrementQuantity(Integer quantity) {
 		remainingStock += quantity;
+	}
+
+	public void setCurrentPrice(int price) {
+		currentPrice = price;
 	}
 }

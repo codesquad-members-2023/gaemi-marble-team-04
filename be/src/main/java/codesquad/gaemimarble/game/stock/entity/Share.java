@@ -1,4 +1,4 @@
-package codesquad.gaemimarble.game.entity;
+package codesquad.gaemimarble.game.stock.entity;
 
 import lombok.Getter;
 

@@ -1,6 +1,4 @@
-package codesquad.gaemimarble.game.entity;
-
-import java.util.List;
+package codesquad.gaemimarble.game.stock.entity;
 
 import lombok.Getter;
 

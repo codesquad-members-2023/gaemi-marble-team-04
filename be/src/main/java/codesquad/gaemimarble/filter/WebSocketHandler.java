@@ -7,10 +7,11 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import codesquad.gaemimarble.exception.CustomException;
+import codesquad.gaemimarble.exception.PlayTimeException;
+import codesquad.gaemimarble.exception.SocketException;
+import codesquad.gaemimarble.game.controller.GameController;
 import codesquad.gaemimarble.game.controller.SocketDataSender;
 import codesquad.gaemimarble.game.dto.request.GameMessage;
-import codesquad.gaemimarble.game.controller.GameController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +24,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 	private final SocketDataSender socketDataSender;
 
 	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+	public void afterConnectionEstablished(WebSocketSession session) {
 		Long gameId = extractGameIdFromUri(session.getUri().getPath());
 		String playerId = extractPlayerIdFromUri(session.getUri().getPath());
 		gameController.enterGame(gameId, session, playerId);
@@ -42,8 +43,11 @@ public class WebSocketHandler extends TextWebSocketHandler {
 		log.info("className:{}", mappedRequest.getClass().cast(mappedRequest));
 		try {
 			gameController.handleRequest(mappedRequest);
-		} catch (CustomException ex) {
-			socketDataSender.sendErrorMessage(ex.getGameId(), ex.getPlayerId(), ex.getMessage());
+		} catch (PlayTimeException ex) {
+			socketDataSender.sendErrorMessage(session, ex.getMessage());
+		} catch (SocketException ex) {
+			socketDataSender.sendErrorMessage(session, ex.getMessage());
+			ex.getSession().close();
 		}
 	}
 

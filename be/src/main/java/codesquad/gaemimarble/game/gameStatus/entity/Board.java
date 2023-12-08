@@ -1,8 +1,9 @@
-package codesquad.gaemimarble.game.entity;
+package codesquad.gaemimarble.game.gameStatus.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import codesquad.gaemimarble.game.stock.entity.Share;
 import lombok.Getter;
 
 @Getter

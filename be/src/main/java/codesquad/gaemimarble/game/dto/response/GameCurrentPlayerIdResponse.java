@@ -4,13 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class GameTeleportResponse {
+public class GameCurrentPlayerIdResponse {
 	private final String playerId;
-	private final Integer location;
 
 	@Builder
-	private GameTeleportResponse(String playerId, Integer location) {
+	public GameCurrentPlayerIdResponse(String playerId) {
 		this.playerId = playerId;
-		this.location = location;
 	}
 }

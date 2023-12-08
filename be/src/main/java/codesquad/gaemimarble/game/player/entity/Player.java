@@ -1,6 +1,5 @@
-package codesquad.gaemimarble.game.entity;
+package codesquad.gaemimarble.game.player.entity;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import lombok.Builder;
@@ -20,7 +19,7 @@ public class Player {
 	// 상태, 황금카드 보류
 
 	@Builder
-	Player(String playerId, Integer order, Integer location, ConcurrentMap<String, Integer> myStocks,
+	private Player(String playerId, Integer order, Integer location, ConcurrentMap<String, Integer> myStocks,
 		Integer stockAsset,
 		Integer cashAsset, Integer totalAsset, Boolean isReady, Integer prisonCount) {
 		this.playerId = playerId;
@@ -32,19 +31,6 @@ public class Player {
 		this.totalAsset = totalAsset;
 		this.isReady = isReady;
 		this.prisonCount = prisonCount;
-	}
-
-	public static Player init(String playerId) {
-		return Player.builder()
-			.playerId(playerId)
-			.cashAsset(200_000_000)
-			.location(0)
-			.myStocks(new ConcurrentHashMap<>())
-			.stockAsset(0)
-			.totalAsset(200_000_000)
-			.isReady(false)
-			.prisonCount(0)
-			.build();
 	}
 
 	public void setOrder(Integer order) {
@@ -72,21 +58,25 @@ public class Player {
 		this.location = 6;
 	}
 
-	public void buy(Stock stock, Integer quantity) {
-		myStocks.put(stock.getName(), myStocks.getOrDefault(stock.getName(), 0) + quantity);
-		cashAsset -= quantity * stock.getCurrentPrice();
-		stockAsset += quantity * stock.getCurrentPrice();
+	public void buy(String stockName, Integer stockCurrentPrice, Integer quantity) {
+		myStocks.put(stockName, myStocks.getOrDefault(stockName, 0) + quantity);
+		cashAsset -= quantity * stockCurrentPrice;
+		stockAsset += quantity * stockCurrentPrice;
 	}
 
-	public void sellStock(Stock stock, Integer quantity) {
-		myStocks.put(stock.getName(), myStocks.get(stock.getName()) - quantity);
-		cashAsset += quantity * stock.getCurrentPrice();
-		stockAsset -= quantity * stock.getCurrentPrice();
+	public void sellStock(String stockName, Integer stockCurrentPrice, Integer quantity) {
+		myStocks.put(stockName, myStocks.get(stockName) - quantity);
+		cashAsset += quantity * stockCurrentPrice;
+		stockAsset -= quantity * stockCurrentPrice;
 	}
 
-	public void updateStockAsset(Stock stock) {
-		stockAsset = myStocks.get(stock.getName()) * stock.getCurrentPrice();
+	public void updateStockAsset(String stockName, int currentPrice) {
+		stockAsset += myStocks.get(stockName) * currentPrice;
 		totalAsset = cashAsset + stockAsset;
+	}
+
+	public void initStockAsset() {
+		stockAsset = 0;
 	}
 
 	public void escapePrison(int diceResult) {

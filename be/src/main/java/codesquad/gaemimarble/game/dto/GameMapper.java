@@ -9,8 +9,8 @@ import org.mapstruct.factory.Mappers;
 import codesquad.gaemimarble.game.dto.response.generalStatusBoard.GameStockStatusResponse;
 import codesquad.gaemimarble.game.dto.response.userStatusBoard.GameUserStatusBoardResponse;
 import codesquad.gaemimarble.game.dto.response.userStatusBoard.StockResponse;
-import codesquad.gaemimarble.game.entity.Player;
-import codesquad.gaemimarble.game.entity.Stock;
+import codesquad.gaemimarble.game.player.entity.Player;
+import codesquad.gaemimarble.game.stock.entity.Stock;
 
 @Mapper
 public interface GameMapper {

@@ -6,15 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GameRobRequest {
+public class GameStatusBoardRequest {
 	private Long gameId;
-	private String playerId;
-	private String targetId;
 
 	@Builder
-	private GameRobRequest(Long gameId, String playerId, String targetId) {
+	public GameStatusBoardRequest(Long gameId) {
 		this.gameId = gameId;
-		this.playerId = playerId;
-		this.targetId = targetId;
 	}
 }
